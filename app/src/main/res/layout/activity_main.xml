@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/list"
                 android:layout_weight="90"
-                android:divider="#AAAAAA">
+                android:visibility="visible">
             </ListView>
 
             <LinearLayout

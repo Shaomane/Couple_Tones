@@ -29,9 +29,19 @@ public class MainActivity extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.list);
         adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
         list.setAdapter(adapter);
-        listItems.add("Hello");
-        adapter.notifyDataSetChanged();
-        listItems.add("Hello2");
+
+        //Have mercy on me guys, I'll get rid of this later --Andrew
+        listItems.add("");
+        listItems.add("");
+        listItems.add("");
+        listItems.add("");
+        listItems.add("");
+        listItems.add("");
+        listItems.add("");
+        listItems.add("");
+        listItems.add("");
+        listItems.add("");
+        listItems.add("");
         adapter.notifyDataSetChanged();
     }
 
