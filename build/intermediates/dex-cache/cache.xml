@@ -61,14 +61,14 @@
         jar="/Users/noellin/AndroidStudioProjects/100lab5part2/CoupleTones/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="3e4543261eaa874a994471bd07e4ebddb688bebb">
+        sha1="f1887e4e033a0fa28dbd5c4d6317b2579221e381">
         <dex dex="/Users/noellin/AndroidStudioProjects/100lab5part2/CoupleTones/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_872ffd18c7b0ffc8f7b460a2141a25f49261a768/classes.dex" />
     </item>
     <item
         jar="/Users/noellin/AndroidStudioProjects/100lab5part2/CoupleTones/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="691e600afbcf872fb5b629a3d5ac468302fe4500">
+        sha1="35a3e3047125aebf8aedd308e6673abdc78598b2">
         <dex dex="/Users/noellin/AndroidStudioProjects/100lab5part2/CoupleTones/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_2a99468910960c5a8be9ffb29767ab18a227b709/classes.dex" />
     </item>
     <item
@@ -159,13 +159,8 @@
         jar="/Users/noellin/AndroidStudioProjects/100lab5part2/CoupleTones/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/8.4.0/jars/classes.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
-        sha1="8165cba5cf0dcefb5dc150860d30ad620ba55d9a">
-        <dex dex="/Users/jeremy/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_9fa16a2d2289b25a1972d779832ad31a00981d36/classes.dex" />
-=======
         sha1="b82b8e847173c28efffcd291b2a0b1ae9ad17fa4">
         <dex dex="/Users/noellin/AndroidStudioProjects/100lab5part2/CoupleTones/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-identity-8.4.0_243d5e1e73aaf9ee29219a1abed8c08dda1d2b03/classes.dex" />
->>>>>>> 8f3c2a7462baf050588969c27093efa394026935
     </item>
     <item
         jar="/Users/noellin/AndroidStudioProjects/100lab5part2/CoupleTones/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth/8.4.0/jars/classes.jar"
@@ -206,13 +201,8 @@
         jar="/Users/noellin/AndroidStudioProjects/100lab5part2/CoupleTones/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.4.0/jars/classes.jar"
         jumboMode="true"
         revision="23.0.3"
-<<<<<<< HEAD
-        sha1="970df778a7dba8b51f72423fe6e10de3a6738cd6">
-        <dex dex="/Users/jeremy/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_ac86b8bf57ecdaa2f47a9429ca17d61dfb1c1682/classes.dex" />
-=======
         sha1="04de44f90606c77f3b28cf44861f306290505aac">
         <dex dex="/Users/noellin/AndroidStudioProjects/100lab5part2/CoupleTones/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-maps-8.4.0_9bc11ae4eec9c9c55e69d1eecccb35c240c86931/classes.dex" />
->>>>>>> 8f3c2a7462baf050588969c27093efa394026935
     </item>
     <item
         jar="/Users/noellin/AndroidStudioProjects/100lab5part2/CoupleTones/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.3.0/jars/classes.jar"
