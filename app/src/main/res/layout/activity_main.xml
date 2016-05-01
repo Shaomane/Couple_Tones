@@ -30,12 +30,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="bottom">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list"
+                android:layout_weight="90"
+                android:divider="#AAAAAA">
+            </ListView>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
 
                 <Button
                     android:layout_width="fill_parent"
@@ -43,7 +53,7 @@
                     android:layout_weight="50"
                     android:text="Map"
                     android:onClick="toMap"
-                    ></Button>
+                    />
 
                 <Button
                     android:layout_width="fill_parent"

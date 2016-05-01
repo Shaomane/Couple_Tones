@@ -9,10 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    /*ANDREW ANDREW ANDREW ANDREW ANDREW*/
+    ArrayList<String> listItems = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +26,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        ListView list = (ListView) findViewById(R.id.list);
+        adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
+        list.setAdapter(adapter);
+        listItems.add("Hello");
+        adapter.notifyDataSetChanged();
+        listItems.add("Hello2");
+        adapter.notifyDataSetChanged();
     }
 
     @Override
