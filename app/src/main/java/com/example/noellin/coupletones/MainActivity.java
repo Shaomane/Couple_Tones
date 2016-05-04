@@ -2,8 +2,6 @@ package com.example.noellin.coupletones;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -43,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
         //if not logged in make em log in
         if (!logged_in) {
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
         }
 
