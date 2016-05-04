@@ -5,7 +5,7 @@
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="title_text">Please Sign in\n to Begin CoupleTones</string>
+    <string name="title_text">Welcome to CoupleTones</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -38,8 +38,9 @@
     <string name="play_services_error_fmt">Google Play Services Error: %i</string>
 
     <!-- Button labels -->
-    <string name="sign_out">Sign Out</string>
+    <string name="sign_out">Switch Account</string>
     <string name="disconnect">Disconnect</string>
+    <string name="continuebutton">Continue</string>
 
     <!-- Content Description for images -->
     <string name="desc_google_icon">Google Logo</string>

@@ -31,6 +31,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
+    private static boolean loggedIn = false;
 
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
@@ -47,7 +48,7 @@ public class SignInActivity extends AppCompatActivity implements
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.disconnect_button).setOnClickListener(this);
+        findViewById(R.id.continue_button).setOnClickListener(this);
 
         // [START configure_signin]
         // Configure sign-in to request the user's ID, email address, and basic
@@ -85,13 +86,14 @@ public class SignInActivity extends AppCompatActivity implements
         super.onStart();
 
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
+        if (opr.isDone() ) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
             // and the GoogleSignInResult will be available instantly.
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
         } else {
+
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
@@ -104,6 +106,7 @@ public class SignInActivity extends AppCompatActivity implements
                 }
             });
         }
+
     }
 
     // [START onActivityResult]
@@ -127,20 +130,12 @@ public class SignInActivity extends AppCompatActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             updateUI(true);
-
-            //after brief delay, go back to MainActivity
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable(){
-                @Override
-                public void run(){
-                    //transition to MainActivity
-                    toMain();
-                }
-            }, 3000);
+            loggedIn = true;
 
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
+            loggedIn = false;
         }
     }
     // [END handleSignInResult]
@@ -167,6 +162,7 @@ public class SignInActivity extends AppCompatActivity implements
                     public void onResult(Status status) {
                         // [START_EXCLUDE]
                         updateUI(false);
+                        loggedIn = false;
                         // [END_EXCLUDE]
                     }
                 });
@@ -181,6 +177,7 @@ public class SignInActivity extends AppCompatActivity implements
                     public void onResult(Status status) {
                         // [START_EXCLUDE]
                         updateUI(false);
+                        loggedIn = false;
                         // [END_EXCLUDE]
                     }
                 });
@@ -231,8 +228,13 @@ public class SignInActivity extends AppCompatActivity implements
             case R.id.sign_out_button:
                 signOut();
                 break;
-            case R.id.disconnect_button:
-                revokeAccess();
+            case R.id.continue_button:
+                if (loggedIn) {
+                    toMain();
+                }
+                else{
+                    //error out
+                }
                 break;
         }
     }
