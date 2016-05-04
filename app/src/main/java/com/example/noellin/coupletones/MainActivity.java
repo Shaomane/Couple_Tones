@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             logged_in = extras.getBoolean("logged_in");
         }
 
-        logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
+        //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
         //if not logged in make em log in
         if (!logged_in) {
             Intent intent = new Intent(this, LoginActivity.class);

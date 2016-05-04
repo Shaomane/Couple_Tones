@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements  GoogleApiClient
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    private static final int RC_SIGN_IN = 0;
+    private static final int RC_SIGN_IN = 9001;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -97,6 +97,7 @@ public class LoginActivity extends AppCompatActivity implements  GoogleApiClient
         findViewById(R.id.email_sign_in_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("click", "onClick called");
                 switch(v.getId()){
                     case R.id.email_sign_in_button:
                         signIn();
@@ -105,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements  GoogleApiClient
 
             }
             private void signIn(){
+                Log.d("signIn", "signIn called from click");
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
@@ -114,6 +116,7 @@ public class LoginActivity extends AppCompatActivity implements  GoogleApiClient
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.d("onActivityResult", "onActivity result called with requestCode: " + requestCode);
         super.onActivityResult(requestCode, resultCode, data);
 
         //Result returned form launching the Intent from GoogleSignInApi.getSignInIntent()
@@ -124,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements  GoogleApiClient
     }
 
     private void handleSignInResult(GoogleSignInResult result){
-        //Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        Log.d("handleSignInResult", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()){
             //signed in successfully, transition back to MainActivity
             Intent toMain = new Intent(this, MainActivity.class);
