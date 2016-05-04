@@ -81,6 +81,11 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        else if (id == R.id.action_signout){
+            Intent intent = new Intent(this, SignInActivity.class);
+            intent.putExtra("doNotSignIn", true);
+            startActivity(intent);
+        }
 
         return super.onOptionsItemSelected(item);
     }
