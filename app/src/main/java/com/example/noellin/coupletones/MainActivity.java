@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         listItems.add("");
         listItems.add("");
         listItems.add("");
-        listItems.add("");
         adapter.notifyDataSetChanged();
     }
 

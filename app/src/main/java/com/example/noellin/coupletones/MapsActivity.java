@@ -47,5 +47,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng laJolla = new LatLng(32.881, -117.234);
         mMap.addMarker(new MarkerOptions().position(laJolla).title("Marker in La Jolla"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(laJolla));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
     }
 }
