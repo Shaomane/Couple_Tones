@@ -34,8 +34,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="bottom">
-<<<<<<< HEAD
-=======
 
             <ListView
                 android:layout_width="match_parent"
@@ -44,7 +42,7 @@
                 android:layout_weight="90"
                 android:visibility="visible">
             </ListView>
->>>>>>> 07a191aec4686cf30211124bddc1d1a9bed4f589
+
 
             <LinearLayout
                 android:orientation="horizontal"

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "290538927222",
+    "project_id": "snappy-way-129123"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290538927222:android:14f7242fb832d9a6",
+        "android_client_info": {
+          "package_name": "com.example.noellin.coupletones"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290538927222-0in8buf1mot2bir7vr6kfdetfbm4qcdd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.noellin.coupletones",
+            "certificate_hash": "535E8970E5D2020A7FF69667FE157798442C0347"
+          }
+        },
+        {
+          "client_id": "290538927222-dj1sdahcff8fvt8cia0234ic1t3ornq2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUrq5-mqavt5AbxAozMR-GFTOLKhPBq8c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

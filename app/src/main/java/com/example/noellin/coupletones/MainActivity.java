@@ -26,6 +26,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /* TALK ABOUT THIS ONE. I'm thinking on app open, check if the app is connected to an account.
+        If not, bring the user to the login activity automatically. We may need some sort of log out
+        feature, and a way to save the user's login information between opens/closes of the app -- Jeremy
+         */
+        boolean logged_in = true;
+        if (!logged_in) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
         ListView list = (ListView) findViewById(R.id.list);
         adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
         list.setAdapter(adapter);
