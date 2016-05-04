@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 .requestEmail()
                 .build();
 
-        //Build a GoogleApiClient with access to the Google Sign-in API and the options specified by gso
+        //Build a GoogleApiClient with access to the Google Sign-in API and options specified by gso
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /*FragmentActivity*/,  this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
