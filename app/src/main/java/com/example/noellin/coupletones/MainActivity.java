@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         boolean logged_in = false;
         if (extras != null){
-            Log.d("othertag", "found extras");
             logged_in = extras.getBoolean("logged_in");
+            Log.d("found extras", "result of logged_in: " + logged_in);
         }
 
         //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login

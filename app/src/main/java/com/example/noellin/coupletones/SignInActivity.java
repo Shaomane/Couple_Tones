@@ -4,6 +4,7 @@ package com.example.noellin.coupletones;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -126,12 +127,30 @@ public class SignInActivity extends AppCompatActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             updateUI(true);
+
+            //after brief delay, go back to MainActivity
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable(){
+                @Override
+                public void run(){
+                    //transition to MainActivity
+                    toMain();
+                }
+            }, 3000);
+
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
         }
     }
     // [END handleSignInResult]
+
+    private void toMain(){
+        //transition back to MainActivity and indicate logged in
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("logged_in", true);
+        startActivity(intent);
+    }
 
     // [START signIn]
     private void signIn() {
