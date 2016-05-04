@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         if (!logged_in) {
             Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
+            finish();//TODO: comment this line to allow you to reach MainActivity through the back button. Final version should be uncommented
         }
 
         ListView list = (ListView) findViewById(R.id.list);
