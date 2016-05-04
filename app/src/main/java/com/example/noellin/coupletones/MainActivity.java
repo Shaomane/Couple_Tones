@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         If not, bring the user to the login activity automatically. We may need some sort of log out
         feature, and a way to save the user's login information between opens/closes of the app -- Jeremy
          */
-        boolean logged_in = true;
+        boolean logged_in = false;
         if (!logged_in) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
