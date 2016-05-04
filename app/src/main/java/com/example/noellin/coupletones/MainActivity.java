@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,7 +31,17 @@ public class MainActivity extends AppCompatActivity {
         If not, bring the user to the login activity automatically. We may need some sort of log out
         feature, and a way to save the user's login information between opens/closes of the app -- Jeremy
          */
+        //determine if the user has logged in
+        Log.d("tag", "MAIN ACTIVITY WAS RUN");
+        Bundle extras = getIntent().getExtras();
         boolean logged_in = false;
+        if (extras != null){
+            Log.d("othertag", "found extras");
+            logged_in = extras.getBoolean("logged_in");
+        }
+
+        logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
+        //if not logged in make em log in
         if (!logged_in) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);

@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,7 +32,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -107,11 +110,27 @@ public class LoginActivity extends AppCompatActivity implements  GoogleApiClient
             }
         });
 
-
-
-
-
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Result returned form launching the Intent from GoogleSignInApi.getSignInIntent()
+        if (requestCode == RC_SIGN_IN){
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result){
+        //Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()){
+            //signed in successfully, transition back to MainActivity
+            Intent toMain = new Intent(this, MainActivity.class);
+            toMain.putExtra("loggedIn", true);
+            startActivity(toMain);
+        }
+    }
 }
 
