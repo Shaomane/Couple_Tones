@@ -33,6 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static int locationToggle = 0;
     // counter to check for addlocation toggle
 
+    private static final int METERS_160 = 160;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Initialize our favorite locations ArrayList
         favoriteLocations = new ArrayList<>();
 
+        Location loc1 = new Location("location 1");
+        loc1.setLatitude(32.882320);
+        loc1.setLongitude(-117.226790);
+        favoriteLocations.add(loc1);
+
+        Location loc2 = new Location("location 2");
+        loc2.setLatitude(32.878080);
+        loc2.setLongitude(-117.214250);
+        favoriteLocations.add(loc2);
+
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -57,36 +68,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 prevMarker = m;
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15.0f));
 
-                Context context = getApplicationContext();
-                CharSequence text = "Reached favorite location";
-                int duration = Toast.LENGTH_SHORT;
-
-                LatLng[] arr = {new LatLng(32.882320, -117.226790)};
-                Location target = new Location("target");
-                for (LatLng point: arr)
+                Location target;
+                for (Location point: favoriteLocations)
                 {
-                    target.setLatitude(point.latitude);
-                    target.setLongitude(point.longitude);
-                    Toast t = Toast.makeText(context, text, duration);
-                    int toastDistance = 160;
-                    if (location.distanceTo(target) < toastDistance)
+                    target = point;
+                    if (location.distanceTo(target) < METERS_160)
                     {
                         Log.d("success", "near location");
-                        if (prevLocation == null)
+                        if ((prevLocation == null) || (target.getLatitude() != prevLocation.getLatitude() && target.getLongitude() != prevLocation.getLongitude()))
                         {
-                            t.show();
+                            handleReachedFavoriteLocation(target);
                             prevLocation = target;
-                            Log.d("first", "first if statement");
                         }
-                        else if (target.getLatitude() != prevLocation.getLatitude() && target.getLongitude() != prevLocation.getLongitude())
-                        {
-                            t.show();
-                            prevLocation = target;
-                            Log.d("second", "else if statement");
-                        }
-
                     }
-
                 }
             }
 
@@ -177,6 +171,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationToggle++;
     }
 
+    private void handleReachedFavoriteLocation(Location location)
+    {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        CharSequence text = "Reached favorite location: " + location.getProvider();
+        Toast t = Toast.makeText(context, text, duration);
+        t.show();
+    }
 
 }
 
