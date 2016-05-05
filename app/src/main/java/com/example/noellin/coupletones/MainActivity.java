@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
+    private String name = "";
+    private String email = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,11 @@ public class MainActivity extends AppCompatActivity {
         boolean logged_in = false;
         if (extras != null){
             logged_in = extras.getBoolean("logged_in");
+            name = extras.getString("name");
+            email = extras.getString("email");
             Log.d("found extras", "result of logged_in: " + logged_in);
+            Log.d("found extras", "result of name: " + name);
+            Log.d("found extras", "result of email: " + email);
         }
 
         //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
@@ -84,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (id == R.id.action_signout){
             Intent intent = new Intent(this, SignInActivity.class);
-            intent.putExtra("doNotSignIn", true);
+            //intent.putExtra("doNotSignIn", true);
             startActivity(intent);
         }
 

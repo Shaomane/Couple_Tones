@@ -34,6 +34,7 @@ public class SignInActivity extends AppCompatActivity implements
     private static final int RC_SIGN_IN = 9001;
     private static boolean loggedIn = false;
 
+    private GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
@@ -128,7 +129,7 @@ public class SignInActivity extends AppCompatActivity implements
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
+            acct = result.getSignInAccount();
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             updateUI(true);
             loggedIn = true;
@@ -145,6 +146,8 @@ public class SignInActivity extends AppCompatActivity implements
         //transition back to MainActivity and indicate logged in
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("logged_in", true);
+        intent.putExtra("name", acct.getDisplayName());
+        intent.putExtra("email", acct.getEmail());
         startActivity(intent);
     }
 
