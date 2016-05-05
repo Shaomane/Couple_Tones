@@ -11,9 +11,18 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.ValueEventListener;
+import com.firebase.client.snapshot.IndexedNode;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Setup Firebase for Androdi for database
+        Firebase.setAndroidContext(this);
+        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/data");
+        loadFromDatabase(ref);
 
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
@@ -51,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Get the relationship from the database
-        loadFromDatabase();
+        //loadFromDatabase();
 
         ListView list = (ListView) findViewById(R.id.list);
         adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
@@ -71,8 +85,36 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void loadFromDatabase(){
+    public void loadFromDatabase(Firebase ref){
+        Log.d("loadFromDatabase", "loadFromDataBase called");
+        ref.addChildEventListener(new ChildEventListener() {
+            // Retrieve new posts as they are added to the database
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                Log.d("onChildAdded", "onChildAdded called");
+                boolean name = snapshot.hasChildren();
+                Log.d("onChildAdded", ""+name);
+                Log.d("onChildAdded", "another print statement");
+            }
+            @Override
+            public void onChildRemoved(DataSnapshot snapshot){}
+            @Override
+            public void onChildChanged(DataSnapshot snapshot, String previousChildKey){
+                Log.d("onChildChanged", "onChildChanged called with previousChildKey" + previousChildKey);
 
+            }
+            @Override
+            public void onChildMoved(DataSnapshot snapshot, String previousChildKey){}
+            @Override
+            public void onCancelled(FirebaseError error){}
+        });
+
+        Log.d("loadFromDatabase", "attempting to add a child");
+        Map<String, Object> temp = new HashMap<String, Object>();
+        temp.put("temp", "");
+        //ref.child("0").updateChildren(temp);
+        //ref.child("-1").setValue("");
+        //ref.child("-1").removeValue();
     }
 
     @Override
