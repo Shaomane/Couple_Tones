@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     private String name = "";
     private String email = "";
+    protected static GoogleSignInAccount acct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,18 +30,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /* TALK ABOUT THIS ONE. I'm thinking on app open, check if the app is connected to an account.
-        If not, bring the user to the login activity automatically. We may need some sort of log out
-        feature, and a way to save the user's login information between opens/closes of the app -- Jeremy
-         */
         //determine if the user has logged in
-        Log.d("tag", "MAIN ACTIVITY WAS RUN");
         Bundle extras = getIntent().getExtras();
         boolean logged_in = false;
         if (extras != null){
-            logged_in = extras.getBoolean("logged_in");
-            name = extras.getString("name");
-            email = extras.getString("email");
+            acct = SignInActivity.acct;
+            name = acct.getDisplayName();
+            email = acct.getEmail();
             Log.d("found extras", "result of logged_in: " + logged_in);
             Log.d("found extras", "result of name: " + name);
             Log.d("found extras", "result of email: " + email);
@@ -49,8 +47,11 @@ public class MainActivity extends AppCompatActivity {
         if (!logged_in) {
             Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
-            finish();//TODO: comment this line to allow you to reach MainActivity through the back button. Final version should be uncommented
+            finish();
         }
+
+        //Get the relationship from the database
+        loadFromDatabase();
 
         ListView list = (ListView) findViewById(R.id.list);
         adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
@@ -68,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
         listItems.add("");
         listItems.add("");
         adapter.notifyDataSetChanged();
+    }
+
+    public void loadFromDatabase(){
+
     }
 
     @Override
