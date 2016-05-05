@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("found extras", "result of email: " + email);
         }
 
-        //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
+        logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
         //if not logged in make em log in
         if (!logged_in) {
             Intent intent = new Intent(this, SignInActivity.class);

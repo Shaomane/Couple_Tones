@@ -2,6 +2,7 @@ package com.example.noellin.coupletones;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,9 +11,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    static ArrayList<LatLng> arrayLatLng = new ArrayList<LatLng>();
+    static int locationToggle = 0;              // counter to check for addlocation toggle
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
 
@@ -48,5 +56,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(laJolla).title("Marker in La Jolla"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(laJolla));
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+
+
+      //  public void addLocation() {
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng point) {
+                // TODO Auto-generated method stub
+                System.out.println(arrayLatLng);
+                //  mMap.clear();
+                if (locationToggle %2 == 0) {
+                    mMap.addMarker(new MarkerOptions().position(point));
+                    arrayLatLng.add(point);
+
+                }
+            }
+        });
+        }
+
+    public void addLocation (View view) {
+
+        locationToggle++;
     }
+
+
 }
+
+
+
