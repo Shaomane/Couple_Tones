@@ -9,12 +9,9 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.util.Log;
 import android.widget.Toast;
-=======
 import android.view.View;
->>>>>>> cb50143ade99c4c81b75f3d9a34e119a8be554df
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,15 +26,13 @@ import java.util.ArrayList;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-<<<<<<< HEAD
     ArrayList<Location> favoriteLocations;
     Marker prevMarker;
     Location prevLocation;
-=======
     static ArrayList<LatLng> arrayLatLng = new ArrayList<LatLng>();
-    static int locationToggle = 0;              // counter to check for addlocation toggle
+    static int locationToggle = 0;
+    // counter to check for addlocation toggle
 
->>>>>>> cb50143ade99c4c81b75f3d9a34e119a8be554df
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +43,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-<<<<<<< HEAD
         // Initialize our favorite locations ArrayList
         favoriteLocations = new ArrayList<>();
 
@@ -136,9 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
-=======
 
->>>>>>> cb50143ade99c4c81b75f3d9a34e119a8be554df
     }
 
 
