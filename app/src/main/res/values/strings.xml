@@ -38,7 +38,7 @@
     <string name="play_services_error_fmt">Google Play Services Error: %i</string>
 
     <!-- Button labels -->
-    <string name="sign_out">Switch Account</string>
+    <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
     <string name="continuebutton">Continue</string>
 
