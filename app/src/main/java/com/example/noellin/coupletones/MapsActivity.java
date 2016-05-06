@@ -13,6 +13,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import android.view.View;
@@ -39,16 +48,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     static ArrayList<LatLng> arrayLatLng = new ArrayList<LatLng>();
     static int locationToggle = 0;              // counter to check for addlocation toggle
     String placeName = "";
-    private static final int METERS_160 = 160;
 
     /* these lines below save user favorite locations between app sessions */
     private static final int PREFERENCE_MODE_PRIVATE = 0;
     private SharedPreferences preferenceSettings = getPreferences(PREFERENCE_MODE_PRIVATE);
     private SharedPreferences.Editor preferenceEditor = preferenceSettings.edit();
 
+    private static final int METERS_160 = 160;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -155,6 +166,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // add a partner in La Jolla and move the camera
         //LatLng laJolla = new LatLng(32.882340, -117.233620);
+        LatLng laJolla = new LatLng(32.882340, -117.233620);
         //mMap.addMarker(new MarkerOptions().position(laJolla).title("Marker in La Jolla"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((laJolla), 15.0f));
         mMap.getUiSettings().setZoomControlsEnabled(true);

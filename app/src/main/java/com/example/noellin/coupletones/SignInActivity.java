@@ -11,6 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -21,6 +25,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
@@ -36,6 +43,10 @@ public class SignInActivity extends AppCompatActivity implements
 
     protected static GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
+    private static long rel_number = -1;
+    private static String partnerName = null;
+    private static String partnerEmail = null;
+
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
 
@@ -143,12 +154,79 @@ public class SignInActivity extends AppCompatActivity implements
     // [END handleSignInResult]
 
     private void toMain(){
+
+        //checkForAccount();
+
         //transition back to MainActivity and indicate logged in
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("logged_in", true);
-        //intent.putExtra("name", acct.getDisplayName());
-        //intent.putExtra("email", acct.getEmail());
+        intent.putExtra("rel_number", rel_number);
+        intent.putExtra("partnerName", partnerName);
+        intent.putExtra("partnerEmail",partnerEmail);
+        Log.d("partnerName", "sending partnerName: "+partnerName);
+        Log.d("partnerEmail","sending partnerEmail: "+partnerEmail);
+        Log.d("blah","blah blah blah");
         startActivity(intent);
+        finish();
+    }
+
+    //This method checks if the user already has an account with CoupleTones
+    //It should be called as the user logs in
+    private void checkForAccount(){
+        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+        //attach a listener to read the data
+        ref.addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot snapshot){
+                Log.d("checkForAccount","found " + snapshot.getChildrenCount() + " relationships");
+                long counter = -1;
+                for (DataSnapshot rel : snapshot.getChildren()){
+                    counter++;
+                    //Log.d("test",acct.getDisplayName()+"---"+rel.child("nameOne").getValue().toString());
+                    if (rel.child("nameOne").getValue().toString().equals(acct.getDisplayName())) {
+                        //Log.d("found relationship","found relationship");
+                        rel_number = counter;
+                        //Log.d("nameTwo", ""+rel.child("nameTwo").getValue());
+                        if (rel.child("nameTwo").getValue() != null){
+                            partnerName = rel.child("nameTwo").getValue().toString();
+                            partnerEmail = rel.child("emailTwo").getValue().toString();
+                            Log.d("partnerName", "IN ONDATACHANGED SET PARTNERNAME TO: "+partnerName);
+                            //Log.d("blah","nameTwo is not null");
+                        }
+                        return;
+                        //Log.d("checkForAccount","user is in relationship " + rel_number);
+                    }
+                    else if(rel.child("nameTwo").getValue().toString().equals(acct.getDisplayName())){
+                        rel_number = counter;
+                        if (rel.child("nameOne").getValue() != null){
+                            partnerName = rel.child("nameOne").getValue().toString();
+                            partnerEmail = rel.child("emailOne").getValue().toString();
+                        }
+                        return;
+                    }
+                }
+                //no relationship was found including the user
+                Log.d("adding rel", "no relationship found for user. adding a new one");
+                Firebase root = snapshot.getRef();
+                Map<String, Object> newEntry = new HashMap<String, Object>();
+                rel_number = snapshot.getChildrenCount();
+                String relNum = "rel"+snapshot.getChildrenCount();
+                newEntry.put(relNum, "");
+                root.updateChildren(newEntry);
+
+                Map<String, Object> nameOne = new HashMap<String, Object>();
+                Map<String, Object> emailOne = new HashMap<String, Object>();
+                nameOne.put("nameOne", acct.getDisplayName());
+                emailOne.put("emailOne", acct.getEmail());
+
+                root.child(relNum).updateChildren(nameOne);
+                root.child(relNum).updateChildren(emailOne);
+            }
+            @Override
+            public void onCancelled(FirebaseError fireBaseError){
+                Log.d("Read failed", "Read failed in addValueListener");
+            }
+        });
     }
 
     // [START signIn]
@@ -234,7 +312,14 @@ public class SignInActivity extends AppCompatActivity implements
                 break;
             case R.id.continue_button:
                 if (loggedIn) {
-                    toMain();
+                    checkForAccount();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable(){
+                        @Override
+                        public void run(){
+                            toMain();
+                        }
+                    }, 1000);
                 }
                 else{
                     //error out
