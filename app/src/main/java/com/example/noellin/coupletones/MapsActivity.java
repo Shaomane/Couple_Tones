@@ -1,14 +1,21 @@
 package com.example.noellin.coupletones;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.LayoutInflater;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
+import android.widget.Toast;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,15 +27,24 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    ArrayList<Location> favoriteLocations;
+    Marker prevMarker;
+    Location prevLocation;
     static ArrayList<LatLng> arrayLatLng = new ArrayList<LatLng>();
     static int locationToggle = 0;              // counter to check for addlocation toggle
-    String m_Text = "";
+    String placeName = "";
+    private static final int METERS_160 = 160;
 
-
+    /* these lines below save user favorite locations between app sessions */
+    private static final int PREFERENCE_MODE_PRIVATE = 0;
+    private SharedPreferences preferenceSettings = getPreferences(PREFERENCE_MODE_PRIVATE);
+    private SharedPreferences.Editor preferenceEditor = preferenceSettings.edit();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +55,86 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // Initialize our favorite locations ArrayList
+        favoriteLocations = new ArrayList<>();
+
+        Location loc1 = new Location("location 1");
+        loc1.setLatitude(32.882320);
+        loc1.setLongitude(-117.226790);
+        favoriteLocations.add(loc1);
+
+        Location loc2 = new Location("location 2");
+        loc2.setLatitude(32.878080);
+        loc2.setLongitude(-117.214250);
+        favoriteLocations.add(loc2);
+
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("updated path"));
+                if (prevMarker != null)
+                {
+                    prevMarker.remove();
+                }
+                prevMarker = m;
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15.0f));
+
+                Location target;
+                for (Location point: favoriteLocations)
+                {
+                    target = point;
+                    if (location.distanceTo(target) < METERS_160)
+                    {
+                        Log.d("success", "near location");
+                        if ((prevLocation == null) || (target.getLatitude() != prevLocation.getLatitude() && target.getLongitude() != prevLocation.getLongitude()))
+                        {
+                            handleReachedFavoriteLocation(target);
+                            prevLocation = target;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+
+            }
+        };
+
+        LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = LocationManager.GPS_PROVIDER;
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    100);
+            Log.d("test1","ins");
+            return;
+        }else if(mMap != null) {
+            Log.d("test2", "outs");
+            mMap.setMyLocationEnabled(true);
+
+        }
+
+        locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
 
     }
 
@@ -57,15 +153,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
         // add a partner in La Jolla and move the camera
-        LatLng laJolla = new LatLng(32.881, -117.234);
-        mMap.addMarker(new MarkerOptions().position(laJolla).title("Marker in La Jolla"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(laJolla));
+        //LatLng laJolla = new LatLng(32.882340, -117.233620);
+        //mMap.addMarker(new MarkerOptions().position(laJolla).title("Marker in La Jolla"));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((laJolla), 15.0f));
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
 
@@ -81,53 +172,72 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (locationToggle % 2 == 0)
                 {
                     showDialog ();
-                    Marker marker = mMap.addMarker(new MarkerOptions()
-                                                    .position(point)
-                                                    .title(m_Text));
+                    mMap.addMarker(new MarkerOptions()
+                            .position(point)
+                            .title(placeName));
 
                     arrayLatLng.add(point);
+                    Set<String> locationData = new HashSet<String>();
+                    Double currLat = point.latitude;
+                    Double currLong = point.longitude;
+                    locationData.add(currLat.toString());
+                    locationData.add(currLong.toString());
+
+                    preferenceEditor.putStringSet(placeName, locationData);
+                    preferenceEditor.commit();
+                    System.out.println (placeName);
+                    for (String s: locationData)
+                        System.out.println (locationData);
                 }
             }
 
 
         });
     }
+
+    // shows a dialog box when called
     public void showDialog ()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
-        builder.setTitle("Title");
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MapsActivity.this);
+        dialogBuilder.setTitle("Name this location:");
 
-        // Set up the input
+        // To grab input from user
         final EditText input = new EditText(MapsActivity.this);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
+        dialogBuilder.setView(input);
 
-        // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        // Create the buttons
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                m_Text = input.getText().toString();
+                placeName = input.getText().toString();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
 
-        builder.show();
-
+        dialogBuilder.show();
 
     }
 
+    // toggles the add location button
     public void addLocation (View view)
     {
         locationToggle++;
-
     }
 
+    private void handleReachedFavoriteLocation(Location location)
+    {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        CharSequence text = "Reached favorite location: " + location.getProvider();
+        Toast t = Toast.makeText(context, text, duration);
+        t.show();
+    }
 
 }
 
