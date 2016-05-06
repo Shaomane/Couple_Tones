@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Setup Firebase for Android for database
-        loadFromDatabase();
+        //loadFromDatabase();
 
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
             email = acct.getEmail();
             partnerName = extras.getString("partnerName");
             partnerEmail = extras.getString("partnerEmail");
-            Log.d("found extras", "result of logged_in: " + logged_in);
             Log.d("found extras", "result of name: " + name);
             Log.d("found extras", "result of email: " + email);
             Log.d("found extras", "result of partnerName: "+partnerName);

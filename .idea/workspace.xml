@@ -14,7 +14,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -54,7 +53,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/noellin/coupletones/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="64" column="9" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
+              <caret line="47" column="10" selection-start-line="47" selection-start-column="10" selection-end-line="47" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -63,23 +62,22 @@
       <file leaf-file-name="SignInActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/noellin/coupletones/SignInActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5">
-              <caret line="314" column="38" selection-start-line="314" selection-start-column="38" selection-end-line="314" selection-end-column="38" />
+            <state vertical-scroll-proportion="0.69536424">
+              <caret line="50" column="6" selection-start-line="50" selection-start-column="6" selection-end-line="50" selection-end-column="6" />
               <folding>
-                <element signature="e#4763#5043#0" expanded="true" />
-                <element signature="e#5042#5043#0" expanded="true" />
-                <element signature="e#5914#5970#0" expanded="true" />
-                <element signature="e#9261#9277#0" expanded="true" />
-                <element signature="e#9553#9569#0" expanded="true" />
-                <element signature="e#9631#9647#0" expanded="true" />
-                <element signature="e#10466#10791#0" expanded="true" />
-                <element signature="e#10790#10791#0" expanded="true" />
-                <element signature="e#10979#11304#0" expanded="true" />
-                <element signature="e#11303#11304#0" expanded="true" />
-                <element signature="e#11785#11812#0" expanded="true" />
-                <element signature="e#12359#12378#0" expanded="true" />
-                <element signature="e#13017#13195#0" expanded="true" />
-                <element signature="e#13194#13195#0" expanded="true" />
+                <element signature="e#4767#5049#0" expanded="true" />
+                <element signature="e#5048#5049#0" expanded="true" />
+                <element signature="e#5920#5976#0" expanded="true" />
+                <element signature="e#8821#8837#0" expanded="true" />
+                <element signature="e#9113#9129#0" expanded="true" />
+                <element signature="e#9191#9207#0" expanded="true" />
+                <element signature="e#10026#10351#0" expanded="true" />
+                <element signature="e#10350#10351#0" expanded="true" />
+                <element signature="e#10539#10864#0" expanded="true" />
+                <element signature="e#10863#10864#0" expanded="true" />
+                <element signature="e#11923#11942#0" expanded="true" />
+                <element signature="e#12581#12759#0" expanded="true" />
+                <element signature="e#12758#12759#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2474,20 +2472,19 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#4763#5043#0" expanded="true" />
-            <element signature="e#5042#5043#0" expanded="true" />
-            <element signature="e#5914#5970#0" expanded="true" />
-            <element signature="e#9261#9277#0" expanded="true" />
-            <element signature="e#9553#9569#0" expanded="true" />
-            <element signature="e#9631#9647#0" expanded="true" />
-            <element signature="e#10466#10791#0" expanded="true" />
-            <element signature="e#10790#10791#0" expanded="true" />
-            <element signature="e#10979#11304#0" expanded="true" />
-            <element signature="e#11303#11304#0" expanded="true" />
-            <element signature="e#11785#11812#0" expanded="true" />
-            <element signature="e#12359#12378#0" expanded="true" />
-            <element signature="e#13017#13195#0" expanded="true" />
-            <element signature="e#13194#13195#0" expanded="true" />
+            <element signature="e#4767#5049#0" expanded="true" />
+            <element signature="e#5048#5049#0" expanded="true" />
+            <element signature="e#5920#5976#0" expanded="true" />
+            <element signature="e#8821#8837#0" expanded="true" />
+            <element signature="e#9113#9129#0" expanded="true" />
+            <element signature="e#9191#9207#0" expanded="true" />
+            <element signature="e#10026#10351#0" expanded="true" />
+            <element signature="e#10350#10351#0" expanded="true" />
+            <element signature="e#10539#10864#0" expanded="true" />
+            <element signature="e#10863#10864#0" expanded="true" />
+            <element signature="e#11923#11942#0" expanded="true" />
+            <element signature="e#12581#12759#0" expanded="true" />
+            <element signature="e#12758#12759#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2530,14 +2527,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/noellin/coupletones/MapsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/noellin/coupletones/FireBaseInteractor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2560,33 +2549,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/noellin/coupletones/MapsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/noellin/coupletones/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="64" column="9" selection-start-line="64" selection-start-column="9" selection-end-line="64" selection-end-column="9" />
+          <caret line="47" column="10" selection-start-line="47" selection-start-column="10" selection-end-line="47" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/noellin/coupletones/SignInActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5">
-          <caret line="314" column="38" selection-start-line="314" selection-start-column="38" selection-end-line="314" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.69536424">
+          <caret line="50" column="6" selection-start-line="50" selection-start-column="6" selection-end-line="50" selection-end-column="6" />
           <folding>
-            <element signature="e#4763#5043#0" expanded="true" />
-            <element signature="e#5042#5043#0" expanded="true" />
-            <element signature="e#5914#5970#0" expanded="true" />
-            <element signature="e#9261#9277#0" expanded="true" />
-            <element signature="e#9553#9569#0" expanded="true" />
-            <element signature="e#9631#9647#0" expanded="true" />
-            <element signature="e#10466#10791#0" expanded="true" />
-            <element signature="e#10790#10791#0" expanded="true" />
-            <element signature="e#10979#11304#0" expanded="true" />
-            <element signature="e#11303#11304#0" expanded="true" />
-            <element signature="e#11785#11812#0" expanded="true" />
-            <element signature="e#12359#12378#0" expanded="true" />
-            <element signature="e#13017#13195#0" expanded="true" />
-            <element signature="e#13194#13195#0" expanded="true" />
+            <element signature="e#4767#5049#0" expanded="true" />
+            <element signature="e#5048#5049#0" expanded="true" />
+            <element signature="e#5920#5976#0" expanded="true" />
+            <element signature="e#8821#8837#0" expanded="true" />
+            <element signature="e#9113#9129#0" expanded="true" />
+            <element signature="e#9191#9207#0" expanded="true" />
+            <element signature="e#10026#10351#0" expanded="true" />
+            <element signature="e#10350#10351#0" expanded="true" />
+            <element signature="e#10539#10864#0" expanded="true" />
+            <element signature="e#10863#10864#0" expanded="true" />
+            <element signature="e#11923#11942#0" expanded="true" />
+            <element signature="e#12581#12759#0" expanded="true" />
+            <element signature="e#12758#12759#0" expanded="true" />
           </folding>
         </state>
       </provider>

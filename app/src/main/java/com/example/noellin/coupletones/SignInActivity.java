@@ -48,7 +48,6 @@ public class SignInActivity extends AppCompatActivity implements
     private static String partnerEmail = null;
 
     private TextView mStatusTextView;
-    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,11 +109,9 @@ public class SignInActivity extends AppCompatActivity implements
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
-            showProgressDialog();
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
-                    hideProgressDialog();
                     handleSignInResult(googleSignInResult);
                 }
             });
@@ -155,17 +152,12 @@ public class SignInActivity extends AppCompatActivity implements
 
     private void toMain(){
 
-        //checkForAccount();
-
         //transition back to MainActivity and indicate logged in
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("logged_in", true);
         intent.putExtra("rel_number", rel_number);
         intent.putExtra("partnerName", partnerName);
         intent.putExtra("partnerEmail",partnerEmail);
-        Log.d("partnerName", "sending partnerName: "+partnerName);
-        Log.d("partnerEmail","sending partnerEmail: "+partnerEmail);
-        Log.d("blah","blah blah blah");
         startActivity(intent);
         finish();
     }
@@ -178,7 +170,6 @@ public class SignInActivity extends AppCompatActivity implements
         ref.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot snapshot){
-                Log.d("checkForAccount","found " + snapshot.getChildrenCount() + " relationships");
                 long counter = -1;
                 for (DataSnapshot rel : snapshot.getChildren()){
                     counter++;
@@ -190,8 +181,6 @@ public class SignInActivity extends AppCompatActivity implements
                         if (rel.child("nameTwo").getValue() != null){
                             partnerName = rel.child("nameTwo").getValue().toString();
                             partnerEmail = rel.child("emailTwo").getValue().toString();
-                            Log.d("partnerName", "IN ONDATACHANGED SET PARTNERNAME TO: "+partnerName);
-                            //Log.d("blah","nameTwo is not null");
                         }
                         return;
                         //Log.d("checkForAccount","user is in relationship " + rel_number);
@@ -251,42 +240,11 @@ public class SignInActivity extends AppCompatActivity implements
     }
     // [END signOut]
 
-    // [START revokeAccess]
-    private void revokeAccess() {
-        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                        updateUI(false);
-                        loggedIn = false;
-                        // [END_EXCLUDE]
-                    }
-                });
-    }
-    // [END revokeAccess]
-
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-    }
-
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
-        }
     }
 
     private void updateUI(boolean signedIn) {
