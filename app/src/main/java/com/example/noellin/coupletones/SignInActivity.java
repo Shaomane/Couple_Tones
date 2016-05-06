@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,9 @@ import com.google.android.gms.common.api.Status;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
@@ -44,11 +48,11 @@ public class SignInActivity extends AppCompatActivity implements
     protected static GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
     private static long rel_number = -1;
+    private static boolean not_ready = true;
     private static String partnerName = null;
     private static String partnerEmail = null;
 
     private TextView mStatusTextView;
-    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,11 +114,9 @@ public class SignInActivity extends AppCompatActivity implements
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
-            showProgressDialog();
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
-                    hideProgressDialog();
                     handleSignInResult(googleSignInResult);
                 }
             });
@@ -153,60 +155,54 @@ public class SignInActivity extends AppCompatActivity implements
     }
     // [END handleSignInResult]
 
-    private void toMain(){
-
-        //checkForAccount();
-
+    private synchronized void toMain(){
         //transition back to MainActivity and indicate logged in
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("logged_in", true);
         intent.putExtra("rel_number", rel_number);
         intent.putExtra("partnerName", partnerName);
         intent.putExtra("partnerEmail",partnerEmail);
-        Log.d("partnerName", "sending partnerName: "+partnerName);
-        Log.d("partnerEmail","sending partnerEmail: "+partnerEmail);
-        Log.d("blah","blah blah blah");
+
         startActivity(intent);
         finish();
     }
 
     //This method checks if the user already has an account with CoupleTones
-    //It should be called as the user logs in
+    //It should be called as the user logs in. The app transitions to MainActivity
     private void checkForAccount(){
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
         //attach a listener to read the data
         ref.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
-            public void onDataChange(DataSnapshot snapshot){
-                Log.d("checkForAccount","found " + snapshot.getChildrenCount() + " relationships");
+            public synchronized void onDataChange(DataSnapshot snapshot){
                 long counter = -1;
+
+                //Loop through each of the relationships in the database
                 for (DataSnapshot rel : snapshot.getChildren()){
                     counter++;
-                    //Log.d("test",acct.getDisplayName()+"---"+rel.child("nameOne").getValue().toString());
-                    if (rel.child("nameOne").getValue().toString().equals(acct.getDisplayName())) {
-                        //Log.d("found relationship","found relationship");
+                    //Check if current relationship has the user as Partner 1 by comparing the acct email
+                    if (rel.child("emailOne").getValue().toString().equals(acct.getEmail())) {
                         rel_number = counter;
-                        //Log.d("nameTwo", ""+rel.child("nameTwo").getValue());
+                        //The user has an account. If there is a partner, update partnerName and partnerEmail
                         if (rel.child("nameTwo").getValue() != null){
                             partnerName = rel.child("nameTwo").getValue().toString();
                             partnerEmail = rel.child("emailTwo").getValue().toString();
-                            Log.d("partnerName", "IN ONDATACHANGED SET PARTNERNAME TO: "+partnerName);
-                            //Log.d("blah","nameTwo is not null");
                         }
+                        toMain();
                         return;
-                        //Log.d("checkForAccount","user is in relationship " + rel_number);
                     }
-                    else if(rel.child("nameTwo").getValue().toString().equals(acct.getDisplayName())){
+                    //Check if current relationship has the user as Partner 2
+                    else if(rel.child("emailTwo").getValue().toString().equals(acct.getEmail())){
                         rel_number = counter;
                         if (rel.child("nameOne").getValue() != null){
                             partnerName = rel.child("nameOne").getValue().toString();
                             partnerEmail = rel.child("emailOne").getValue().toString();
                         }
+                        toMain();
                         return;
                     }
                 }
-                //no relationship was found including the user
-                Log.d("adding rel", "no relationship found for user. adding a new one");
+                //no relationship was found including the user. Create a new entry in the database
                 Firebase root = snapshot.getRef();
                 Map<String, Object> newEntry = new HashMap<String, Object>();
                 rel_number = snapshot.getChildrenCount();
@@ -221,6 +217,7 @@ public class SignInActivity extends AppCompatActivity implements
 
                 root.child(relNum).updateChildren(nameOne);
                 root.child(relNum).updateChildren(emailOne);
+                toMain();
             }
             @Override
             public void onCancelled(FirebaseError fireBaseError){
@@ -251,42 +248,11 @@ public class SignInActivity extends AppCompatActivity implements
     }
     // [END signOut]
 
-    // [START revokeAccess]
-    private void revokeAccess() {
-        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                        updateUI(false);
-                        loggedIn = false;
-                        // [END_EXCLUDE]
-                    }
-                });
-    }
-    // [END revokeAccess]
-
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-    }
-
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
-        }
     }
 
     private void updateUI(boolean signedIn) {
@@ -313,13 +279,6 @@ public class SignInActivity extends AppCompatActivity implements
             case R.id.continue_button:
                 if (loggedIn) {
                     checkForAccount();
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable(){
-                        @Override
-                        public void run(){
-                            toMain();
-                        }
-                    }, 1000);
                 }
                 else{
                     //error out
