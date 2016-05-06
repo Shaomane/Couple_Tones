@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,9 @@ import com.google.android.gms.common.api.Status;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
@@ -44,6 +48,7 @@ public class SignInActivity extends AppCompatActivity implements
     protected static GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
     private static long rel_number = -1;
+    private static boolean not_ready = true;
     private static String partnerName = null;
     private static String partnerEmail = null;
 
@@ -150,52 +155,54 @@ public class SignInActivity extends AppCompatActivity implements
     }
     // [END handleSignInResult]
 
-    private void toMain(){
-
+    private synchronized void toMain(){
         //transition back to MainActivity and indicate logged in
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("logged_in", true);
         intent.putExtra("rel_number", rel_number);
         intent.putExtra("partnerName", partnerName);
         intent.putExtra("partnerEmail",partnerEmail);
+
         startActivity(intent);
         finish();
     }
 
     //This method checks if the user already has an account with CoupleTones
-    //It should be called as the user logs in
+    //It should be called as the user logs in. The app transitions to MainActivity
     private void checkForAccount(){
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
         //attach a listener to read the data
         ref.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
-            public void onDataChange(DataSnapshot snapshot){
+            public synchronized void onDataChange(DataSnapshot snapshot){
                 long counter = -1;
+
+                //Loop through each of the relationships in the database
                 for (DataSnapshot rel : snapshot.getChildren()){
                     counter++;
-                    //Log.d("test",acct.getDisplayName()+"---"+rel.child("nameOne").getValue().toString());
-                    if (rel.child("nameOne").getValue().toString().equals(acct.getDisplayName())) {
-                        //Log.d("found relationship","found relationship");
+                    //Check if current relationship has the user as Partner 1 by comparing the acct email
+                    if (rel.child("emailOne").getValue().toString().equals(acct.getEmail())) {
                         rel_number = counter;
-                        //Log.d("nameTwo", ""+rel.child("nameTwo").getValue());
+                        //The user has an account. If there is a partner, update partnerName and partnerEmail
                         if (rel.child("nameTwo").getValue() != null){
                             partnerName = rel.child("nameTwo").getValue().toString();
                             partnerEmail = rel.child("emailTwo").getValue().toString();
                         }
+                        toMain();
                         return;
-                        //Log.d("checkForAccount","user is in relationship " + rel_number);
                     }
-                    else if(rel.child("nameTwo").getValue().toString().equals(acct.getDisplayName())){
+                    //Check if current relationship has the user as Partner 2
+                    else if(rel.child("emailTwo").getValue().toString().equals(acct.getEmail())){
                         rel_number = counter;
                         if (rel.child("nameOne").getValue() != null){
                             partnerName = rel.child("nameOne").getValue().toString();
                             partnerEmail = rel.child("emailOne").getValue().toString();
                         }
+                        toMain();
                         return;
                     }
                 }
-                //no relationship was found including the user
-                Log.d("adding rel", "no relationship found for user. adding a new one");
+                //no relationship was found including the user. Create a new entry in the database
                 Firebase root = snapshot.getRef();
                 Map<String, Object> newEntry = new HashMap<String, Object>();
                 rel_number = snapshot.getChildrenCount();
@@ -210,6 +217,7 @@ public class SignInActivity extends AppCompatActivity implements
 
                 root.child(relNum).updateChildren(nameOne);
                 root.child(relNum).updateChildren(emailOne);
+                toMain();
             }
             @Override
             public void onCancelled(FirebaseError fireBaseError){
@@ -271,13 +279,6 @@ public class SignInActivity extends AppCompatActivity implements
             case R.id.continue_button:
                 if (loggedIn) {
                     checkForAccount();
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable(){
-                        @Override
-                        public void run(){
-                            toMain();
-                        }
-                    }, 1000);
                 }
                 else{
                     //error out

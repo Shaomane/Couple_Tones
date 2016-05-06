@@ -1,7 +1,9 @@
 package com.example.noellin.coupletones;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.firebase.client.ChildEventListener;
@@ -43,9 +47,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //Setup Firebase for Android for database
-        //loadFromDatabase();
 
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
@@ -89,32 +90,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void loadFromDatabase(){
-        Log.d("loadFromDatabase", "loadFromDataBase called");
-        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
-
-        //attach a listener to read the data
-        ref.addValueEventListener(new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot snapshot){
-                /*
-                long numChildren = snapshot.getChildrenCount();
-                Log.d("numChildren", "found "+numChildren+" children");
-                String partnerOneName0 = snapshot.child("0").child("partnerOneName").getValue().toString();
-                String partnerTwoName0 = snapshot.child("0").child("partnerTwoName").getValue().toString();
-                String partnerOneName1 = snapshot.child("1").child("partnerOneName").getValue().toString();
-                String partnerTwoName1 = snapshot.child("1").child("partnerTwoName").getValue().toString();
-                Log.d("names", partnerOneName0 + "-" + partnerTwoName0 + "-" + partnerOneName1 + "-" + partnerTwoName1);
-                */
-            }
-            @Override
-            public void onCancelled(FirebaseError fireBaseError){
-                Log.d("Read failed", "Read failed in addValueListener");
-            }
-        });
-
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -142,6 +117,46 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    //Called by clicking the Add Partner button. Creates a dialogue that goes through the partner
+    //adding process
+    public void addPartner(View view){
+
+        AlertDialog.Builder addPartnerDialogue = new AlertDialog.Builder(MainActivity.this);
+        addPartnerDialogue.setTitle("Send an Invite");
+
+        final EditText input = new EditText(MainActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        addPartnerDialogue.setView(input);
+
+        addPartnerDialogue.setPositiveButton("Send",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String entered_email = input.getText().toString();
+                        sendPartnerRequest(entered_email);
+                    }
+                });
+
+        addPartnerDialogue.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        addPartnerDialogue.show();
+
+    }
+
+    //helper method to send a partner request from the Add Partner dialogue
+    public void sendPartnerRequest(String entered_email){
+
+        Log.d("sendPartnerRequest","entered email: "+entered_email);
+    }
+
+    //Called by clicking To Map button. Transitions to the map activity
     public void toMap(View view){
 
         //Move to activity
