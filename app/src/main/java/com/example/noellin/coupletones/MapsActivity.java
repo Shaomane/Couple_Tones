@@ -1,5 +1,18 @@
 package com.example.noellin.coupletones;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.text.InputType;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -12,6 +25,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import android.view.View;
+import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +36,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -30,8 +46,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Marker prevMarker;
     Location prevLocation;
     static ArrayList<LatLng> arrayLatLng = new ArrayList<LatLng>();
-    static int locationToggle = 0;
-    // counter to check for addlocation toggle
+    static int locationToggle = 0;              // counter to check for addlocation toggle
+    String placeName = "";
+
+    /* these lines below save user favorite locations between app sessions */
+    private static final int PREFERENCE_MODE_PRIVATE = 0;
+    private SharedPreferences preferenceSettings = getPreferences(PREFERENCE_MODE_PRIVATE);
+    private SharedPreferences.Editor preferenceEditor = preferenceSettings.edit();
 
     private static final int METERS_160 = 160;
 
@@ -139,10 +160,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap)
+    {
         mMap = googleMap;
 
         // add a partner in La Jolla and move the camera
+        //LatLng laJolla = new LatLng(32.882340, -117.233620);
         LatLng laJolla = new LatLng(32.882340, -117.233620);
         //mMap.addMarker(new MarkerOptions().position(laJolla).title("Marker in La Jolla"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((laJolla), 15.0f));
@@ -151,24 +174,71 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
       //  public void addLocation() {
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
+        {
 
             @Override
-            public void onMapClick(LatLng point) {
-                // TODO Auto-generated method stub
+            public void onMapClick(LatLng point)
+            {
                 System.out.println(arrayLatLng);
-                //  mMap.clear();
-                if (locationToggle %2 == 0) {
-                    mMap.addMarker(new MarkerOptions().position(point));
-                    arrayLatLng.add(point);
+                if (locationToggle % 2 == 0)
+                {
+                    showDialog ();
+                    mMap.addMarker(new MarkerOptions()
+                            .position(point)
+                            .title(placeName));
 
+                    arrayLatLng.add(point);
+                    Set<String> locationData = new HashSet<String>();
+                    Double currLat = point.latitude;
+                    Double currLong = point.longitude;
+                    locationData.add(currLat.toString());
+                    locationData.add(currLong.toString());
+
+                    preferenceEditor.putStringSet(placeName, locationData);
+                    preferenceEditor.commit();
+                    System.out.println (placeName);
+                    for (String s: locationData)
+                        System.out.println (locationData);
                 }
             }
+
+
         });
-        }
+    }
 
-    public void addLocation (View view) {
+    // shows a dialog box when called
+    public void showDialog ()
+    {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MapsActivity.this);
+        dialogBuilder.setTitle("Name this location:");
 
+        // To grab input from user
+        final EditText input = new EditText(MapsActivity.this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        dialogBuilder.setView(input);
+
+        // Create the buttons
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                placeName = input.getText().toString();
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        dialogBuilder.show();
+
+    }
+
+    // toggles the add location button
+    public void addLocation (View view)
+    {
         locationToggle++;
     }
 
