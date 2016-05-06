@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     private String name = "";
     private String email = "";
+    private String partnerName = "";
+    private String partnerEmail = "";
     protected static GoogleSignInAccount acct;
 
     @Override
@@ -49,12 +51,17 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         boolean logged_in = false;
         if (extras != null){
+            logged_in = extras.getBoolean("logged_in");
             acct = SignInActivity.acct;
             name = acct.getDisplayName();
             email = acct.getEmail();
+            partnerName = extras.getString("partnerName");
+            partnerEmail = extras.getString("partnerEmail");
             Log.d("found extras", "result of logged_in: " + logged_in);
             Log.d("found extras", "result of name: " + name);
             Log.d("found extras", "result of email: " + email);
+            Log.d("found extras", "result of partnerName: "+partnerName);
+            Log.d("found extras", "result of partnerEmail: "+partnerEmail);
         }
 
         //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
@@ -64,9 +71,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
-        //Get the relationship from the database
-        //loadFromDatabase();
 
         ListView list = (ListView) findViewById(R.id.list);
         adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
@@ -89,12 +93,12 @@ public class MainActivity extends AppCompatActivity {
     public void loadFromDatabase(){
         Log.d("loadFromDatabase", "loadFromDataBase called");
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
-        Log.d("loadFromDatabase", "key: "+ref.getKey());
 
         //attach a listener to read the data
         ref.addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot snapshot){
+                /*
                 long numChildren = snapshot.getChildrenCount();
                 Log.d("numChildren", "found "+numChildren+" children");
                 String partnerOneName0 = snapshot.child("0").child("partnerOneName").getValue().toString();
@@ -102,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 String partnerOneName1 = snapshot.child("1").child("partnerOneName").getValue().toString();
                 String partnerTwoName1 = snapshot.child("1").child("partnerTwoName").getValue().toString();
                 Log.d("names", partnerOneName0 + "-" + partnerTwoName0 + "-" + partnerOneName1 + "-" + partnerTwoName1);
+                */
             }
             @Override
             public void onCancelled(FirebaseError fireBaseError){
