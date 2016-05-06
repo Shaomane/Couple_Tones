@@ -35,14 +35,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Firebase.setAndroidContext(this);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Setup Firebase for Androdi for database
-        Firebase.setAndroidContext(this);
-        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/data");
-        loadFromDatabase(ref);
+        //Setup Firebase for Android for database
+        loadFromDatabase();
 
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("found extras", "result of email: " + email);
         }
 
-        logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
+        //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
         //if not logged in make em log in
         if (!logged_in) {
             Intent intent = new Intent(this, SignInActivity.class);
@@ -85,36 +86,29 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public void loadFromDatabase(Firebase ref){
+    public void loadFromDatabase(){
         Log.d("loadFromDatabase", "loadFromDataBase called");
-        ref.addChildEventListener(new ChildEventListener() {
-            // Retrieve new posts as they are added to the database
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                Log.d("onChildAdded", "onChildAdded called");
-                boolean name = snapshot.hasChildren();
-                Log.d("onChildAdded", ""+name);
-                Log.d("onChildAdded", "another print statement");
-            }
-            @Override
-            public void onChildRemoved(DataSnapshot snapshot){}
-            @Override
-            public void onChildChanged(DataSnapshot snapshot, String previousChildKey){
-                Log.d("onChildChanged", "onChildChanged called with previousChildKey" + previousChildKey);
+        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+        Log.d("loadFromDatabase", "key: "+ref.getKey());
 
+        //attach a listener to read the data
+        ref.addValueEventListener(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot snapshot){
+                long numChildren = snapshot.getChildrenCount();
+                Log.d("numChildren", "found "+numChildren+" children");
+                String partnerOneName0 = snapshot.child("0").child("partnerOneName").getValue().toString();
+                String partnerTwoName0 = snapshot.child("0").child("partnerTwoName").getValue().toString();
+                String partnerOneName1 = snapshot.child("1").child("partnerOneName").getValue().toString();
+                String partnerTwoName1 = snapshot.child("1").child("partnerTwoName").getValue().toString();
+                Log.d("names", partnerOneName0 + "-" + partnerTwoName0 + "-" + partnerOneName1 + "-" + partnerTwoName1);
             }
             @Override
-            public void onChildMoved(DataSnapshot snapshot, String previousChildKey){}
-            @Override
-            public void onCancelled(FirebaseError error){}
+            public void onCancelled(FirebaseError fireBaseError){
+                Log.d("Read failed", "Read failed in addValueListener");
+            }
         });
 
-        Log.d("loadFromDatabase", "attempting to add a child");
-        Map<String, Object> temp = new HashMap<String, Object>();
-        temp.put("temp", "");
-        //ref.child("0").updateChildren(temp);
-        //ref.child("-1").setValue("");
-        //ref.child("-1").removeValue();
     }
 
     @Override
