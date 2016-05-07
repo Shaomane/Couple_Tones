@@ -54,7 +54,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:text="Map"
+                    android:id="@+id/mapButton"
+                    android:text="@string/mapbutton"
                     android:onClick="toMap"
                     />
 
@@ -62,7 +63,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
-                    android:text="Add a Partner"
+                    android:id="@+id/addPartnerButton"
+                    android:text="@string/addPartnerButton"
                     android:onClick="addPartner"/>
 
             </LinearLayout>
