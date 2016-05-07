@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -79,6 +80,12 @@ public class MainActivity extends AppCompatActivity {
         if (partnerName == null) {
             checkForRequest();
         }
+        else{
+            //We are in a relationship. Do not allow another add
+            Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
+            addPartnerButton.setClickable(false);
+            addPartnerButton.setAlpha(0.5f);
+        }
 
         //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
         //if not logged in make em log in
@@ -107,6 +114,13 @@ public class MainActivity extends AppCompatActivity {
 
         }
         getRegId();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        if (partnerName == null)
+            checkForRequest();
     }
 
     @Override
