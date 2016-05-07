@@ -24,6 +24,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 import android.view.View;
 import android.widget.EditText;
@@ -48,13 +49,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Marker prevMarker;
     Location prevLocation;
     static ArrayList<LatLng> arrayLatLng = new ArrayList<LatLng>();
-    static int locationToggle = 0;              // counter to check for addlocation toggle
+    static int addLocationToggle = 0;              // counter to check for addlocation toggle
+    static int removeLocationToggle = 0;            // counter to check for remove location toggle
     public static String placeName;
 
     /* these lines below save user favorite locations between app sessions */
     static final int PREFERENCE_MODE_PRIVATE = 0;
     public static final String SAVED_LOCATIONS = "Saved_locations_file";
-
 
     private static final int METERS_160 = 160;
 
@@ -169,98 +170,116 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap)
     {
         mMap = googleMap;
-
         // add a partner in La Jolla and move the camera
         //LatLng laJolla = new LatLng(32.882340, -117.233620);
         LatLng laJolla = new LatLng(32.882340, -117.233620);
         //mMap.addMarker(new MarkerOptions().position(laJolla).title("Marker in La Jolla"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((laJolla), 15.0f));
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        // opens the sharedpreferences
-        SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
-       // SharedPreferences.Editor savedLocationsEditor = savedLocations.edit();
 
-        // adds a marker for each previously set marker
-        Map<String, ?> previousLocations = savedLocations.getAll();
-        for (Map.Entry<String, ?> entry : previousLocations.entrySet())
-        {
-            String locName = entry.getKey();
-            String locPos = entry.getValue().toString();
-            System.out.println("LatLng from getValue: " + locPos);
-            String strLatLng[] = (locPos.split (" "));
-            // creates a new LatLng with string[] by parsing them into doubles
-            System.out.println (strLatLng[0]);
-            System.out.println (strLatLng[1]);
-               LatLng thisLocationLatLng = new LatLng(Double.parseDouble(strLatLng[0]),
-                                             Double.parseDouble(strLatLng[1]) );
-    /*        System.out.println ("Name is: " + locName);
-            System.out.println ("Lat after parse double is: " + Double.parseDouble(strLatLng[0]));
-            System.out.println ("Long after parse double is: " + Double.parseDouble(strLatLng[1])); */
+        // fills the map with markers
+        populateMap();
 
-            mMap.addMarker(new MarkerOptions().position(thisLocationLatLng).title(locName));
-        }
-
-
-        //  public void addLocation() {
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
         {
-
             @Override
             public void onMapClick(LatLng point)
             {
-                if (locationToggle % 2 == 1)
+                if (addLocationToggle % 2 == 1)
                 {
-                    showDialog(point);
-       /*             Marker instMarker =
-                            mMap.addMarker (new MarkerOptions()
-                    .title(placeName).position(point));    */
-                                    //.showInfoWindow();
-                   // instMarker.setTitle(placeName);
-                   // instMarker.setPosition(point);
-/*
-                    Double currLat = point.latitude;
-                    Double currLong = point.longitude;
-                    // adds a location as a concatenation of latitude and longitude
-                    String locationData = (currLat.toString()+ " " + currLong.toString());
-
-                    savedLocationsEditor.putString(placeName, locationData);
-                    savedLocationsEditor.apply();
-                    System.out.println ("Place name is " + placeName);
-                    System.out.println ("Location is " + locationData);  */
+                    showInputDialog(point);
                 }
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+        {
+            @Override
+            public boolean onMarkerClick(Marker clickedMarker) {
+
+                if (removeLocationToggle % 2 == 1) {
+                    System.err.println(clickedMarker.getTitle());
+                    mMap.clear();
+                    SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
+                    SharedPreferences.Editor savedLocationsEditor = savedLocations.edit();
+
+                    System.err.println(savedLocations.getAll());
+
+                    savedLocationsEditor.remove(clickedMarker.getTitle().toString());
+                    savedLocationsEditor.apply();
+                    System.err.println(savedLocations.getAll());
+                    populateMap();
+                }
+
+                clickedMarker.showInfoWindow();
+
+                return true;
             }
 
         });
+
+        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener()
+        {
+            @Override
+            public void onMarkerDragStart (Marker startMarker) {
+             //   System.err.println ("Marker drag now start");
+
+            }
+            @Override
+            public void onMarkerDrag (Marker duringMarker) {
+                //System.err.println ("Marker drag now being dragged");
+
+            }
+            @Override
+            public void onMarkerDragEnd (Marker endMarker) {
+                System.err.println ("Marker drag now ends");
+
+                SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
+                SharedPreferences.Editor savedLocationsEditor = savedLocations.edit();
+                System.err.println(savedLocations.getAll());
+
+                savedLocationsEditor.remove(endMarker.getTitle());
+
+                Double currLat = endMarker.getPosition().latitude;
+                Double currLong = endMarker.getPosition().longitude;
+                // adds a location as a concatenation of latitude and longitude
+                String locationData = (currLat.toString()+ " " + currLong.toString());
+
+                savedLocationsEditor.putString(endMarker.getTitle(), locationData);
+
+                savedLocationsEditor.apply();
+                System.err.println(savedLocations.getAll());
+
+
+            }
+        });
+
     }
 
     // shows a dialog box when called to accept user input
-    public void showDialog (final LatLng currPoint)
+    public void showInputDialog (final LatLng currPoint)
     {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MapsActivity.this);
-        dialogBuilder.setTitle("Name this location:");
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MapsActivity.this);
+        alertBuilder.setTitle("Name this location:");
 
         // To grab input from user
         final EditText input = new EditText(MapsActivity.this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
-        dialogBuilder.setView(input);
+        alertBuilder.setView(input);
 
         // Create the buttons
-        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
+        alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-               // SharedPreferences savedLocations = PreferenceManager.getDefaultSharedPreferences(0);
-               // final SharedPreferences.Editor savedLocationsEditor = savedLocations.edit();
-                SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, 0);
+                SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
                 SharedPreferences.Editor savedLocationsEditor = savedLocations.edit();
 
                 placeName = input.getText().toString();
 
                 mMap.addMarker (new MarkerOptions()
-                                .title(placeName).position(currPoint)).showInfoWindow();
-
+                                .title(placeName).position(currPoint).draggable(true)).showInfoWindow();
 
                 Double currLat = currPoint.latitude;
                 Double currLong = currPoint.longitude;
@@ -278,23 +297,65 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 System.err.println ("Location is " + locationData);
             }
         });
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
 
-        dialogBuilder.show();
+        alertBuilder.show();
 
     }
 
     // toggles the add location button
     public void addLocation (View view)
     {
-        locationToggle++;
+        final Button addLocationButton = (Button) findViewById(R.id.addLocationButton);
+        addLocationToggle++;
+        if (addLocationToggle % 2 == 1)
+        {
+            addLocationButton.setText("Adding Location!");
+        }
+        else {
+            addLocationButton.setText("Not Adding Location.");
+          //  removeLocation();
+        }
     }
 
+    // to remove location
+    public void removeLocation (View view)
+    {
+        final Button removeLocationButton = (Button) findViewById(R.id.removeLocationButton);
+        removeLocationToggle++;
+        if (removeLocationToggle % 2 == 1)
+        {
+            removeLocationButton.setText("Removing Location!");
+        }
+        else {
+            removeLocationButton.setText("Not Removing Location.");
+            //  removeLocation();
+        }
+
+    }
+    public void populateMap ()
+    {
+        // opens the sharedpreferences
+        SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
+        // adds a marker for each previously set marker
+        Map<String, ?> previousLocations = savedLocations.getAll();
+        for (Map.Entry<String, ?> entry : previousLocations.entrySet())
+        {
+            String locName = entry.getKey();
+            String locPos = entry.getValue().toString();
+            String strLatLng[] = (locPos.split (" "));
+            // creates a new LatLng with string[] by parsing them into doubles
+            LatLng thisLocationLatLng = new LatLng(Double.parseDouble(strLatLng[0]),
+                    Double.parseDouble(strLatLng[1]) );
+
+            mMap.addMarker(new MarkerOptions().position(thisLocationLatLng).title(locName).draggable(true)).showInfoWindow();
+        }
+    }
     private void handleReachedFavoriteLocation(Location location)
     {
         Context context = getApplicationContext();

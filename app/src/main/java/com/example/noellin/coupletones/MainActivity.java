@@ -2,6 +2,7 @@ package com.example.noellin.coupletones;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private String partnerName = "";
     private String partnerEmail = "";
     protected static GoogleSignInAccount acct;
+    static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
+    public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,17 +87,18 @@ public class MainActivity extends AppCompatActivity {
         list.setAdapter(adapter);
 
         //Have mercy on me guys, I'll get rid of this later --Andrew
-        listItems.add("");
-        listItems.add("");
-        listItems.add("");
-        listItems.add("");
-        listItems.add("");
-        listItems.add("");
-        listItems.add("");
-        listItems.add("");
-        listItems.add("");
-        listItems.add("");
-        adapter.notifyDataSetChanged();
+
+        // loads up the locations from shared preferences and lists them on the main screen
+        // using Map<>.
+        // CURRENTLY DISPLAYING ALL FAVORITE LOCATIONS, rather than visited locations
+        SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
+        Map<String, ?> previousLocations = savedLocations.getAll();
+        for (Map.Entry<String, ?> entry : previousLocations.entrySet()) {
+
+            listItems.add(entry.getKey());
+            adapter.notifyDataSetChanged();
+
+        }
     }
 
     @Override
