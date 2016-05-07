@@ -11,6 +11,13 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        //Enable MultiDex
+        multiDexEnabled = true;
+
+        testInstrumentationRunner "com.android.test.runner.MultiDexTestRunner"
+        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -27,4 +34,11 @@ dependencies {
     compile 'com.android.support:design:23.3.0'
     compile 'com.google.android.gms:play-services:8.3.0'
     compile 'com.firebase:firebase-client-android:2.5.2+'
+
+    compile 'com.android.support:multidex:1.0.0'
+
+    androidTestCompile 'com.android.support.test:rules:0.3'
+    androidTestCompile 'com.android.support.test:runner:0.3'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'
+    androidTestCompile 'com.android.support:support-annotations:23.3.0'
 }
