@@ -2,6 +2,7 @@ package com.example.noellin.coupletones;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,7 +23,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,7 +115,6 @@ public class SignInActivity extends AppCompatActivity implements
                 }
             });
         }
-
     }
 
     // [START onActivityResult]
@@ -238,6 +240,7 @@ public class SignInActivity extends AppCompatActivity implements
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
     }
+
 
     @Override
     public void onClick(View v) {

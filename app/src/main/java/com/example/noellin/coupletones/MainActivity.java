@@ -3,6 +3,7 @@ package com.example.noellin.coupletones;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +25,9 @@ import com.firebase.client.MutableData;
 import com.firebase.client.ValueEventListener;
 import com.firebase.client.snapshot.IndexedNode;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
 
+    GoogleCloudMessaging gcm;
+    String regid;
+    String PROJECT_NUMBER = "290538927222";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
 
         }
+        getRegId();
     }
 
     @Override
@@ -139,8 +146,9 @@ public class MainActivity extends AppCompatActivity {
                     //Found a request! We are loved.
                     String senderName = req.child("senderName").getValue().toString();
                     String senderEmail = req.child("senderEmail").getValue().toString();
+                    String senderRegId = req.child("senderRegId").getValue().toString();
                     req.getRef().setValue(null);
-                    respondToRequest(senderName, senderEmail);
+                    respondToRequest(senderName, senderEmail, senderRegId);
                 }
             }
 
@@ -189,14 +197,18 @@ public class MainActivity extends AppCompatActivity {
                 //Create Maps to put data in for the database
                 Map<String, Object> senderName = new HashMap<String, Object>();
                 Map<String, Object> senderEmail = new HashMap<String, Object>();
+                Map<String, Object> senderRegId = new HashMap<String, Object>();
                 Map<String, Object> receiverEmail = new HashMap<String, Object>();
                 senderName.put("senderName", acct.getDisplayName());
                 senderEmail.put("senderEmail", acct.getEmail());
+                senderRegId.put("senderRegId", regid);
+                Log.d("sendPartnerRequest","sending regid: "+regid);
                 receiverEmail.put("receiverEmail", entered_email);
 
                 //update the request in the database with the new information
                 root.child(reqName).updateChildren(senderName);
                 root.child(reqName).updateChildren(senderEmail);
+                root.child(reqName).updateChildren(senderRegId);
                 root.child(reqName).updateChildren(receiverEmail);
 
             }
@@ -207,10 +219,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void respondToRequest(String senderName, String senderEmail){
+    public void respondToRequest(String senderName, String senderEmail, String senderRegId){
 
         final String secondName = senderName;
         final String secondEmail = senderEmail;
+        final String secondRegId = senderRegId;
         AlertDialog.Builder respondToRequestDialogue = new AlertDialog.Builder(MainActivity.this);
         respondToRequestDialogue.setTitle("Partner Request:");
         respondToRequestDialogue.setMessage(senderName+" ("+senderEmail+") sent you a partner request!");
@@ -230,18 +243,24 @@ public class MainActivity extends AppCompatActivity {
                         //Create Maps to put data in for the database
                         Map<String, Object> nameOne = new HashMap<String, Object>();
                         Map<String, Object> emailOne = new HashMap<String, Object>();
+                        Map<String, Object> regIdOne = new HashMap<String, Object>();
                         Map<String, Object> nameTwo = new HashMap<String, Object>();
                         Map<String, Object> emailTwo = new HashMap<String, Object>();
+                        Map<String, Object> regIdTwo = new HashMap<String, Object>();
                         nameOne.put("nameOne", name);
                         emailOne.put("emailOne", email);
+                        regIdOne.put("regIdOne", regid);
                         nameTwo.put("nameTwo", secondName);
                         emailTwo.put("emailTwo", secondEmail);
+                        regIdTwo.put("regIdTwo", secondRegId);
 
                         //update the request in the database with the new information
                         root.child(relName).updateChildren(nameOne);
                         root.child(relName).updateChildren(emailOne);
+                        root.child(relName).updateChildren(regIdOne);
                         root.child(relName).updateChildren(nameTwo);
                         root.child(relName).updateChildren(emailTwo);
+                        root.child(relName).updateChildren(regIdTwo);
                     }
                 });
 
@@ -294,6 +313,34 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MapsActivity.class);
 
         startActivity(intent);
+    }
+
+    public void getRegId() {
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                try {
+                    if(gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                    }
+
+                    regid = gcm.register(PROJECT_NUMBER);
+                    msg = "Device registered, registration ID=" + regid;
+                    Log.i("GCM", "!!!!! " + regid);
+
+                } catch(IOException ex) {
+                    msg = "Error: " + ex.getMessage();
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                /*etRegId.setText(msg);*/
+            }
+        }.execute(null, null, null);
     }
 
 }
