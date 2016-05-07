@@ -58,9 +58,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
-        boolean logged_in = false;
+        boolean logged_in = true;
+        //boolean logged_in = false;
         if (extras != null){
             logged_in = extras.getBoolean("logged_in");
             acct = SignInActivity.acct;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             checkForRequest();
         }
 
-        logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
+        //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
         //if not logged in make em log in
         if (!logged_in) {
             Intent intent = new Intent(this, SignInActivity.class);
@@ -92,21 +94,29 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
         list.setAdapter(adapter);
 
-        //Have mercy on me guys, I'll get rid of this later --Andrew
+        getRegId();
+    }
 
-        // loads up the locations from shared preferences and lists them on the main screen
-        // using Map<>.
-        // CURRENTLY DISPLAYING ALL FAVORITE LOCATIONS, rather than visited locations
+    // loads up the locations from shared preferences and lists them on the main screen using Map<>.
+    // CURRENTLY DISPLAYING ALL FAVORITE LOCATIONS, rather than visited locations
+    // attempts to refresh favorite locations page upon returning from maps
+    protected void onResume() {
+        super.onResume();
+        adapter.clear();
+        adapter.notifyDataSetChanged();
+
         SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
+
         Map<String, ?> previousLocations = savedLocations.getAll();
 
         for (Map.Entry<String, ?> entry : previousLocations.entrySet()) {
 
-            listItems.add(entry.getKey());
+            if (!(listItems.contains(entry.getKey()))) {
+                listItems.add(entry.getKey());
+            }
             adapter.notifyDataSetChanged();
 
         }
-        getRegId();
     }
 
     @Override

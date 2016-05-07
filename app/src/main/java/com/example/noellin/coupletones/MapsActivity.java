@@ -15,19 +15,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Toast;
-import android.view.View;
 import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -38,11 +28,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -51,8 +38,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Marker prevMarker;
     Location prevLocation;
     static ArrayList<LatLng> arrayLatLng = new ArrayList<LatLng>();
-    static int addLocationToggle = 0;              // counter to check for addlocation toggle
-    static int removeLocationToggle = 0;            // counter to check for remove location toggle
+   // static int addLocationToggle = 0;              // counter to check for addlocation toggle
+   // static int removeLocationToggle = 0;            // counter to check for remove location toggle
     public static String placeName;
 
     /* these lines below save user favorite locations between app sessions */
@@ -61,9 +48,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int METERS_160 = 160;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
 
@@ -169,6 +158,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((laJolla), 15.0f));
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
+        // creates a radio group and links it to this activity
+        final RadioGroup rg = (RadioGroup) findViewById(R.id.radioLocationAction);
         // fills the map with markers
         populateMap();
 
@@ -177,7 +168,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng point)
             {
-                if (addLocationToggle % 2 == 1)
+                //if (addLocationToggle % 2 == 1)
+                if (rg.getCheckedRadioButtonId() == R.id.addLocation)
                 {
                     showInputDialog(point);
                 }
@@ -189,7 +181,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker clickedMarker) {
 
-                if (removeLocationToggle % 2 == 1) {
+                //if (removeLocationToggle % 2 == 1)
+                if (rg.getCheckedRadioButtonId() == R.id.removeLocation)
+                {
                     System.err.println(clickedMarker.getTitle());
                     mMap.clear();
                     SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
@@ -233,7 +227,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             @Override
             public void onMarkerDrag (Marker duringMarker) {
-                //System.err.println ("Marker drag now being dragged");
 
             }
             @Override
@@ -330,13 +323,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         alertBuilder.show();
 
     }
-
+/*
     // toggles the add location button
     public void addLocation (View view)
     {
         final Button addLocationButton = (Button) findViewById(R.id.addLocationButton);
         addLocationToggle++;
-        if (addLocationToggle % 2 == 1)
+        if ((addLocationToggle % 2 == 1))
         {
             addLocationButton.setText("Adding Location!");
             addLocationButton.setTextColor(Color.BLUE);
@@ -353,7 +346,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         final Button removeLocationButton = (Button) findViewById(R.id.removeLocationButton);
         removeLocationToggle++;
-        if (removeLocationToggle % 2 == 1)
+        if ((removeLocationToggle % 2 == 1))
         {
             removeLocationButton.setText("Removing Location!");
             removeLocationButton.setTextColor(Color.RED);
@@ -365,7 +358,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //  removeLocation();
         }
 
-    }
+    }  */
     public void populateMap ()
     {
         // opens the sharedpreferences
