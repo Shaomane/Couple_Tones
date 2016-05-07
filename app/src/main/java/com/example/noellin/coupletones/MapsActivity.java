@@ -1,7 +1,9 @@
 package com.example.noellin.coupletones;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
@@ -53,9 +55,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> f79d4772092edb28002a478ce6e2a406ee977d9a
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -64,7 +69,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Initialize our favorite locations ArrayList
         favoriteLocations = new ArrayList<>();
-
 
         LocationListener locationListener = new LocationListener() {
             @Override
@@ -89,7 +93,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if ((prevLocation == null) || (target.getLatitude() != prevLocation.getLatitude() && target.getLongitude() != prevLocation.getLongitude()))
                         {
                             handleReachedFavoriteLocation(target);
-                            prevLocation = target;
                         }
                     }
                 }
@@ -389,7 +392,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int duration = Toast.LENGTH_SHORT;
         CharSequence text = "Reached favorite location: " + location.getProvider();
         Toast t = Toast.makeText(context, text, duration);
-        t.show();
+        if (isMyServiceRunning(CoolDownService.class))
+        {
+            Log.d("running", "service is running in the background");
+        }
+        else
+        {
+            // Start the background service
+            Intent intent = new Intent(MapsActivity.this, CoolDownService.class);
+            startService(intent);
+            Log.d("success", "near location " + location.getProvider());
+            t.show();
+            prevLocation = location;
+        }
     }
 
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
