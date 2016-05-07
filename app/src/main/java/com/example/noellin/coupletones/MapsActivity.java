@@ -96,7 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     target = point;
                     if (location.distanceTo(target) < METERS_160)
                     {
-                        Log.d("success", "near location");
+                        //Log.d("success", "near location");
                         if ((prevLocation == null) || (target.getLatitude() != prevLocation.getLatitude() && target.getLongitude() != prevLocation.getLongitude()))
                         {
                             handleReachedFavoriteLocation(target);
@@ -204,8 +204,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     for (int i = 0; i < favoriteLocations.size(); i++)
                     {
-                        if (favoriteLocations.get(i).getProvider().equals(clickedMarker.getTitle()))
+                        Location currLoc = favoriteLocations.get(i);
+                        if ((currLoc.getProvider().equals(clickedMarker.getTitle())) &&
+                            (currLoc.getLatitude() == clickedMarker.getPosition().latitude) &&
+                                (currLoc.getLongitude() == clickedMarker.getPosition().longitude))
                         {
+                            System.err.println("REMOVE SUCCESSFUL");
                             favoriteLocations.remove(i);
                         }
                     }
@@ -220,10 +224,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener()
         {
+            Marker startMarker;
+
             @Override
             public void onMarkerDragStart (Marker startMarker) {
-             //   System.err.println ("Marker drag now start");
-
+                System.err.println ("Marker drag now start");
+                this.startMarker = startMarker;
             }
             @Override
             public void onMarkerDrag (Marker duringMarker) {
@@ -250,11 +256,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 savedLocationsEditor.apply();
                 System.err.println(savedLocations.getAll());
 
-
                 for (int i = 0; i < favoriteLocations.size(); i++)
                 {
-                    if (favoriteLocations.get(i).getProvider().equals(endMarker.getTitle()))
+                    if ((favoriteLocations.get(i).getProvider().equals(startMarker.getTitle())))
                     {
+                        System.err.println("MOVE SUCCESSFUL");
+                        System.err.println("favorite location lat: " + favoriteLocations.get(i).getLatitude());
+                        System.err.println("startMarker lat: " + startMarker.getPosition().latitude);
+                        System.err.println("new lat: " + currLat);
                         favoriteLocations.get(i).setLatitude(currLat);
                         favoriteLocations.get(i).setLongitude(currLong);
                     }
