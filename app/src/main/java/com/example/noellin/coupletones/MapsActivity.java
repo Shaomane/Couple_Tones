@@ -34,6 +34,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -75,20 +76,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Initialize our favorite locations ArrayList
         favoriteLocations = new ArrayList<>();
 
-        Location loc1 = new Location("location 1");
-        loc1.setLatitude(32.882320);
-        loc1.setLongitude(-117.226790);
-        favoriteLocations.add(loc1);
-
-        Location loc2 = new Location("location 2");
-        loc2.setLatitude(32.878080);
-        loc2.setLongitude(-117.214250);
-        favoriteLocations.add(loc2);
 
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("updated path"));
+                Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),
+                        location.getLongitude())).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title("Current location"));
+
                 if (prevMarker != null)
                 {
                     prevMarker.remove();
@@ -102,7 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     target = point;
                     if (location.distanceTo(target) < METERS_160)
                     {
-                        Log.d("success", "near location");
+                        //Log.d("success", "near location");
                         if ((prevLocation == null) || (target.getLatitude() != prevLocation.getLatitude() && target.getLongitude() != prevLocation.getLongitude()))
                         {
                             handleReachedFavoriteLocation(target);
@@ -152,9 +146,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
-
-
-
     }
 
 
@@ -210,6 +201,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     savedLocationsEditor.apply();
                     System.err.println(savedLocations.getAll());
                     populateMap();
+
+                    for (int i = 0; i < favoriteLocations.size(); i++)
+                    {
+                        Location currLoc = favoriteLocations.get(i);
+                        if ((currLoc.getProvider().equals(clickedMarker.getTitle())) &&
+                            (currLoc.getLatitude() == clickedMarker.getPosition().latitude) &&
+                                (currLoc.getLongitude() == clickedMarker.getPosition().longitude))
+                        {
+                            System.err.println("REMOVE SUCCESSFUL");
+                            favoriteLocations.remove(i);
+                        }
+                    }
                 }
 
                 clickedMarker.showInfoWindow();
@@ -221,10 +224,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener()
         {
+            Marker startMarker;
+
             @Override
             public void onMarkerDragStart (Marker startMarker) {
-             //   System.err.println ("Marker drag now start");
-
+                System.err.println ("Marker drag now start");
+                this.startMarker = startMarker;
             }
             @Override
             public void onMarkerDrag (Marker duringMarker) {
@@ -251,7 +256,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 savedLocationsEditor.apply();
                 System.err.println(savedLocations.getAll());
 
-
+                for (int i = 0; i < favoriteLocations.size(); i++)
+                {
+                    if ((favoriteLocations.get(i).getProvider().equals(startMarker.getTitle())))
+                    {
+                        System.err.println("MOVE SUCCESSFUL");
+                        System.err.println("favorite location lat: " + favoriteLocations.get(i).getLatitude());
+                        System.err.println("startMarker lat: " + startMarker.getPosition().latitude);
+                        System.err.println("new lat: " + currLat);
+                        favoriteLocations.get(i).setLatitude(currLat);
+                        favoriteLocations.get(i).setLongitude(currLong);
+                    }
+                }
             }
         });
 
@@ -290,6 +306,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 savedLocationsEditor.putString(placeName, locationData);
                 savedLocationsEditor.apply();
+
+                //Add location to favoriteLocations
+                Location currLoc = new Location(placeName);
+                currLoc.setLatitude(currLat);
+                currLoc.setLongitude(currLong);
+                favoriteLocations.add(currLoc);
 
                 // err messages for debugging purposes
                 System.err.println("Hello from line 278");
@@ -360,6 +382,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Double.parseDouble(strLatLng[1]) );
 
             mMap.addMarker(new MarkerOptions().position(thisLocationLatLng).title(locName).draggable(true)).showInfoWindow();
+
+            //Add each location to favoriteLocations
+            Location currLoc = new Location(locName);
+            currLoc.setLatitude(thisLocationLatLng.latitude);
+            currLoc.setLongitude(thisLocationLatLng.longitude);
+            favoriteLocations.add(currLoc);
         }
     }
     private void handleReachedFavoriteLocation(Location location)
