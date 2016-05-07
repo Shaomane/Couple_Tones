@@ -40,8 +40,6 @@ public class SignInActivity extends AppCompatActivity implements
 
     protected static GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
-    private static long rel_number = -1;
-    private static boolean not_ready = true;
     private static String partnerName = null;
     private static String partnerEmail = null;
 
@@ -152,7 +150,6 @@ public class SignInActivity extends AppCompatActivity implements
         //transition back to MainActivity and indicate logged in
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("logged_in", true);
-        intent.putExtra("rel_number", rel_number);
         intent.putExtra("partnerName", partnerName);
         intent.putExtra("partnerEmail",partnerEmail);
 
@@ -168,14 +165,12 @@ public class SignInActivity extends AppCompatActivity implements
         ref.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public synchronized void onDataChange(DataSnapshot snapshot){
-                long counter = -1;
 
                 //Loop through each of the relationships in the database
                 for (DataSnapshot rel : snapshot.getChildren()){
-                    counter++;
                     //Check if current relationship has the user as Partner 1 by comparing the acct email
                     if (rel.child("emailOne").getValue().toString().equals(acct.getEmail())) {
-                        rel_number = counter;
+                        //rel_number = counter;
                         //The user has an account. If there is a partner, update partnerName and partnerEmail
                         if (rel.child("nameTwo").getValue() != null){
                             partnerName = rel.child("nameTwo").getValue().toString();
@@ -186,7 +181,6 @@ public class SignInActivity extends AppCompatActivity implements
                     }
                     //Check if current relationship has the user as Partner 2
                     else if(rel.child("emailTwo").getValue().toString().equals(acct.getEmail())){
-                        rel_number = counter;
                         if (rel.child("nameOne").getValue() != null){
                             partnerName = rel.child("nameOne").getValue().toString();
                             partnerEmail = rel.child("emailOne").getValue().toString();
@@ -195,21 +189,6 @@ public class SignInActivity extends AppCompatActivity implements
                         return;
                     }
                 }
-                //no relationship was found including the user. Create a new entry in the database
-                Firebase root = snapshot.getRef();
-                Map<String, Object> newEntry = new HashMap<String, Object>();
-                rel_number = snapshot.getChildrenCount();
-                String relNum = "rel"+snapshot.getChildrenCount();
-                newEntry.put(relNum, "");
-                root.updateChildren(newEntry);
-
-                Map<String, Object> nameOne = new HashMap<String, Object>();
-                Map<String, Object> emailOne = new HashMap<String, Object>();
-                nameOne.put("nameOne", acct.getDisplayName());
-                emailOne.put("emailOne", acct.getEmail());
-
-                root.child(relNum).updateChildren(nameOne);
-                root.child(relNum).updateChildren(emailOne);
                 toMain();
             }
             @Override
