@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
-        boolean logged_in = true;
-        //boolean logged_in = false;
+        //boolean logged_in = true;
+        boolean logged_in = false;
         if (extras != null){
             logged_in = extras.getBoolean("logged_in");
             acct = SignInActivity.acct;
