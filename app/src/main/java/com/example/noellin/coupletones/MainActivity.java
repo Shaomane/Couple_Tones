@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
-        boolean logged_in = true;    // change back to false
+        boolean logged_in = false;
         if (extras != null){
             logged_in = extras.getBoolean("logged_in");
             acct = SignInActivity.acct;
@@ -58,10 +58,16 @@ public class MainActivity extends AppCompatActivity {
             email = acct.getEmail();
             partnerName = extras.getString("partnerName");
             partnerEmail = extras.getString("partnerEmail");
+
+            //TODO: disable or change Add Partner button when in a relationship
+
             Log.d("found extras", "result of name: " + name);
             Log.d("found extras", "result of email: " + email);
             Log.d("found extras", "result of partnerName: "+partnerName);
             Log.d("found extras", "result of partnerEmail: "+partnerEmail);
+        }
+        if (partnerName == null) {
+            checkForRequest();
         }
 
         //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
@@ -117,6 +123,130 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void checkForRequest(){
+        Log.d("checkForRequest","checking the database for pending request");
+        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/requests");
+        ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot req, String s) {
+                if (req.child("receiverEmail").getValue() != null && req.child("receiverEmail").getValue().toString().equals(email)){
+                    //Found a request! We are loved.
+                    String senderName = req.child("senderName").getValue().toString();
+                    String senderEmail = req.child("senderEmail").getValue().toString();
+                    req.getRef().setValue(null);
+                    respondToRequest(senderName, senderEmail);
+                }
+            }
+
+            //Unused
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.d("Read failed", "Read failed in addChildEventListener");
+            }
+        });
+
+    }
+
+    //helper method to send a partner request from the Add Partner dialogue
+    public void sendPartnerRequest(final String entered_email){
+        Log.d("sendPartnerRequest","entered email: "+entered_email);
+        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+        //attach a listener to read the data
+        ref.addListenerForSingleValueEvent(new ValueEventListener(){
+            @Override
+            public synchronized void onDataChange(DataSnapshot snapshot){
+                long counter = -1;
+
+                //Loop through each of the relationships in the database
+                for (DataSnapshot rel : snapshot.getChildren()){
+                    counter++;
+                    //Check if current relationship has the requested partner
+                    if (rel.child("emailOne").getValue().toString().equals(entered_email)
+                            || rel.child("emailTwo").getValue().toString().equals(entered_email)) {
+                        //TODO: error, the requested partner already has a partner
+                        return;
+                    }
+                }
+                //no relationship was found including the user. Create a new request in the database
+                Firebase root = snapshot.getRef().getParent().child("requests");
+                Map<String, Object> newEntry = new HashMap<String, Object>();
+                String reqName = acct.getId();
+                newEntry.put(reqName, "");
+                root.updateChildren(newEntry);
+
+                //Create Maps to put data in for the database
+                Map<String, Object> senderName = new HashMap<String, Object>();
+                Map<String, Object> senderEmail = new HashMap<String, Object>();
+                Map<String, Object> receiverEmail = new HashMap<String, Object>();
+                senderName.put("senderName", acct.getDisplayName());
+                senderEmail.put("senderEmail", acct.getEmail());
+                receiverEmail.put("receiverEmail", entered_email);
+
+                //update the request in the database with the new information
+                root.child(reqName).updateChildren(senderName);
+                root.child(reqName).updateChildren(senderEmail);
+                root.child(reqName).updateChildren(receiverEmail);
+
+            }
+            @Override
+            public void onCancelled(FirebaseError fireBaseError){
+                Log.d("Read failed", "Read failed in addValueListener");
+            }
+        });
+    }
+
+    public void respondToRequest(String senderName, String senderEmail){
+
+        final String secondName = senderName;
+        final String secondEmail = senderEmail;
+        AlertDialog.Builder respondToRequestDialogue = new AlertDialog.Builder(MainActivity.this);
+        respondToRequestDialogue.setTitle("Partner Request:");
+        respondToRequestDialogue.setMessage(senderName+" ("+senderEmail+") sent you a partner request!");
+
+        respondToRequestDialogue.setPositiveButton("Accept",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+
+                        //no relationship was found including the user. Create a new request in the database
+                        Map<String, Object> newEntry = new HashMap<String, Object>();
+                        String relName = acct.getId();
+                        newEntry.put(relName, "");
+                        root.updateChildren(newEntry);
+
+                        //Create Maps to put data in for the database
+                        Map<String, Object> nameOne = new HashMap<String, Object>();
+                        Map<String, Object> emailOne = new HashMap<String, Object>();
+                        Map<String, Object> nameTwo = new HashMap<String, Object>();
+                        Map<String, Object> emailTwo = new HashMap<String, Object>();
+                        nameOne.put("nameOne", name);
+                        emailOne.put("emailOne", email);
+                        nameTwo.put("nameTwo", secondName);
+                        emailTwo.put("emailTwo", secondEmail);
+
+                        //update the request in the database with the new information
+                        root.child(relName).updateChildren(nameOne);
+                        root.child(relName).updateChildren(emailOne);
+                        root.child(relName).updateChildren(nameTwo);
+                        root.child(relName).updateChildren(emailTwo);
+                    }
+                });
+
+        respondToRequestDialogue.setNegativeButton("Decline",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        respondToRequestDialogue.show();
+    }
 
     //Called by clicking the Add Partner button. Creates a dialogue that goes through the partner
     //adding process
@@ -136,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String entered_email = input.getText().toString();
+                        dialog.cancel();
                         sendPartnerRequest(entered_email);
                     }
                 });
@@ -148,12 +279,6 @@ public class MainActivity extends AppCompatActivity {
                 });
         addPartnerDialogue.show();
 
-    }
-
-    //helper method to send a partner request from the Add Partner dialogue
-    public void sendPartnerRequest(String entered_email){
-
-        Log.d("sendPartnerRequest","entered email: "+entered_email);
     }
 
     //Called by clicking To Map button. Transitions to the map activity
