@@ -13,12 +13,56 @@
       },
       "oauth_client": [
         {
+          "client_id": "290538927222-j062k31nsqqg5rqk8irbao3nsgd6n9gp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.noellin.coupletones",
+            "certificate_hash": "EA3637C8207821A60696567EACF23F58F12CCD88"
+          }
+        },
+        {
+          "client_id": "290538927222-o1rnk9t2cg88petec1t3ou7b3mbdch5v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.noellin.coupletones",
+            "certificate_hash": "F12101881DEE6EEB78D668BF24B349AA6C1C7610"
+          }
+        },
+        {
+          "client_id": "290538927222-s6fmr9act76ileieu0f7kca1m0830t84.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.noellin.coupletones",
+            "certificate_hash": "4BBABE815C6B4CC6818D154E5B7655E6D1584D3C"
+          }
+        },
+        {
+          "client_id": "290538927222-nqsnr5mn9hbp4pubvvggk9711fhg3vka.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.noellin.coupletones",
+            "certificate_hash": "D743CC89A937692C4B8C51CAD012E0773E8C37EC"
+          }
+        },
+        {
+          "client_id": "290538927222-g4ltqe18vhfo17lsi5qef7c4al766i6p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.noellin.coupletones",
+            "certificate_hash": "B0236A3AC15D91C63C1C98FA6D4A7A055460D20A"
+          }
+        },
+        {
           "client_id": "290538927222-0in8buf1mot2bir7vr6kfdetfbm4qcdd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.noellin.coupletones",
             "certificate_hash": "535E8970E5D2020A7FF69667FE157798442C0347"
           }
+        },
+        {
+          "client_id": "290538927222-t7gu376372ortcnf5st4atfnjnfuq1v1.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
           "client_id": "290538927222-dj1sdahcff8fvt8cia0234ic1t3ornq2.apps.googleusercontent.com",

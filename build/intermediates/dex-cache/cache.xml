@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" >
+<items version="2" />
 
+<<<<<<< HEAD
     <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\8.3.0\jars\classes.jar"
         jumboMode="true"
@@ -297,3 +298,5 @@
     </item>
 
 </items>
+=======
+>>>>>>> 8f127c044f854047d521fa2528967aa040e0672c
