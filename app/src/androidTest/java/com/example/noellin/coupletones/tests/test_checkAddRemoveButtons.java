@@ -1,10 +1,15 @@
 package com.example.noellin.coupletones.tests;
 
-import android.support.test.InstrumentationRegistry;
+/**
+ * Created by sinan on 5/6/2016.
+ */
+
 import android.support.test.runner.AndroidJUnit4;
+
+import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.example.noellin.coupletones.MainActivity;
+import com.example.noellin.coupletones.MapsActivity;
 import com.example.noellin.coupletones.R;
 
 import org.junit.Before;
@@ -17,12 +22,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class test_checkMainActivityButtons extends ActivityInstrumentationTestCase2<MainActivity> {
+public class test_checkAddRemoveButtons extends ActivityInstrumentationTestCase2<MapsActivity>{
+    private MapsActivity mapsActivity;
 
-    private MainActivity mainActivity;
-
-    public test_checkMainActivityButtons() {
-        super(MainActivity.class);
+    public test_checkAddRemoveButtons() {
+        super(MapsActivity.class);
     }
 
     @Before
@@ -30,11 +34,11 @@ public class test_checkMainActivityButtons extends ActivityInstrumentationTestCa
 
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-        mainActivity = getActivity();
+        mapsActivity = getActivity();
     }
 
     @Test
-    public void test_checkMainButtons() {
+    public void test_checkMapsButtons() {
 
         try {
             Thread.sleep(2000);
@@ -43,11 +47,10 @@ public class test_checkMainActivityButtons extends ActivityInstrumentationTestCa
         }
 
         //Check the map button
-        onView(withId(R.id.mapButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.addLocationButton)).check(matches(isDisplayed()));
 
         //Check the Add Partner Button
-        onView(withId(R.id.addPartnerButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.removeLocationButton)).check(matches(isDisplayed()));
 
     }
-
 }
