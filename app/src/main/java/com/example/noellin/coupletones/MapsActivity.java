@@ -3,6 +3,7 @@ package com.example.noellin.coupletones;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -316,9 +317,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (addLocationToggle % 2 == 1)
         {
             addLocationButton.setText("Adding Location!");
+            addLocationButton.setTextColor(Color.BLUE);
         }
         else {
             addLocationButton.setText("Not Adding Location.");
+            addLocationButton.setTextColor(Color.BLACK);
           //  removeLocation();
         }
     }
@@ -331,9 +334,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (removeLocationToggle % 2 == 1)
         {
             removeLocationButton.setText("Removing Location!");
+            removeLocationButton.setTextColor(Color.RED);
         }
         else {
             removeLocationButton.setText("Not Removing Location.");
+            removeLocationButton.setTextColor(Color.BLACK);
+
             //  removeLocation();
         }
 
@@ -366,6 +372,3 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 }
-
-
-

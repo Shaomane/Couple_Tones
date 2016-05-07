@@ -19,24 +19,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @RunWith(AndroidJUnit4.class)
 public class test_checkMainActivityButtons extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    /*MainActivity mainActivity;
-    public test_checkMainActivityButtons() {
-        super(MainActivity.class);
-    }
-
-    public void test_checkText() {
-
-        String MAP_TEXT = "Map";
-
-        mainActivity = getActivity();
-
-        Button mapButton = (Button) mainActivity.findViewById(R.id.mapButton);
-
-        String mapText = (String) mapButton.getText();
-
-        assertEquals(MAP_TEXT, mapText);
-    }*/
-
     private MainActivity mainActivity;
 
     public test_checkMainActivityButtons() {
@@ -53,6 +35,18 @@ public class test_checkMainActivityButtons extends ActivityInstrumentationTestCa
 
     @Test
     public void test_checkMainButtons() {
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //Check the map button
         onView(withId(R.id.mapButton)).check(matches(isDisplayed()));
+
+        //Check the Add Partner Button
+        onView(withId(R.id.addPartnerButton)).check(matches(isDisplayed()));
+
     }
 }
