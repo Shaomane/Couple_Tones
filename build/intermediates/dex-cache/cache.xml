@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
-<<<<<<< HEAD
     <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\8.3.0\jars\classes.jar"
         jumboMode="true"
@@ -24,18 +23,18 @@
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-nearby-8.3.0_10eea91fafb90e88ec8b1e3661f04ffc88dc2d50\classes.dex" />
     </item>
     <item
-        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\8.3.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="9c9bdb4b2497465a6cf7d5e8f57c5298f828a380">
-        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wallet-8.3.0_52a8b1d6052f310dac438b7464ccb5b3b7efa1d5\classes.dex" />
-    </item>
-    <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\8.3.0\jars\classes.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="9aedc597d74c6d77258ce5236e9abff0c3cc65e3">
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wearable-8.3.0_9067ac8884be416aa2776095a1d5919320ed36b3\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-wallet\8.3.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="9c9bdb4b2497465a6cf7d5e8f57c5298f828a380">
+        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wallet-8.3.0_52a8b1d6052f310dac438b7464ccb5b3b7efa1d5\classes.dex" />
     </item>
     <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-vision\8.3.0\jars\classes.jar"
@@ -160,7 +159,7 @@
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="a8a7331af6ba21ba49d3126f8a584e69d8b15052">
+        sha1="2b867bac3cf9c8427315f6e77ad5aa5dd665b4ef">
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_88380b6490a105c24ae6005132e8e9bd5f4a9589\classes.dex" />
     </item>
     <item
@@ -258,7 +257,7 @@
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="d52ff79618fdd7682a7c3703bd5103ac8b93a186">
+        sha1="2504ed59f9fd016545b864cd27ec399c16052ee3">
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_afdbf3d4340a4f935e995f3ea560d4fec1c74fe8\classes.dex" />
     </item>
     <item
@@ -298,5 +297,3 @@
     </item>
 
 </items>
-=======
->>>>>>> 8f127c044f854047d521fa2528967aa040e0672c
