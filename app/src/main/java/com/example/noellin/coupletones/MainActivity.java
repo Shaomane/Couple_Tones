@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         // CURRENTLY DISPLAYING ALL FAVORITE LOCATIONS, rather than visited locations
         SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
         Map<String, ?> previousLocations = savedLocations.getAll();
+
         for (Map.Entry<String, ?> entry : previousLocations.entrySet()) {
 
             listItems.add(entry.getKey());
