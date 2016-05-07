@@ -41,6 +41,8 @@
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
     <string name="continuebutton">Continue</string>
+    <string name="mapbutton">Map</string>
+    <string name="addPartnerButton">Add a Partner</string>
 
     <!-- Content Description for images -->
     <string name="desc_google_icon">Google Logo</string>

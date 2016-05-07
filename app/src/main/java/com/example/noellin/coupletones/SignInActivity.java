@@ -1,12 +1,8 @@
 package com.example.noellin.coupletones;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.PersistableBundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -29,9 +25,6 @@ import com.google.android.gms.common.api.Status;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
 
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
@@ -43,7 +36,7 @@ public class SignInActivity extends AppCompatActivity implements
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
-    private static boolean loggedIn = false;
+    private static boolean loggedIn = true;
 
     protected static GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
