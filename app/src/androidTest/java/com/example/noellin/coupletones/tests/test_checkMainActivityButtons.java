@@ -49,4 +49,5 @@ public class test_checkMainActivityButtons extends ActivityInstrumentationTestCa
         onView(withId(R.id.addPartnerButton)).check(matches(isDisplayed()));
 
     }
+
 }

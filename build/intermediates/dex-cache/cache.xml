@@ -51,18 +51,18 @@
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-cast-8.3.0_ca265ce2caef5cb5e6ba8cfeff3714e33fe8e502\classes.dex" />
     </item>
     <item
-        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.android.support\mediarouter-v7\22.2.0\jars\libs\internal_impl-22.2.0.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
-        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-22.2.0_f8aee131c67caff0beab4c1ee42d5501dd1fabeb\classes.dex" />
-    </item>
-    <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-fitness\8.3.0\jars\classes.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="697679619b00837e3d09e9988a2e1e2a9009d502">
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-fitness-8.3.0_ca922cc5f06612f12a5b436f080d83305176c534\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.android.support\mediarouter-v7\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
+        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-22.2.0_f8aee131c67caff0beab4c1ee42d5501dd1fabeb\classes.dex" />
     </item>
     <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.3.0\jars\classes.jar"
@@ -72,18 +72,18 @@
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.3.0_8594862ec1167d1dd57114c3317c5d97aec97253\classes.dex" />
     </item>
     <item
-        jar="C:\Users\sinan\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.2.2\3c8f6018eaa72d43b261181e801e6f8676c16ef6\jackson-databind-2.2.2.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="3c8f6018eaa72d43b261181e801e6f8676c16ef6">
-        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\jackson-databind-2.2.2_f421a436807229d5d2517bf8efc1e23567fe7e48\classes.dex" />
-    </item>
-    <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-safetynet\8.3.0\jars\classes.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="ea34579b1be157cd792376362157e9c54ebb4cd7">
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-safetynet-8.3.0_317497773253ff6ec123790267c1240f58540d94\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\sinan\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.2.2\3c8f6018eaa72d43b261181e801e6f8676c16ef6\jackson-databind-2.2.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="3c8f6018eaa72d43b261181e801e6f8676c16ef6">
+        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\jackson-databind-2.2.2_f421a436807229d5d2517bf8efc1e23567fe7e48\classes.dex" />
     </item>
     <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.android.support\design\23.3.0\jars\classes.jar"
@@ -107,18 +107,18 @@
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\tubesock-0.0.12_f4e9f062246012e13571ea43c31f1db18ba10b00\classes.dex" />
     </item>
     <item
-        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\8.3.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="01a90bbb9495a8bbf6f3cfdf12f1b35caaa9524b">
-        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-8.3.0_4e0380daf43a8f00ed7fd7c30798018b0f257da7\classes.dex" />
-    </item>
-    <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.3.0\jars\classes.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.3.0_a95ada44a228e68784ede7af986216163014ace0\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\8.3.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="01a90bbb9495a8bbf6f3cfdf12f1b35caaa9524b">
+        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-8.3.0_4e0380daf43a8f00ed7fd7c30798018b0f257da7\classes.dex" />
     </item>
     <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-gcm\8.3.0\jars\classes.jar"
@@ -142,6 +142,13 @@
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-location-8.3.0_17e4ad832a421953abb4197b37e45557ca8577f3\classes.dex" />
     </item>
     <item
+        jar="C:\Users\sinan\.gradle\caches\modules-2\files-2.1\com.firebase\firebase-client-jvm\2.5.2\91731b8f5868a3e8a8a773f29b8d06b5c358f5bb\firebase-client-jvm-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="91731b8f5868a3e8a8a773f29b8d06b5c358f5bb">
+        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\firebase-client-jvm-2.5.2_278e3a492033ae9d0c91c364f8e18b30b541ad16\classes.dex" />
+    </item>
+    <item
         jar="C:\Users\sinan\.gradle\caches\modules-2\files-2.1\com.firebase\firebase-client-android\2.5.2\f19f10d6276aa0b380e2d05d2ab3272d693a5433\firebase-client-android-2.5.2.jar"
         jumboMode="true"
         revision="23.0.3"
@@ -149,11 +156,11 @@
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\firebase-client-android-2.5.2_e1ffe19ae658407b67a5b5b3c32d8678ca8e237a\classes.dex" />
     </item>
     <item
-        jar="C:\Users\sinan\.gradle\caches\modules-2\files-2.1\com.firebase\firebase-client-jvm\2.5.2\91731b8f5868a3e8a8a773f29b8d06b5c358f5bb\firebase-client-jvm-2.5.2.jar"
+        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="91731b8f5868a3e8a8a773f29b8d06b5c358f5bb">
-        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\firebase-client-jvm-2.5.2_278e3a492033ae9d0c91c364f8e18b30b541ad16\classes.dex" />
+        sha1="a8a7331af6ba21ba49d3126f8a584e69d8b15052">
+        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_88380b6490a105c24ae6005132e8e9bd5f4a9589\classes.dex" />
     </item>
     <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-panorama\8.3.0\jars\classes.jar"
@@ -163,13 +170,6 @@
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-panorama-8.3.0_38ea9a4f877063dfc29ff300e5d53edf435a271a\classes.dex" />
     </item>
     <item
-        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="ded091c10c88ec7336a7e206eda5f2afe5e1d5e3">
-        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_88380b6490a105c24ae6005132e8e9bd5f4a9589\classes.dex" />
-    </item>
-    <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.3.0\jars\classes.jar"
         jumboMode="true"
         revision="23.0.3"
@@ -177,18 +177,18 @@
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.3.0_6c489ea991be5a74c910c9bf7ae380f665b8049f\classes.dex" />
     </item>
     <item
-        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\8.3.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="27775d59b16610ac76f1b83693fedd9520396332">
-        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-ads-8.3.0_239c9692d4446e0c4ca5de94acdb912d82545d6f\classes.dex" />
-    </item>
-    <item
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-games\8.3.0\jars\classes.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="2c6fcd6267cbac6509a2e72a61127534a1d616cf">
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-games-8.3.0_b76483a71cbdb499664dc1df2eb407377eb3fa04\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\8.3.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="27775d59b16610ac76f1b83693fedd9520396332">
+        <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-ads-8.3.0_239c9692d4446e0c4ca5de94acdb912d82545d6f\classes.dex" />
     </item>
     <item
         jar="C:\Users\sinan\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.2.2\d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b\jackson-core-2.2.2.jar"
@@ -257,7 +257,7 @@
         jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="8143d60aaa6620f48c091da1bd3f5a6ce621b54f">
+        sha1="d52ff79618fdd7682a7c3703bd5103ac8b93a186">
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_afdbf3d4340a4f935e995f3ea560d4fec1c74fe8\classes.dex" />
     </item>
     <item
