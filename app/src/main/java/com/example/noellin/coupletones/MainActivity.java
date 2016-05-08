@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent backgroundIntent = new Intent(MainActivity.this, BackgroundListenerService.class);
-        startService(backgroundIntent);
 
         Firebase.setAndroidContext(this);
 
@@ -95,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+        backgroundIntent.putExtra("rel_id", relationship.rel_id);
+        backgroundIntent.putExtra("partner_email", relationship.partnerTwoEmail);
+        startService(backgroundIntent);
 
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
@@ -287,6 +290,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("rel_id", relationship.rel_id);
         intent.putExtra("senderEmail", relationship.partnerOneEmail);
+        intent.putExtra("senderName", relationship.partnerOneName);
 
         startActivity(intent);
     }
