@@ -24,6 +24,9 @@ public class BackgroundListenerService extends Service {
     String rel_id = null;
     String partner_email = null;
 
+    final static String notifGroup = "group_notif";
+    static int id = 0;
+
     public BackgroundListenerService() {
     }
 
@@ -116,9 +119,12 @@ public class BackgroundListenerService extends Service {
                 .setSmallIcon(R.drawable.ic_stat_collections_cloud)
                 .setContentTitle("CoupleTones Notification")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                .setGroup(notifGroup)
                 .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(com.example.noellin.coupletones.Constants.NOTIFICATION_NR, mBuilder.build());
+        //mNotificationManager.notify(com.example.noellin.coupletones.Constants.NOTIFICATION_NR, mBuilder.build());
+        mNotificationManager.notify(id, mBuilder.build());
+        id++;
     }
 }
