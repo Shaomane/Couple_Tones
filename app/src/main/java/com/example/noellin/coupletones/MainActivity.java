@@ -148,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        if (relationship.partnerTwoName == null)
-            checkForRequest();
+        //if (relationship.partnerTwoName == null)
+        //    checkForRequest();
     }
 
     @Override
