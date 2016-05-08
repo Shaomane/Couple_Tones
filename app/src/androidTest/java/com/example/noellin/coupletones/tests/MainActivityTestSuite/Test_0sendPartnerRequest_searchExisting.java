@@ -39,7 +39,7 @@ public class Test_0sendPartnerRequest_searchExisting extends ActivityInstrumenta
         mainActivity.relationship.partnerOneID = "0987654321";
         final String entered_email = "bar@example.com";
 
-        //mainActivity.sendPartnerRequest("bar@example.com");
+        mainActivity.sendPartnerRequest("bar@example.com");
         mainActivity.sendPartnerRequest("bar@example.com");
 
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
