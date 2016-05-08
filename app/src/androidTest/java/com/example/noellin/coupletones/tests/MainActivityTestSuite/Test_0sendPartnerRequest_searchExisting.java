@@ -4,6 +4,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
 import com.example.noellin.coupletones.MainActivity;
+import com.example.noellin.coupletones.Relationship;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -22,22 +23,23 @@ public class Test_0sendPartnerRequest_searchExisting extends ActivityInstrumenta
 
     public void test_first() {
         mainActivity = getActivity();
-        mainActivity.name = "foo";
-        mainActivity.email = "foo@example.com";
-        mainActivity.myRegId = "1234567890";
-        mainActivity.ID = "0987654321";
+        mainActivity.relationship.partnerOneName = "foo";
+        mainActivity.relationship.partnerOneEmail = "foo@example.com";
+        mainActivity.relationship.partnerOneRegId = "1234567890";
+        mainActivity.relationship.partnerOneID = "0987654321";
         mainActivity.sendPartnerRequest("bar@example.com");
     }
 
     public void test_sendPartnerRequest_searchExistingRelationships() {
         mainActivity = getActivity();
-        mainActivity.name = "foo";
-        mainActivity.email = "foo@example.com";
-        mainActivity.myRegId = "1234567890";
-        mainActivity.ID = "0987654321";
+        //mainActivity.relationship = new Relationship();
+        mainActivity.relationship.partnerOneName = "foo";
+        mainActivity.relationship.partnerOneEmail = "foo@example.com";
+        mainActivity.relationship.partnerOneRegId = "1234567890";
+        mainActivity.relationship.partnerOneID = "0987654321";
         final String entered_email = "bar@example.com";
 
-        //mainActivity.sendPartnerRequest("bar@example.com");
+        mainActivity.sendPartnerRequest("bar@example.com");
         mainActivity.sendPartnerRequest("bar@example.com");
 
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");

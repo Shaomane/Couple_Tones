@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
 
-public class CoolDownService extends Service {
-    public CoolDownService() {
+public class BackgroundListenerService extends Service {
+    public BackgroundListenerService() {
     }
 
     @Override
@@ -29,14 +29,7 @@ public class CoolDownService extends Service {
         {
             synchronized (this)
             {
-                try
-                {
-                    wait(5000);
-                } catch(InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
-                stopSelf(startId);
+
             }
         }
     }
@@ -44,7 +37,7 @@ public class CoolDownService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        Toast.makeText(CoolDownService.this, "Starting cooldown period", Toast.LENGTH_SHORT).show();
+        Toast.makeText(BackgroundListenerService.this, "Able to receive messages", Toast.LENGTH_SHORT).show();
         Thread thread = new Thread(new MyThread(startId));
         thread.start();
         return super.onStartCommand(intent, flags, startId);
@@ -53,7 +46,7 @@ public class CoolDownService extends Service {
     @Override
     public void onDestroy()
     {
-        Toast.makeText(CoolDownService.this, "Cooldown period over", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(BackgroundListenerService.this, "Cooldown period over", Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
 }

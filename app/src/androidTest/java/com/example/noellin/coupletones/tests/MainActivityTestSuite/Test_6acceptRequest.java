@@ -4,6 +4,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
 import com.example.noellin.coupletones.MainActivity;
+import com.example.noellin.coupletones.Relationship;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -12,28 +13,42 @@ import com.firebase.client.ValueEventListener;
 /**
  * Created by jeremy on 5/8/16.
  */
-public class Test_2acceptRequest extends ActivityInstrumentationTestCase2<MainActivity> {
-    MainActivity mainActivity;
+public class Test_6acceptRequest extends ActivityInstrumentationTestCase2<MainActivity> {
+    MainActivity mainActivity;// = getActivity();
 
-    public Test_2acceptRequest(){
+    public Test_6acceptRequest(){
         super(MainActivity.class);
     }
 
+    public void test_first() {
+        mainActivity = getActivity();
+        mainActivity.relationship.partnerOneName = "foo";
+        mainActivity.relationship.partnerOneEmail = "foo@example.com";
+        mainActivity.relationship.partnerOneRegId = "1234567890";
+        mainActivity.relationship.partnerOneID = "0987654321";
+        mainActivity.sendPartnerRequest("bar@example.com");
+    }
 
     public void test_acceptRequest(){
-        final String entered_email = "bar@example.com";
+        //mainActivity = getActivity();
+        /*mainActivity.FBInteractor.relationship = new Relationship();
+        mainActivity.FBInteractor.relationship.partnerOneName = "bar";
+        mainActivity.FBInteractor.relationship.partnerOneEmail = "bar@example.com";
+        mainActivity.FBInteractor.relationship.partnerOneRegId = "0000000000";
+        mainActivity.FBInteractor.relationship.partnerOneID = "1111111111";
+*/
         mainActivity = getActivity();
-        mainActivity.name = "bar";
-        mainActivity.email = "bar@example.com";
-        mainActivity.myRegId = "0000000000";
-        mainActivity.ID = "1111111111";
+        mainActivity.relationship.partnerOneName = "bar";
+        mainActivity.relationship.partnerOneEmail = "bar@example.com";
+        mainActivity.relationship.partnerOneRegId = "00000000";
+        mainActivity.relationship.partnerOneID = "11111111";
 
         mainActivity.acceptRequest("foo","foo@example.com","1234567890");
 
         //Ensure that the correct variables are being set
-        assertEquals(mainActivity.partnersRegId, "1234567890");
-        assertEquals(mainActivity.partnerEmail, "foo@example.com");
-        assertEquals(mainActivity.partnerName, "foo");
+        assertEquals(mainActivity.relationship.partnerTwoRegId, "1234567890");
+        assertEquals(mainActivity.relationship.partnerTwoEmail, "foo@example.com");
+        assertEquals(mainActivity.relationship.partnerTwoName, "foo");
 
         //Check if a relationship was added to the database
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");

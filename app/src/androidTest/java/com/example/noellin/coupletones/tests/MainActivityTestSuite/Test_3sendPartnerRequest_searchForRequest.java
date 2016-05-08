@@ -12,21 +12,22 @@ import com.firebase.client.ValueEventListener;
 /**
  * Created by jeremy on 5/8/16.
  */
-public class Test_1sendPartnerRequest_searchForRequest extends ActivityInstrumentationTestCase2<MainActivity>{
+public class Test_3sendPartnerRequest_searchForRequest extends ActivityInstrumentationTestCase2<MainActivity>{
 
     MainActivity mainActivity;
 
-    public Test_1sendPartnerRequest_searchForRequest(){
+    public Test_3sendPartnerRequest_searchForRequest(){
         super(MainActivity.class);
     }
 
     public void test_sendPartnerRequest_searchForRequest(){
         final String entered_email = "bar@example.com";
         mainActivity = getActivity();
-        mainActivity.name = "foo";
-        mainActivity.email = "foo@example.com";
-        mainActivity.myRegId = "1234567890";
-        mainActivity.ID = "0987654321";
+
+        mainActivity.relationship.partnerOneName = "foo";
+        mainActivity.relationship.partnerOneEmail = "foo@example.com";
+        mainActivity.relationship.partnerOneRegId = "1234567890";
+        mainActivity.relationship.partnerOneID = "0987654321";
 
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/requests");
         //attach a listener to read the data

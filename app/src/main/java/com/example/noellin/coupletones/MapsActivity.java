@@ -42,6 +42,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.EditText;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -51,6 +52,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -77,6 +79,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int METERS_160 = 160;
 
+    private String rel_id = null;
+    private String senderEmail;
+
     boolean isSpecialMessageSent = false;
 
 
@@ -84,12 +89,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//<<<<<<< HEAD
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            rel_id = extras.getString("rel_id");
+            senderEmail = extras.getString("senderEmail");
+        }
 
-
-
-//=======
-//>>>>>>> f79d4772092edb28002a478ce6e2a406ee977d9a
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -433,7 +438,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("success", "near location " + location.getProvider());
             t.show();
             prevLocation = location;
-            sendMessage();
+            //sendMessage();
         }
     }
 
@@ -447,33 +452,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 
-    private void sendMessage() {
-        if (!isSpecialMessageSent)
-        {
-            isSpecialMessageSent = true;
-            Intent i = new Intent(getApplicationContext(), GcmIntentService.class);
-            i.setAction(Constants.ACTION_ECHO);
-            String msg = "PartnerRegId^^^" + MainActivity.partnersRegId;
-            i.putExtra(Constants.KEY_MESSAGE_TXT, msg);
-            System.err.println("SENDING FIRST MESSAGE");
-            getApplicationContext().startService(i);
+    private void sendMessage(Location location) {
+        if (location == null){
+            Log.e("sendMessage", "null location was received in sendMessage");
+            return;
+        }else if (rel_id == null || senderEmail == null){
+            Log.e("sendMessage", "rel_id is null. Implied that we are not in a relationship");
+            return;
         }
-        Intent msgIntent = new Intent(getApplicationContext(), GcmIntentService.class);
-        msgIntent.setAction(Constants.ACTION_ECHO);
-        String msg = "Sending favorite location to partner";
-        System.err.println("SENDING SECOND MESSAGE");
-        /*if (!TextUtils.isEmpty(mTxtMsg.getText())) {
-            msg = mTxtMsg.getText().toString();
-            mTxtMsg.setText("");
-        }
-        else {
-            msg = getActivity().getString(R.string.no_message);
-        }*/
-        String msgTxt = "Sending favorite location to partner";
-        //Crouton.showText(getApplicationContext(), msgTxt, Style.INFO);
-        Crouton.makeText(this, msgTxt, Style.INFO).show();
-        msgIntent.putExtra(Constants.KEY_MESSAGE_TXT, msg);
-        getApplicationContext().startService(msgIntent);
+
+        String msg = location.getProvider();
+        long time = location.getTime();
+        String coords = ""+location.getLatitude()+location.getLongitude();
+
+        final String relationshipID = rel_id;
+
+        //Get a Firebase reference to our relationship
+        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id);
+
+        Map<String, Object> newNotification = new HashMap<String, Object>();
+        newNotification.put(coords, "");
+
+        Map<String, Object> sender = new HashMap<String, Object>();
+        sender.put("sender", senderEmail);
+        Map<String, Object> message = new HashMap<String, Object>();
+        sender.put("message", msg);
+        Map<String, Object> occuranceTime = new HashMap<String, Object>();
+        occuranceTime.put("occuranceTime", time);
+
+        ref.child("notifications").child(coords).updateChildren(sender);
+        ref.child("notifications").child(coords).updateChildren(message);
+        ref.child("notifications").child(coords).updateChildren(occuranceTime);
     }
 
     @Override
@@ -489,5 +498,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+
+
 
 }

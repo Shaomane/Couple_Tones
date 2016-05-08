@@ -4,6 +4,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
 import com.example.noellin.coupletones.MainActivity;
+import com.example.noellin.coupletones.Relationship;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -12,11 +13,11 @@ import com.firebase.client.ValueEventListener;
 /**
  * Created by jeremy on 5/8/16.
  */
-public class Test_3removeRelationship extends ActivityInstrumentationTestCase2<MainActivity> {
+public class Test_9removeRelationship extends ActivityInstrumentationTestCase2<MainActivity> {
 
     MainActivity mainActivity;
 
-    public Test_3removeRelationship(){
+    public Test_9removeRelationship(){
         super(MainActivity.class);
     }
 
@@ -26,8 +27,9 @@ public class Test_3removeRelationship extends ActivityInstrumentationTestCase2<M
         cleanup.setValue(null);
 
         mainActivity = getActivity();
-        String rel_id = "1111111111";
-        mainActivity.rel_id = rel_id;
+        mainActivity.relationship = new Relationship();
+        String rel_id = "11111111";
+        mainActivity.relationship.rel_id = rel_id;
         mainActivity.removeRelationship();
 
         //Check if a relationship was removed from the database
