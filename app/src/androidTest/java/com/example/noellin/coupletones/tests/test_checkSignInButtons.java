@@ -17,11 +17,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class test_checkMainActivityButtons extends ActivityInstrumentationTestCase2<MainActivity> {
+public class test_checkSignInButtons extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private MainActivity mainActivity;
 
-    public test_checkMainActivityButtons() {
+    public test_checkSignInButtons() {
         super(MainActivity.class);
     }
 
