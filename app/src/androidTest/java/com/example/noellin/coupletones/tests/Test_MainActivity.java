@@ -52,6 +52,7 @@ public class Test_MainActivity extends ActivityInstrumentationTestCase2<MainActi
                         return;
                     }
                 }
+                Log.d("sendPartnerRequest","correctly did not find a relationship");
             }
             @Override
             public void onCancelled(FirebaseError fireBaseError){
@@ -96,7 +97,7 @@ public class Test_MainActivity extends ActivityInstrumentationTestCase2<MainActi
             }
         });
     }
-
+/*
     public void test_acceptRequest(){
         final String entered_email = "bar@example.com";
         mainActivity = getActivity();
@@ -123,6 +124,7 @@ public class Test_MainActivity extends ActivityInstrumentationTestCase2<MainActi
                     //Check if current relationship has the user as Partner 1 by comparing the acct email
                     if (rel.child("emailOne").getValue().toString().equals("bar@example.com")
                             || rel.child("emailTwo").getValue().toString().equals("bar@example.com")) {
+                        Log.d("acceptRequest","correctly found relationship in test_acceptRequest");
                         assertTrue("correctly found relationship", true);
                         return;
                     }
@@ -136,6 +138,6 @@ public class Test_MainActivity extends ActivityInstrumentationTestCase2<MainActi
             }
         });
     }
-
+*/
 
 }
