@@ -1,9 +1,5 @@
 package com.example.noellin.coupletones.tests;
 
-/**
- * Created by sinan on 5/6/2016.
- */
-
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
@@ -21,10 +17,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class test_checkAddRemoveButtons extends ActivityInstrumentationTestCase2<MapsActivity>{
+public class test_checkMapRadioButtons extends ActivityInstrumentationTestCase2<MapsActivity>{
     private MapsActivity mapsActivity;
 
-    public test_checkAddRemoveButtons() {
+    public test_checkMapRadioButtons() {
         super(MapsActivity.class);
     }
 
@@ -33,7 +29,7 @@ public class test_checkAddRemoveButtons extends ActivityInstrumentationTestCase2
 
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-        //mapsActivity = getActivity();
+        mapsActivity = getActivity();
     }
 
     @Test
@@ -45,11 +41,14 @@ public class test_checkAddRemoveButtons extends ActivityInstrumentationTestCase2
             e.printStackTrace();
         }
 
-        //Check the map button
-        //onView(withId(R.id.addLocationButton)).check(matches(isDisplayed()));
+        //Check the No Action Button is displayed
+        onView(withId(R.id.noAction)).check(matches(isDisplayed()));
 
-        //Check the Add Partner Button
-        //onView(withId(R.id.removeLocationButton)).check(matches(isDisplayed()));
+        //Check the Add Location Button is displayed
+        onView(withId(R.id.addLocation)).check(matches(isDisplayed()));
+
+        //Check the Remove Location Button is displayed
+        onView(withId(R.id.removeLocation)).check(matches(isDisplayed()));
 
     }
 }
