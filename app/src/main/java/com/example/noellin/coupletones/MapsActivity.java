@@ -438,6 +438,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("success", "near location " + location.getProvider());
             t.show();
             prevLocation = location;
+            sendMessage(location);
             //sendMessage();
         }
     }

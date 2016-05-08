@@ -1,10 +1,17 @@
 package com.example.noellin.coupletones;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+<<<<<<< HEAD
 import android.util.Log;
+=======
+import android.support.v4.app.NotificationCompat;
+>>>>>>> 85f269a6f888e0adbf1be06dbdb7d50132acb1fe
 import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
@@ -87,5 +94,28 @@ public class BackgroundListenerService extends Service {
     {
         //Toast.makeText(BackgroundListenerService.this, "Cooldown period over", Toast.LENGTH_SHORT).show();
         super.onDestroy();
+    }
+
+    private void showNotification(String msg) {
+        NotificationManager mNotificationManager;
+        mNotificationManager = (NotificationManager) this
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Intent notificationIntent = new Intent(this, MapsActivity.class);
+        notificationIntent.setAction(com.example.noellin.coupletones.Constants.NOTIFICATION_ACTION);
+        notificationIntent.putExtra(com.example.noellin.coupletones.Constants.KEY_MESSAGE_TXT, msg);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_stat_collections_cloud)
+                .setContentTitle("GCM Notification")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                .setContentText(msg);
+
+        mBuilder.setContentIntent(contentIntent);
+        mNotificationManager.notify(com.example.noellin.coupletones.Constants.NOTIFICATION_NR, mBuilder.build());
     }
 }
