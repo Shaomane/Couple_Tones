@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             addPartnerButton.setVisibility(View.GONE);
             removePartnerButton.setVisibility(View.VISIBLE);
             removePartnerButton.setClickable(true);
+
         }
 
         //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login

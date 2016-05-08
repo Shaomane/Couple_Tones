@@ -77,6 +77,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int METERS_160 = 160;
 
+    boolean isSpecialMessageSent = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -446,9 +448,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void sendMessage() {
+        if (!isSpecialMessageSent)
+        {
+            isSpecialMessageSent = true;
+            Intent i = new Intent(getApplicationContext(), GcmIntentService.class);
+            i.setAction(Constants.ACTION_ECHO);
+            String msg = "PartnerRegId^^^" + MainActivity.partnersRegId;
+            i.putExtra(Constants.KEY_MESSAGE_TXT, msg);
+            System.err.println("SENDING FIRST MESSAGE");
+            getApplicationContext().startService(i);
+        }
         Intent msgIntent = new Intent(getApplicationContext(), GcmIntentService.class);
         msgIntent.setAction(Constants.ACTION_ECHO);
-        String msg = "please";
+        String msg = "Sending favorite location to partner";
+        System.err.println("SENDING SECOND MESSAGE");
         /*if (!TextUtils.isEmpty(mTxtMsg.getText())) {
             msg = mTxtMsg.getText().toString();
             mTxtMsg.setText("");
@@ -456,7 +469,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         else {
             msg = getActivity().getString(R.string.no_message);
         }*/
-        String msgTxt = "IF THIS MESSAGE POPS UP THEN WE ARE ON THE RIGHT TRACK... HOPEFULLY :/";
+        String msgTxt = "Sending favorite location to partner";
         //Crouton.showText(getApplicationContext(), msgTxt, Style.INFO);
         Crouton.makeText(this, msgTxt, Style.INFO).show();
         msgIntent.putExtra(Constants.KEY_MESSAGE_TXT, msg);

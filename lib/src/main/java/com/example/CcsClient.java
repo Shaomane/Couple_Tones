@@ -78,6 +78,7 @@ public class CcsClient {
     private String mApiKey = "AIzaSyANEMs0Q9f7V6hrKocgR7S5XYhiBFtrFvg";
     private String mProjectId = null;
     private boolean mDebuggable = false;
+    private static String regId = "";
 
     /**
      * XMPP Packet Extension for GCM Cloud Connection Server.
@@ -215,6 +216,7 @@ public class CcsClient {
      * Handles an upstream data message from a device application.
      */
     public void handleIncomingDataMessage(CcsMessage msg) {
+        //System.err.println("handleIncomingDataMessage");
         if (msg.getPayload().get("action") != null) {
             System.out.println(msg.getPayload().get("message"));
             PayloadProcessor processor = ProcessorFactory.getProcessor(msg.getPayload().get("action"));
@@ -228,7 +230,7 @@ public class CcsClient {
      */
     private CcsMessage getMessage(Map<String, Object> jsonObject) {
         String from = jsonObject.get("from").toString();
-
+        //System.err.println("getMessage");
         // PackageName of the application that sent this message.
         String category = jsonObject.get("category").toString();
 
@@ -429,7 +431,7 @@ public class CcsClient {
     private void handleMessage(Map<String, Object> jsonMap) {
         // present for "ack"/"nack", null otherwise
         Object messageType = jsonMap.get("message_type");
-
+        //System.err.println("handleMessage");
         if (messageType == null) {
             CcsMessage msg = getMessage(jsonMap);
             // Normal upstream data message
@@ -489,15 +491,22 @@ public class CcsClient {
 
     }
     }
-   public static Content createContent(CcsMessage msg ) {
+   public static Content createContent(CcsMessage msg) {
         Content c = new Content();
+        String str = msg.getPayload().get("message");
+        if (str.contains("PartnerRegId^^^"))
+        {
+            System.err.println("CONTAINED PARTNERREGID");
+            regId = str.substring(15);
+            System.err.println(regId);
+        }
 
-        //c.addRegId("APA91bGNKqkUQsqv3-Yjh2f84U8Z9v4z6hQ1XUy2g9pDztwGcB28SITCZFBPKgUGVJOvu-oYUyt--fdKiEuxq45vJRZjPYrvYUXQOe9Q0xmBpwofNUTjVNitQW3A1D16rlN0xeoszsZa");
-       // c.addRegId("APA91bGtjDTQ3SAb69VfzW6FaBy6Wq-5KqX9T1qu7LX-DKHu8FNpqzgaoZ8oR4OQ8fRmues4q3rW7FgyrSB19l4RiTiIPyHNHjGXy3VpbbxlmgVZEmrTeO7uKDg0NRNHvPNt9VK9K9Ol");
         System.out.println("herhehrehr");
-        c.addRegId("APA91bGF0WV3igZ3EapEH2DEocYchyAR-sgAosJ6Vrj55-joC1HyUgKPIbo4rEGfjLX6x6Uo-K9vOT58d3CNLvSQ54JbC4dDioTT7Db5ZLgNhDDI15twvfR_O_l7Hm-xWbBQTJ-fXyOYojaP9E3XYxVL3EpWQDX0Jw");
-            String str = msg.getPayload().get("message");
-        c.createData(str, "popop");
+        //System.err.println("createContent");
+        c.addRegId(regId);
+
+        //c.createData(str, "popop");
+       c.createData(str, str);
 
         return c;
     }

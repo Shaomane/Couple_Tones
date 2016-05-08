@@ -31,7 +31,7 @@ public class CoolDownService extends Service {
             {
                 try
                 {
-                    wait(30000);
+                    wait(5000);
                 } catch(InterruptedException e)
                 {
                     e.printStackTrace();
