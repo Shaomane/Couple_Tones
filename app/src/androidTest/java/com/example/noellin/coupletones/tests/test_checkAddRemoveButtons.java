@@ -34,7 +34,7 @@ public class test_checkAddRemoveButtons extends ActivityInstrumentationTestCase2
 
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-        mapsActivity = getActivity();
+        //mapsActivity = getActivity();
     }
 
     @Test
