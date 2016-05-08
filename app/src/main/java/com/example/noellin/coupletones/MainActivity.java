@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private String email = "";
     private String partnerName = "";
     private String partnerEmail = "";
+    private String rel_id = "";
     protected static GoogleSignInAccount acct;
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
@@ -58,8 +60,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
+        //boolean logged_in = true;
         boolean logged_in = false;
         if (extras != null){
             logged_in = extras.getBoolean("logged_in");
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             email = acct.getEmail();
             partnerName = extras.getString("partnerName");
             partnerEmail = extras.getString("partnerEmail");
+            rel_id = extras.getString("rel_id");
 
             //TODO: disable or change Add Partner button when in a relationship
 
@@ -76,8 +81,21 @@ public class MainActivity extends AppCompatActivity {
             Log.d("found extras", "result of partnerName: "+partnerName);
             Log.d("found extras", "result of partnerEmail: "+partnerEmail);
         }
+        Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
+        Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
         if (partnerName == null) {
             checkForRequest();
+            addPartnerButton.setClickable(true);
+            addPartnerButton.setVisibility(View.VISIBLE);
+            removePartnerButton.setClickable(false);
+            removePartnerButton.setVisibility(View.GONE);
+        }
+        else{
+            //We are in a relationship. Do not allow another add
+            addPartnerButton.setClickable(false);
+            addPartnerButton.setVisibility(View.GONE);
+            removePartnerButton.setVisibility(View.VISIBLE);
+            removePartnerButton.setClickable(true);
         }
 
         //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
@@ -92,21 +110,36 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
         list.setAdapter(adapter);
 
-        //Have mercy on me guys, I'll get rid of this later --Andrew
+        getRegId();
+    }
 
-        // loads up the locations from shared preferences and lists them on the main screen
-        // using Map<>.
-        // CURRENTLY DISPLAYING ALL FAVORITE LOCATIONS, rather than visited locations
+    // loads up the locations from shared preferences and lists them on the main screen using Map<>.
+    // CURRENTLY DISPLAYING ALL FAVORITE LOCATIONS, rather than visited locations
+    // attempts to refresh favorite locations page upon returning from maps
+    protected void onResume() {
+        super.onResume();
+        adapter.clear();
+        adapter.notifyDataSetChanged();
+
         SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
+
         Map<String, ?> previousLocations = savedLocations.getAll();
 
         for (Map.Entry<String, ?> entry : previousLocations.entrySet()) {
 
-            listItems.add(entry.getKey());
+            if (!(listItems.contains(entry.getKey()))) {
+                listItems.add(entry.getKey());
+            }
             adapter.notifyDataSetChanged();
 
         }
-        getRegId();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        if (partnerName == null)
+            checkForRequest();
     }
 
     @Override
@@ -261,6 +294,7 @@ public class MainActivity extends AppCompatActivity {
                         root.child(relName).updateChildren(nameTwo);
                         root.child(relName).updateChildren(emailTwo);
                         root.child(relName).updateChildren(regIdTwo);
+                        rel_id = relName;
                     }
                 });
 
@@ -271,6 +305,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         respondToRequestDialogue.show();
+    }
+
+    public void removeRelationship(){
+        Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+        root.child(rel_id).setValue(null);
+
+        Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
+        Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
+
+        addPartnerButton.setClickable(true);
+        addPartnerButton.setVisibility(View.VISIBLE);
+        removePartnerButton.setClickable(false);
+        removePartnerButton.setVisibility(View.GONE);
     }
 
     //Called by clicking the Add Partner button. Creates a dialogue that goes through the partner
@@ -304,6 +351,28 @@ public class MainActivity extends AppCompatActivity {
                 });
         addPartnerDialogue.show();
 
+    }
+
+    public void removePartner(View view){
+        AlertDialog.Builder removePartnerDialogue = new AlertDialog.Builder(MainActivity.this);
+        removePartnerDialogue.setTitle("Remove Partner");
+        removePartnerDialogue.setMessage("Are you sure you want to remove " + partnerName + "?");
+
+        removePartnerDialogue.setPositiveButton("Send",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        removeRelationship();
+                    }
+                });
+
+        removePartnerDialogue.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        removePartnerDialogue.show();
     }
 
     //Called by clicking To Map button. Transitions to the map activity

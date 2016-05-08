@@ -45,6 +45,7 @@ public class SignInActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private static String partnerName = null;
     private static String partnerEmail = null;
+    private static String rel_id;
 
     private TextView mStatusTextView;
 
@@ -142,8 +143,8 @@ public class SignInActivity extends AppCompatActivity implements
 
         } else {
             // Signed out, show unauthenticated UI.
-            updateUI(false);
-            loggedIn = false;
+         //   updateUI(false);
+           // loggedIn = false;
         }
     }
     // [END handleSignInResult]
@@ -154,6 +155,7 @@ public class SignInActivity extends AppCompatActivity implements
         intent.putExtra("logged_in", true);
         intent.putExtra("partnerName", partnerName);
         intent.putExtra("partnerEmail",partnerEmail);
+        intent.putExtra("rel_id", rel_id);
 
         startActivity(intent);
         finish();
@@ -177,6 +179,7 @@ public class SignInActivity extends AppCompatActivity implements
                         if (rel.child("nameTwo").getValue() != null){
                             partnerName = rel.child("nameTwo").getValue().toString();
                             partnerEmail = rel.child("emailTwo").getValue().toString();
+                            rel_id = rel.getKey().toString();
                         }
                         toMain();
                         return;
@@ -186,6 +189,7 @@ public class SignInActivity extends AppCompatActivity implements
                         if (rel.child("nameOne").getValue() != null){
                             partnerName = rel.child("nameOne").getValue().toString();
                             partnerEmail = rel.child("emailOne").getValue().toString();
+                            rel_id = rel.getKey().toString();
                         }
                         toMain();
                         return;

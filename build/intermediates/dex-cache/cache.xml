@@ -2,9 +2,10 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\8.3.0\jars\classes.jar"
+        jar="/Users/jeremy/AndroidStudioProjects/110group-project/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.3"
+<<<<<<< HEAD
         sha1="77f9593d979f4347344be233bd0d888315f79517">
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-maps-8.3.0_8dd3c5c242d9126115bc37c161dc4484cca8585e\classes.dex" />
     </item>
@@ -294,6 +295,10 @@
         revision="23.0.3"
         sha1="0c3e81d3eb86b86d194b5cdb6a4de78203f6f7fd">
         <dex dex="C:\Users\sinan\AndroidStudioProjects\110group-project\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-appindexing-8.3.0_a724a89580ee9b136d149c500b58b0444b7c00f8\classes.dex" />
+=======
+        sha1="b9af0ecfdc87249e8752a78dfb598766e9936749">
+        <dex dex="/Users/jeremy/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_9fa16a2d2289b25a1972d779832ad31a00981d36/classes.dex" />
+>>>>>>> bbf5b0bb97460eeada5d0b641451766678d2d8d6
     </item>
 
 </items>
