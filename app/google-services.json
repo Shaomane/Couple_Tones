@@ -13,6 +13,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "290538927222-gg15jvtggifsamih04f9mscp2vdccdup.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.noellin.coupletones",
+            "certificate_hash": "17F70AC33EE741C52F0C4ED198E3E47FAC744AB5"
+          }
+        },
+        {
           "client_id": "290538927222-j062k31nsqqg5rqk8irbao3nsgd6n9gp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

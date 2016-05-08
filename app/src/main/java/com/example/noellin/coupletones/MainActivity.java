@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public String partnerName = "";
     public String partnerEmail = "";
     public String rel_id = "";
-    public String partnersRegId = "";
+    public static String partnersRegId = "";
     public String myRegId = "";
     //protected static GoogleSignInAccount acct;
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
