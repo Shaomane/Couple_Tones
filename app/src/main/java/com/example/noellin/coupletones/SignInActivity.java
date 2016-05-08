@@ -39,19 +39,20 @@ public class SignInActivity extends AppCompatActivity implements
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
-    private boolean loggedIn = true;
-    private boolean accountFound = false;
-    private String partnersRegId = "";
-    private String myRegId = "";
+    public boolean loggedIn = true;
+    public String partnersRegId = "";
+    public String myRegId = "";
+
+    public FireBaseInteractor FBInteractor = new FireBaseInteractor(this);
 
     protected GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
-    private String name = null;
-    private String email = null;
-    private String ID = null;
-    private String partnerName = null;
-    private String partnerEmail = null;
-    private String rel_id;
+    public String name = null;
+    public String email = null;
+    public String ID = null;
+    public String partnerName = null;
+    public String partnerEmail = null;
+    public String rel_id;
 
     private TextView mStatusTextView;
 
@@ -155,7 +156,7 @@ public class SignInActivity extends AppCompatActivity implements
     }
     // [END handleSignInResult]
 
-    private synchronized void toMain(){
+    public synchronized void toMain(){
         name = acct.getDisplayName();
         email = acct.getEmail();
         ID = acct.getId();
@@ -179,51 +180,7 @@ public class SignInActivity extends AppCompatActivity implements
     //This method checks if the user already has an account with CoupleTones
     //It should be called as the user logs in. The app transitions to MainActivity
     private void checkForAccount(){
-        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
-        //attach a listener to read the data
-        ref.addListenerForSingleValueEvent(new ValueEventListener(){
-            @Override
-            public synchronized void onDataChange(DataSnapshot snapshot){
-
-                //Loop through each of the relationships in the database
-                for (DataSnapshot rel : snapshot.getChildren()){
-                    //Check if current relationship has the user as Partner 1 by comparing the acct email
-                    if (rel.child("emailOne").getValue().toString().equals(acct.getEmail())) {
-                        //rel_number = counter;
-                        //The user has an account. If there is a partner, update partnerName and partnerEmail
-                        if (rel.child("nameTwo").getValue() != null){
-                            partnerName = rel.child("nameTwo").getValue().toString();
-                            partnerEmail = rel.child("emailTwo").getValue().toString();
-                            rel_id = rel.getKey().toString();
-                        }
-                        myRegId = rel.child("regIdOne").getValue().toString();
-                        partnersRegId = rel.child("regIdTwo").getValue().toString();
-                        accountFound = true;
-                        toMain();
-                        return;
-                    }
-                    //Check if current relationship has the user as Partner 2
-                    else if(rel.child("emailTwo").getValue().toString().equals(acct.getEmail())){
-                        if (rel.child("nameOne").getValue() != null){
-                            partnerName = rel.child("nameOne").getValue().toString();
-                            partnerEmail = rel.child("emailOne").getValue().toString();
-                            rel_id = rel.getKey().toString();
-                        }
-                        myRegId = rel.child("regIdTwo").getValue().toString();
-                        partnersRegId = rel.child("regIdOne").getValue().toString();
-                        accountFound = true;
-                        toMain();
-                        return;
-                    }
-                }
-                //No relationship was found including the user
-                toMain();
-            }
-            @Override
-            public void onCancelled(FirebaseError fireBaseError){
-                Log.d("Read failed", "Read failed in addValueListener");
-            }
-        });
+        FBInteractor.checkForAccount(this);
     }
 
     // [START signIn]

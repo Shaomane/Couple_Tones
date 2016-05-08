@@ -37,20 +37,16 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
-    public String name = "";
-    public String email = "";
-    public String ID = "";
-    public String partnerName = "";
-    public String partnerEmail = "";
-    public String rel_id = "";
+
+    public Relationship relationship;
+    public FireBaseInteractor FBInteractor = new FireBaseInteractor(this);
+
     public static String partnersRegId = "";
-    public String myRegId = "";
-    //protected static GoogleSignInAccount acct;
+
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
 
     GoogleCloudMessaging gcm;
-    //String regid;
     String PROJECT_NUMBER = "290538927222";
 
     @Override
@@ -63,13 +59,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        relationship = new Relationship();
 
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
         boolean logged_in = false;
         if (extras != null){
+            relationship.rel_id = extras.getString("rel_id");
+
+            relationship.partnerOneName = extras.getString("name");
+            relationship.partnerOneEmail = extras.getString("email");
+            relationship.partnerOneRegId = extras.getString("myRegId");
+            relationship.partnerOneID = extras.getString("ID");
+
+            relationship.partnerTwoName = extras.getString("partnerName");
+            relationship.partnerTwoEmail = extras.getString("partnerEmail");
+            relationship.partnerTwoRegId = extras.getString("partnersRegId");
+            //FBInteractor = new FireBaseInteractor(relationship);
+            //relationship.partnerTwoID = extras.getString("partnerID");
+/*
             logged_in = extras.getBoolean("logged_in");
-            //acct = SignInActivity.acct;
             partnerName = extras.getString("partnerName");
             partnerEmail = extras.getString("partnerEmail");
             rel_id = extras.getString("rel_id");
@@ -78,18 +87,26 @@ public class MainActivity extends AppCompatActivity {
             name = extras.getString("name");
             email = extras.getString("email");
             ID = extras.getString("ID");
-
+*//*
             Log.d("found extras", "result of name: " + name);
             Log.d("found extras", "result of email: " + email);
             Log.d("found extras", "result of partnerName: "+partnerName);
             Log.d("found extras", "result of partnerEmail: "+partnerEmail);
             Log.d("found extras", "result of myRegId: "+myRegId);
             Log.d("found extras", "result of partnersRegId: "+partnersRegId);
+*/
+        }
+
+        //if not logged in make em log in
+        if (!logged_in) {
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
-        if (partnerName == null) {
+        if (relationship.partnerTwoName == null) {
             checkForRequest();
             addPartnerButton.setClickable(true);
             addPartnerButton.setVisibility(View.VISIBLE);
@@ -102,15 +119,6 @@ public class MainActivity extends AppCompatActivity {
             addPartnerButton.setVisibility(View.GONE);
             removePartnerButton.setVisibility(View.VISIBLE);
             removePartnerButton.setClickable(true);
-
-        }
-
-        //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
-        //if not logged in make em log in
-        if (!logged_in) {
-            Intent intent = new Intent(this, SignInActivity.class);
-            startActivity(intent);
-            finish();
         }
 
         ListView list = (ListView) findViewById(R.id.list);
@@ -145,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        if (partnerName == null)
+        if (relationship.partnerTwoName == null)
             checkForRequest();
     }
 
@@ -163,13 +171,11 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
         else if (id == R.id.action_signout){
             Intent intent = new Intent(this, SignInActivity.class);
-            //intent.putExtra("doNotSignIn", true);
             startActivity(intent);
         }
 
@@ -177,94 +183,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkForRequest(){
-        Log.d("checkForRequest","checking the database for pending request");
-        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/requests");
-        ref.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot req, String s) {
-                if (req.child("receiverEmail").getValue() != null && req.child("receiverEmail").getValue().toString().equals(email)){
-                    //Found a request! We are loved.
-                    String senderName = req.child("senderName").getValue().toString();
-                    String senderEmail = req.child("senderEmail").getValue().toString();
-                    String senderRegId = req.child("senderRegId").getValue().toString();
-                    req.getRef().setValue(null);
-                    respondToRequest(senderName, senderEmail, senderRegId);
-                }
-            }
-
-            //Unused
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Read failed", "Read failed in addChildEventListener");
-            }
-        });
-
+        FBInteractor.checkForRequest(this);
     }
 
     //helper method to send a partner request from the Add Partner dialogue
     public void sendPartnerRequest(final String entered_email){
-        Log.d("sendPartnerRequest","entered email: "+entered_email);
-        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
-
-        final String id = ID;
-        final String myName = name;
-        final String myEmail = email;
-        final String regId = myRegId;
-
-        //attach a listener to read the data
-        ref.addListenerForSingleValueEvent(new ValueEventListener(){
-            @Override
-            public synchronized void onDataChange(DataSnapshot snapshot){
-                long counter = -1;
-                Log.d("sendPartnerRequest","calling onDataChange");
-
-                //Loop through each of the relationships in the database
-                for (DataSnapshot rel : snapshot.getChildren()){
-                    counter++;
-                    //Check if current relationship has the requested partner
-                    if (rel.child("emailOne").getValue().toString().equals(entered_email)
-                            || rel.child("emailTwo").getValue().toString().equals(entered_email)) {
-                        //TODO: error, the requested partner already has a partner
-                        Log.d("sendPartnerRequest","SOMETHING BAD HAPPENED");
-                        return;
-                    }
-                }
-                //no relationship was found including the user. Create a new request in the database
-                Firebase root = snapshot.getRef().getParent().child("requests");
-                Map<String, Object> newEntry = new HashMap<String, Object>();
-                String reqName = id;
-                newEntry.put(reqName, "");
-                root.updateChildren(newEntry);
-
-                //Create Maps to put data in for the database
-                Map<String, Object> senderName = new HashMap<String, Object>();
-                Map<String, Object> senderEmail = new HashMap<String, Object>();
-                Map<String, Object> senderRegId = new HashMap<String, Object>();
-                Map<String, Object> receiverEmail = new HashMap<String, Object>();
-                senderName.put("senderName", myName);
-                senderEmail.put("senderEmail", myEmail);
-                senderRegId.put("senderRegId", regId);
-                Log.d("sendPartnerRequest","sending regid: "+regId);
-                receiverEmail.put("receiverEmail", entered_email);
-
-                //update the request in the database with the new information
-                root.child(reqName).updateChildren(senderName);
-                root.child(reqName).updateChildren(senderEmail);
-                root.child(reqName).updateChildren(senderRegId);
-                root.child(reqName).updateChildren(receiverEmail);
-
-            }
-            @Override
-            public void onCancelled(FirebaseError fireBaseError){
-                Log.d("Read failed", "Read failed in addValueListener");
-            }
-        });
+        FBInteractor.sendPartnerRequest(entered_email, this);
     }
 
     public void respondToRequest(String senderName, String senderEmail, String senderRegId){
@@ -294,45 +218,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void acceptRequest(String senderName, String senderEmail, String senderRegId){
-        Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
-
-        //no relationship was found including the user. Create a new request in the database
-        Map<String, Object> newEntry = new HashMap<String, Object>();
-        String relName = ID;
-        newEntry.put(relName, "");
-        root.updateChildren(newEntry);
-
-        //Create Maps to put data in for the database
-        Map<String, Object> nameOne = new HashMap<String, Object>();
-        Map<String, Object> emailOne = new HashMap<String, Object>();
-        Map<String, Object> regIdOne = new HashMap<String, Object>();
-        Map<String, Object> nameTwo = new HashMap<String, Object>();
-        Map<String, Object> emailTwo = new HashMap<String, Object>();
-        Map<String, Object> regIdTwo = new HashMap<String, Object>();
-        nameOne.put("nameOne", name);
-        emailOne.put("emailOne", email);
-        regIdOne.put("regIdOne", myRegId);
-        nameTwo.put("nameTwo", senderName);
-        emailTwo.put("emailTwo", senderEmail);
-        regIdTwo.put("regIdTwo", senderRegId);
-
-        partnerName = senderName;
-        partnerEmail = senderEmail;
-        partnersRegId = senderRegId;
-
-        //update the request in the database with the new information
-        root.child(relName).updateChildren(nameOne);
-        root.child(relName).updateChildren(emailOne);
-        root.child(relName).updateChildren(regIdOne);
-        root.child(relName).updateChildren(nameTwo);
-        root.child(relName).updateChildren(emailTwo);
-        root.child(relName).updateChildren(regIdTwo);
-        rel_id = relName;
+        FBInteractor.acceptRequest(senderName, senderEmail, senderRegId, this);
     }
 
     public void removeRelationship(){
-        Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
-        root.child(rel_id).setValue(null);
+        FBInteractor.removeRelationship(this);
 
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
@@ -379,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
     public void removePartner(View view){
         AlertDialog.Builder removePartnerDialogue = new AlertDialog.Builder(MainActivity.this);
         removePartnerDialogue.setTitle("Remove Partner");
-        removePartnerDialogue.setMessage("Are you sure you want to remove " + partnerName + "?");
+        removePartnerDialogue.setMessage("Are you sure you want to remove " + relationship.partnerTwoName + "?");
 
         removePartnerDialogue.setPositiveButton("Send",
                 new DialogInterface.OnClickListener() {
@@ -418,9 +308,9 @@ public class MainActivity extends AppCompatActivity {
                         gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                     }
 
-                    myRegId = gcm.register(PROJECT_NUMBER);
-                    msg = "Device registered, registration ID=" + myRegId;
-                    Log.i("GCM", "!!!!! " + myRegId);
+                    relationship.partnerOneRegId = gcm.register(PROJECT_NUMBER);
+                    msg = "Device registered, registration ID=" + relationship.partnerOneRegId;
+                    Log.i("GCM", "!!!!! " + relationship.partnerOneRegId);
 
                 } catch(IOException ex) {
                     msg = "Error: " + ex.getMessage();
