@@ -34,5 +34,6 @@
     <orderEntry type="library" exported="" name="jackson-core-2.6.0" level="project" />
     <orderEntry type="library" exported="" name="json-simple-1.1.1" level="project" />
     <orderEntry type="library" exported="" name="smack-src" level="project" />
+    <orderEntry type="library" exported="" name="lib.lib" level="project" />
   </component>
 </module>

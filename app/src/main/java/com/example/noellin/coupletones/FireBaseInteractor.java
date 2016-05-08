@@ -168,6 +168,7 @@ public class FireBaseInteractor {
     //It should be called as the user logs in. The app transitions to MainActivity
     public void checkForAccount(final SignInActivity callingActivity){
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+        Log.d("checkForAccount","checkForAccount called");
         //attach a listener to read the data
         ref.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
@@ -186,7 +187,6 @@ public class FireBaseInteractor {
                         }
                         callingActivity.myRegId = rel.child("regIdOne").getValue().toString();
                         callingActivity.partnersRegId = rel.child("regIdTwo").getValue().toString();
-                        //callingActivity.accountFound = true;
                         callingActivity.toMain();
                         return;
                     }
@@ -199,7 +199,6 @@ public class FireBaseInteractor {
                         }
                         callingActivity.myRegId = rel.child("regIdTwo").getValue().toString();
                         callingActivity.partnersRegId = rel.child("regIdOne").getValue().toString();
-                        //callingActivity.accountFound = true;
                         callingActivity.toMain();
                         return;
                     }

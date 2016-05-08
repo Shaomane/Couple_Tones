@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
             relationship.partnerTwoName = extras.getString("partnerName");
             relationship.partnerTwoEmail = extras.getString("partnerEmail");
             relationship.partnerTwoRegId = extras.getString("partnersRegId");
+
+            logged_in = extras.getBoolean("logged_in");
             //FBInteractor = new FireBaseInteractor(relationship);
             //relationship.partnerTwoID = extras.getString("partnerID");
 /*

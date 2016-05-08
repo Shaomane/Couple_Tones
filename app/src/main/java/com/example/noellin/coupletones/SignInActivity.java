@@ -157,6 +157,7 @@ public class SignInActivity extends AppCompatActivity implements
     // [END handleSignInResult]
 
     public synchronized void toMain(){
+        Log.d("toMain","toMain called");
         name = acct.getDisplayName();
         email = acct.getEmail();
         ID = acct.getId();
@@ -174,13 +175,16 @@ public class SignInActivity extends AppCompatActivity implements
         intent.putExtra("ID",ID);
 
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     //This method checks if the user already has an account with CoupleTones
     //It should be called as the user logs in. The app transitions to MainActivity
     private void checkForAccount(){
+
+        Log.d("checkForAccount", "checkForAccount called in SignInActivity");
         FBInteractor.checkForAccount(this);
+
     }
 
     // [START signIn]
