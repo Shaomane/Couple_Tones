@@ -21,7 +21,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
-<<<<<<< HEAD
+//<<<<<<< HEAD
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -35,10 +35,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-=======
+//=======
 import android.util.Log;
 import android.widget.RadioGroup;
->>>>>>> af92d14e35792164d3ea4db8de23b7f35300e5d6
+//>>>>>>> af92d14e35792164d3ea4db8de23b7f35300e5d6
 import android.widget.Toast;
 import android.widget.EditText;
 

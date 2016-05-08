@@ -40,6 +40,9 @@ public class SignInActivity extends AppCompatActivity implements
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
     private static boolean loggedIn = true;
+    private static boolean accountFound = false;
+    private static String partnersRegId = "";
+    private static String myRegId = "";
 
     protected static GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
@@ -156,6 +159,8 @@ public class SignInActivity extends AppCompatActivity implements
         intent.putExtra("partnerName", partnerName);
         intent.putExtra("partnerEmail",partnerEmail);
         intent.putExtra("rel_id", rel_id);
+        intent.putExtra("myRegId", myRegId);
+        intent.putExtra("partnersRegId", partnersRegId);
 
         startActivity(intent);
         finish();
@@ -181,6 +186,9 @@ public class SignInActivity extends AppCompatActivity implements
                             partnerEmail = rel.child("emailTwo").getValue().toString();
                             rel_id = rel.getKey().toString();
                         }
+                        myRegId = rel.child("regIdOne").getValue().toString();
+                        partnersRegId = rel.child("regIdTwo").getValue().toString();
+                        accountFound = true;
                         toMain();
                         return;
                     }
@@ -191,6 +199,9 @@ public class SignInActivity extends AppCompatActivity implements
                             partnerEmail = rel.child("emailOne").getValue().toString();
                             rel_id = rel.getKey().toString();
                         }
+                        myRegId = rel.child("regIdTwo").getValue().toString();
+                        partnersRegId = rel.child("regIdOne").getValue().toString();
+                        accountFound = true;
                         toMain();
                         return;
                     }

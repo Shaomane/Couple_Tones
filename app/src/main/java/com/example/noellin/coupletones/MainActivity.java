@@ -42,12 +42,14 @@ public class MainActivity extends AppCompatActivity {
     private String partnerName = "";
     private String partnerEmail = "";
     private String rel_id = "";
+    public static String partnersRegId = "";
+    public static String myRegId = "";
     protected static GoogleSignInAccount acct;
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
 
     GoogleCloudMessaging gcm;
-    String regid;
+    //String regid;
     String PROJECT_NUMBER = "290538927222";
 
     @Override
@@ -72,11 +74,15 @@ public class MainActivity extends AppCompatActivity {
             partnerName = extras.getString("partnerName");
             partnerEmail = extras.getString("partnerEmail");
             rel_id = extras.getString("rel_id");
+            myRegId = extras.getString("myRegId");
+            partnersRegId = extras.getString("partnersRegId");
 
             Log.d("found extras", "result of name: " + name);
             Log.d("found extras", "result of email: " + email);
             Log.d("found extras", "result of partnerName: "+partnerName);
             Log.d("found extras", "result of partnerEmail: "+partnerEmail);
+            Log.d("found extras", "result of myRegId: "+myRegId);
+            Log.d("found extras", "result of partnersRegId: "+partnersRegId);
         }
 
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
@@ -232,8 +238,8 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, Object> receiverEmail = new HashMap<String, Object>();
                 senderName.put("senderName", acct.getDisplayName());
                 senderEmail.put("senderEmail", acct.getEmail());
-                senderRegId.put("senderRegId", regid);
-                Log.d("sendPartnerRequest","sending regid: "+regid);
+                senderRegId.put("senderRegId", myRegId);
+                Log.d("sendPartnerRequest","sending regid: "+myRegId);
                 receiverEmail.put("receiverEmail", entered_email);
 
                 //update the request in the database with the new information
@@ -280,10 +286,12 @@ public class MainActivity extends AppCompatActivity {
                         Map<String, Object> regIdTwo = new HashMap<String, Object>();
                         nameOne.put("nameOne", name);
                         emailOne.put("emailOne", email);
-                        regIdOne.put("regIdOne", regid);
+                        regIdOne.put("regIdOne", myRegId);
                         nameTwo.put("nameTwo", secondName);
                         emailTwo.put("emailTwo", secondEmail);
                         regIdTwo.put("regIdTwo", secondRegId);
+
+                        partnersRegId = secondRegId;
 
                         //update the request in the database with the new information
                         root.child(relName).updateChildren(nameOne);
@@ -393,9 +401,9 @@ public class MainActivity extends AppCompatActivity {
                         gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                     }
 
-                    regid = gcm.register(PROJECT_NUMBER);
-                    msg = "Device registered, registration ID=" + regid;
-                    Log.i("GCM", "!!!!! " + regid);
+                    myRegId = gcm.register(PROJECT_NUMBER);
+                    msg = "Device registered, registration ID=" + myRegId;
+                    Log.i("GCM", "!!!!! " + myRegId);
 
                 } catch(IOException ex) {
                     msg = "Error: " + ex.getMessage();
