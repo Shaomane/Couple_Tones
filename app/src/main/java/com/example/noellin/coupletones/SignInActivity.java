@@ -143,8 +143,8 @@ public class SignInActivity extends AppCompatActivity implements
 
         } else {
             // Signed out, show unauthenticated UI.
-            updateUI(false);
-            loggedIn = false;
+         //   updateUI(false);
+           // loggedIn = false;
         }
     }
     // [END handleSignInResult]

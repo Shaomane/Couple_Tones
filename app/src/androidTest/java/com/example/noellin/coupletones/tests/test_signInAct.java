@@ -1,16 +1,12 @@
 package com.example.noellin.coupletones.tests;
 
-/**
- * Created by sinan on 5/6/2016.
- */
-
-import android.support.test.runner.AndroidJUnit4;
-
 import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.example.noellin.coupletones.MapsActivity;
+import com.example.noellin.coupletones.MainActivity;
 import com.example.noellin.coupletones.R;
+import com.example.noellin.coupletones.SignInActivity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,12 +17,15 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
-@RunWith(AndroidJUnit4.class)
-public class test_checkAddRemoveButtons extends ActivityInstrumentationTestCase2<MapsActivity>{
-    private MapsActivity mapsActivity;
+/**
+ * Created by sinan on 5/7/2016.
+ */
+public class test_signInAct extends ActivityInstrumentationTestCase2{
 
-    public test_checkAddRemoveButtons() {
-        super(MapsActivity.class);
+    private SignInActivity s;
+
+    public test_signInAct() {
+        super(SignInActivity.class);
     }
 
     @Before
@@ -34,23 +33,27 @@ public class test_checkAddRemoveButtons extends ActivityInstrumentationTestCase2
 
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-        //mapsActivity = getActivity();
+        s = (SignInActivity) getActivity();
     }
 
     @Test
-    public void test_checkMapsButtons() {
-
+    public void test_signInButtons() {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        boolean shown;
+
+       // if (onView(withId(R.id.sign_out_button)).isShown() == true) {
+
+        //}
+
         //Check the map button
-        //onView(withId(R.id.addLocationButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.sign_out_button)).check(matches(isDisplayed()));
 
         //Check the Add Partner Button
-        //onView(withId(R.id.removeLocationButton)).check(matches(isDisplayed()));
-
+        onView(withId(R.id.sign_in_button)).check(matches(isDisplayed()));
     }
 }
