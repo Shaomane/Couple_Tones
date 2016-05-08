@@ -4,9 +4,8 @@ package com.example.noellin.coupletones.tests;
  * Created by sinan on 5/6/2016.
  */
 
-import android.support.test.runner.AndroidJUnit4;
-
 import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.example.noellin.coupletones.MapsActivity;
