@@ -36,17 +36,22 @@ public class test_checkMainActivityButtons extends ActivityInstrumentationTestCa
     @Test
     public void test_checkMainButtons() {
 
+        mainActivity = getActivity();
+
         try {
-            Thread.sleep(2000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //Button continueBtn = (Button) mainActivity.findViewById(R.id.continue_button);
+        //continueBtn.performClick();
+
         //Check the map button
-        onView(withId(R.id.mapButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.sign_out_button)).check(matches(isDisplayed()));
 
         //Check the Add Partner Button
-        onView(withId(R.id.addPartnerButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.continue_button)).check(matches(isDisplayed()));
 
     }
 
