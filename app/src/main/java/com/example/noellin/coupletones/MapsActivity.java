@@ -81,6 +81,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private String rel_id = null;
     private String senderEmail;
+    private String senderName;
 
     boolean isSpecialMessageSent = false;
 
@@ -93,6 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (extras != null){
             rel_id = extras.getString("rel_id");
             senderEmail = extras.getString("senderEmail");
+            senderName = extras.getString("senderName");
         }
 
         setContentView(R.layout.activity_maps);

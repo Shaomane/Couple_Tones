@@ -290,6 +290,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("rel_id", relationship.rel_id);
         intent.putExtra("senderEmail", relationship.partnerOneEmail);
+        intent.putExtra("senderName", relationship.partnerOneName);
 
         startActivity(intent);
     }
