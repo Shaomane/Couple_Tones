@@ -69,7 +69,7 @@ public class BackgroundListenerService extends Service {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_collections_cloud)
-                .setContentTitle("GCM Notification")
+                .setContentTitle("CoupleTones Notification")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setContentText(msg);
 
