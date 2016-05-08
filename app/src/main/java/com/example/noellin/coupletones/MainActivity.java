@@ -77,26 +77,13 @@ public class MainActivity extends AppCompatActivity {
             relationship.partnerTwoRegId = extras.getString("partnersRegId");
 
             logged_in = extras.getBoolean("logged_in");
-            //FBInteractor = new FireBaseInteractor(relationship);
-            //relationship.partnerTwoID = extras.getString("partnerID");
-/*
-            logged_in = extras.getBoolean("logged_in");
-            partnerName = extras.getString("partnerName");
-            partnerEmail = extras.getString("partnerEmail");
-            rel_id = extras.getString("rel_id");
-            myRegId = extras.getString("myRegId");
-            partnersRegId = extras.getString("partnersRegId");
-            name = extras.getString("name");
-            email = extras.getString("email");
-            ID = extras.getString("ID");
-*//*
-            Log.d("found extras", "result of name: " + name);
-            Log.d("found extras", "result of email: " + email);
-            Log.d("found extras", "result of partnerName: "+partnerName);
-            Log.d("found extras", "result of partnerEmail: "+partnerEmail);
-            Log.d("found extras", "result of myRegId: "+myRegId);
-            Log.d("found extras", "result of partnersRegId: "+partnersRegId);
-*/
+
+            Log.d("found extras", "result of name: " + relationship.partnerOneName);
+            Log.d("found extras", "result of email: " + relationship.partnerOneEmail);
+            Log.d("found extras", "result of partnerName: "+relationship.partnerTwoName);
+            Log.d("found extras", "result of partnerEmail: "+relationship.partnerTwoEmail);
+            Log.d("found extras", "result of myRegId: "+relationship.partnerOneRegId);
+            Log.d("found extras", "result of partnersRegId: "+relationship.partnerTwoRegId);
         }
 
         //if not logged in make em log in
