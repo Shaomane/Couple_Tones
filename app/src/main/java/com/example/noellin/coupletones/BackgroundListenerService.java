@@ -7,11 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
-<<<<<<< HEAD
+
 import android.util.Log;
-=======
+
 import android.support.v4.app.NotificationCompat;
->>>>>>> 85f269a6f888e0adbf1be06dbdb7d50132acb1fe
+
 import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
@@ -54,6 +54,9 @@ public class BackgroundListenerService extends Service {
                     public void onChildAdded(DataSnapshot notification, String s) {
                         if (notification.child("sender").getValue().equals(partner_email)){
                             //notification came from partner
+                            String msg = notification.child("message").getValue().toString();
+                            showNotification(msg);
+                            notification.getRef().setValue(null);
 
                         }
                     }
