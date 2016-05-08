@@ -37,6 +37,10 @@ dependencies {
 
     compile 'com.android.support:multidex:1.0.0'
 
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.4@aar') {
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
+
     androidTestCompile 'com.android.support.test:rules:0.3'
     androidTestCompile 'com.android.support.test:runner:0.3'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2'

@@ -1,7 +1,11 @@
 package com.example.noellin.coupletones;
 
+import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+//import android.app.Notification;
+import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,8 +30,10 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 import android.widget.EditText;
@@ -46,7 +52,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+    private TextView mTxtAccountName;
+    private static final int RC_SELECT_ACCOUNT = 200;
+
 
     private GoogleMap mMap;
     ArrayList<Location> favoriteLocations;
@@ -406,6 +419,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("success", "near location " + location.getProvider());
             t.show();
             prevLocation = location;
+            sendMessage();
         }
     }
 
@@ -418,4 +432,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return false;
     }
+
+    private void sendMessage() {
+        Intent msgIntent = new Intent(getApplicationContext(), GcmIntentService.class);
+        msgIntent.setAction(Constants.ACTION_ECHO);
+        String msg = "please";
+        /*if (!TextUtils.isEmpty(mTxtMsg.getText())) {
+            msg = mTxtMsg.getText().toString();
+            mTxtMsg.setText("");
+        }
+        else {
+            msg = getActivity().getString(R.string.no_message);
+        }*/
+        String msgTxt = "IF THIS MESSAGE POPS UP THEN WE ARE ON THE RIGHT TRACK... HOPEFULLY :/";
+        //Crouton.showText(getApplicationContext(), msgTxt, Style.INFO);
+        Crouton.makeText(this, msgTxt, Style.INFO).show();
+        msgIntent.putExtra(Constants.KEY_MESSAGE_TXT, msg);
+        getApplicationContext().startService(msgIntent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SELECT_ACCOUNT) {
+            if (resultCode == Activity.RESULT_OK) {
+                String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                mTxtAccountName.setText(accountName);
+            }
+            else {
+                Log.v("grokkingandroid", "couldn't select account: " + resultCode);
+            }
+        }
+    }
+
 }
