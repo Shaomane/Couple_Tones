@@ -211,11 +211,18 @@ public class MainActivity extends AppCompatActivity {
     public void sendPartnerRequest(final String entered_email){
         Log.d("sendPartnerRequest","entered email: "+entered_email);
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+
+        final String id = ID;
+        final String myName = name;
+        final String myEmail = email;
+        final String regId = myRegId;
+
         //attach a listener to read the data
         ref.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public synchronized void onDataChange(DataSnapshot snapshot){
                 long counter = -1;
+                Log.d("sendPartnerRequest","calling onDataChange");
 
                 //Loop through each of the relationships in the database
                 for (DataSnapshot rel : snapshot.getChildren()){
@@ -224,13 +231,14 @@ public class MainActivity extends AppCompatActivity {
                     if (rel.child("emailOne").getValue().toString().equals(entered_email)
                             || rel.child("emailTwo").getValue().toString().equals(entered_email)) {
                         //TODO: error, the requested partner already has a partner
+                        Log.d("sendPartnerRequest","SOMETHING BAD HAPPENED");
                         return;
                     }
                 }
                 //no relationship was found including the user. Create a new request in the database
                 Firebase root = snapshot.getRef().getParent().child("requests");
                 Map<String, Object> newEntry = new HashMap<String, Object>();
-                String reqName = ID;
+                String reqName = id;
                 newEntry.put(reqName, "");
                 root.updateChildren(newEntry);
 
@@ -239,10 +247,10 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, Object> senderEmail = new HashMap<String, Object>();
                 Map<String, Object> senderRegId = new HashMap<String, Object>();
                 Map<String, Object> receiverEmail = new HashMap<String, Object>();
-                senderName.put("senderName", name);
-                senderEmail.put("senderEmail", email);
-                senderRegId.put("senderRegId", myRegId);
-                Log.d("sendPartnerRequest","sending regid: "+myRegId);
+                senderName.put("senderName", myName);
+                senderEmail.put("senderEmail", myEmail);
+                senderRegId.put("senderRegId", regId);
+                Log.d("sendPartnerRequest","sending regid: "+regId);
                 receiverEmail.put("receiverEmail", entered_email);
 
                 //update the request in the database with the new information
