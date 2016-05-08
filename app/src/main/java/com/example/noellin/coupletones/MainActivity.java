@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
-        //boolean logged_in = true;
         boolean logged_in = false;
         if (extras != null){
             logged_in = extras.getBoolean("logged_in");
@@ -74,13 +73,12 @@ public class MainActivity extends AppCompatActivity {
             partnerEmail = extras.getString("partnerEmail");
             rel_id = extras.getString("rel_id");
 
-            //TODO: disable or change Add Partner button when in a relationship
-
             Log.d("found extras", "result of name: " + name);
             Log.d("found extras", "result of email: " + email);
             Log.d("found extras", "result of partnerName: "+partnerName);
             Log.d("found extras", "result of partnerEmail: "+partnerEmail);
         }
+
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
         if (partnerName == null) {
