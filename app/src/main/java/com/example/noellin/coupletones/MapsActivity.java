@@ -462,8 +462,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         String msg = location.getProvider();
-        long time = location.getTime();
-        String coords = ""+location.getLatitude()+location.getLongitude();
+        //long time = location.getTime();
+        String coords = ""+(int)(location.getLatitude()+location.getLongitude());
 
         final String relationshipID = rel_id;
 
@@ -477,12 +477,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         sender.put("sender", senderEmail);
         Map<String, Object> message = new HashMap<String, Object>();
         sender.put("message", msg);
-        Map<String, Object> occuranceTime = new HashMap<String, Object>();
-        occuranceTime.put("occuranceTime", time);
+        //Map<String, Object> occuranceTime = new HashMap<String, Object>();
+        //occuranceTime.put("occuranceTime", time);
 
         ref.child("notifications").child(coords).updateChildren(sender);
         ref.child("notifications").child(coords).updateChildren(message);
-        ref.child("notifications").child(coords).updateChildren(occuranceTime);
+        //ref.child("notifications").child(coords).updateChildren(occuranceTime);
     }
 
     @Override
