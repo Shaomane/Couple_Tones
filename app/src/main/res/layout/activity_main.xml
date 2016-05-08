@@ -67,6 +67,14 @@
                     android:text="@string/addPartnerButton"
                     android:onClick="addPartner"/>
 
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:id="@+id/removePartnerButton"
+                    android:text="Remove Partner"
+                    android:onClick="removePartner" />
+
             </LinearLayout>
 
         </LinearLayout>

@@ -39,12 +39,19 @@ public class SignInActivity extends AppCompatActivity implements
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
-    private static boolean loggedIn = true;
+    private boolean loggedIn = true;
+    private boolean accountFound = false;
+    private String partnersRegId = "";
+    private String myRegId = "";
 
-    protected static GoogleSignInAccount acct = null;
+    protected GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
-    private static String partnerName = null;
-    private static String partnerEmail = null;
+    private String name = null;
+    private String email = null;
+    private String ID = null;
+    private String partnerName = null;
+    private String partnerEmail = null;
+    private String rel_id;
 
     private TextView mStatusTextView;
 
@@ -142,21 +149,31 @@ public class SignInActivity extends AppCompatActivity implements
 
         } else {
             // Signed out, show unauthenticated UI.
-            updateUI(false);
-            loggedIn = false;
+         //   updateUI(false);
+           // loggedIn = false;
         }
     }
     // [END handleSignInResult]
 
     private synchronized void toMain(){
+        name = acct.getDisplayName();
+        email = acct.getEmail();
+        ID = acct.getId();
+
         //transition back to MainActivity and indicate logged in
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("logged_in", true);
         intent.putExtra("partnerName", partnerName);
         intent.putExtra("partnerEmail",partnerEmail);
+        intent.putExtra("rel_id", rel_id);
+        intent.putExtra("myRegId", myRegId);
+        intent.putExtra("partnersRegId", partnersRegId);
+        intent.putExtra("name",name);
+        intent.putExtra("email",email);
+        intent.putExtra("ID",ID);
 
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     //This method checks if the user already has an account with CoupleTones
@@ -177,7 +194,11 @@ public class SignInActivity extends AppCompatActivity implements
                         if (rel.child("nameTwo").getValue() != null){
                             partnerName = rel.child("nameTwo").getValue().toString();
                             partnerEmail = rel.child("emailTwo").getValue().toString();
+                            rel_id = rel.getKey().toString();
                         }
+                        myRegId = rel.child("regIdOne").getValue().toString();
+                        partnersRegId = rel.child("regIdTwo").getValue().toString();
+                        accountFound = true;
                         toMain();
                         return;
                     }
@@ -186,11 +207,16 @@ public class SignInActivity extends AppCompatActivity implements
                         if (rel.child("nameOne").getValue() != null){
                             partnerName = rel.child("nameOne").getValue().toString();
                             partnerEmail = rel.child("emailOne").getValue().toString();
+                            rel_id = rel.getKey().toString();
                         }
+                        myRegId = rel.child("regIdTwo").getValue().toString();
+                        partnersRegId = rel.child("regIdOne").getValue().toString();
+                        accountFound = true;
                         toMain();
                         return;
                     }
                 }
+                //No relationship was found including the user
                 toMain();
             }
             @Override

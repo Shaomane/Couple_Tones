@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     tools:context="com.example.noellin.coupletones.MapsActivity" >
 
-    <Button
+ <!--   <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|top"
+        android:layout_gravity="left|top"
         android:id="@+id/addLocationButton"
-        android:text="Adding Location!"
+        android:text="Not Adding Location."
         android:padding="10dp"
         android:layout_marginTop="20dp"
         android:paddingRight="10dp"
@@ -23,11 +23,41 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|top"
         android:id="@+id/removeLocationButton"
-        android:text="Toggle Remove Location"
+        android:text="Not Removing Location."
         android:padding="10dp"
         android:layout_marginTop="20dp"
         android:paddingRight="10dp"
         android:onClick="removeLocation"
-        />
+        />  -->
+
+    <RadioGroup
+        android:id="@+id/radioLocationAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:paddingTop="15dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/noAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Action"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/addLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Location" />
+
+        <RadioButton
+            android:id="@+id/removeLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Location" />
+
+
+    </RadioGroup>
 
 </fragment>

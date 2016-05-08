@@ -37,16 +37,20 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
-    private String name = "";
-    private String email = "";
-    private String partnerName = "";
-    private String partnerEmail = "";
-    protected static GoogleSignInAccount acct;
+    public String name = "";
+    public String email = "";
+    public String ID = "";
+    public String partnerName = "";
+    public String partnerEmail = "";
+    public String rel_id = "";
+    public String partnersRegId = "";
+    public String myRegId = "";
+    //protected static GoogleSignInAccount acct;
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
 
     GoogleCloudMessaging gcm;
-    String regid;
+    //String regid;
     String PROJECT_NUMBER = "290538927222";
 
     @Override
@@ -59,32 +63,46 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
         boolean logged_in = false;
         if (extras != null){
             logged_in = extras.getBoolean("logged_in");
-            acct = SignInActivity.acct;
-            name = acct.getDisplayName();
-            email = acct.getEmail();
+            //acct = SignInActivity.acct;
             partnerName = extras.getString("partnerName");
             partnerEmail = extras.getString("partnerEmail");
-
-            //TODO: disable or change Add Partner button when in a relationship
+            rel_id = extras.getString("rel_id");
+            myRegId = extras.getString("myRegId");
+            partnersRegId = extras.getString("partnersRegId");
+            name = extras.getString("name");
+            email = extras.getString("email");
+            ID = extras.getString("ID");
 
             Log.d("found extras", "result of name: " + name);
             Log.d("found extras", "result of email: " + email);
             Log.d("found extras", "result of partnerName: "+partnerName);
             Log.d("found extras", "result of partnerEmail: "+partnerEmail);
+            Log.d("found extras", "result of myRegId: "+myRegId);
+            Log.d("found extras", "result of partnersRegId: "+partnersRegId);
         }
+
+        Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
+        Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
         if (partnerName == null) {
             checkForRequest();
+            addPartnerButton.setClickable(true);
+            addPartnerButton.setVisibility(View.VISIBLE);
+            removePartnerButton.setClickable(false);
+            removePartnerButton.setVisibility(View.GONE);
         }
         else{
             //We are in a relationship. Do not allow another add
-            Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
             addPartnerButton.setClickable(false);
-            addPartnerButton.setAlpha(0.5f);
+            addPartnerButton.setVisibility(View.GONE);
+            removePartnerButton.setVisibility(View.VISIBLE);
+            removePartnerButton.setClickable(true);
+
         }
 
         //logged_in = true;//TODO: remove this. It's only so that everyone else can use the app without it keeping them at the login
@@ -99,21 +117,29 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
         list.setAdapter(adapter);
 
-        //Have mercy on me guys, I'll get rid of this later --Andrew
+        getRegId();
+    }
 
-        // loads up the locations from shared preferences and lists them on the main screen
-        // using Map<>.
-        // CURRENTLY DISPLAYING ALL FAVORITE LOCATIONS, rather than visited locations
+    // loads up the locations from shared preferences and lists them on the main screen using Map<>.
+    // CURRENTLY DISPLAYING ALL FAVORITE LOCATIONS, rather than visited locations
+    // attempts to refresh favorite locations page upon returning from maps
+    protected void onResume() {
+        super.onResume();
+        adapter.clear();
+        adapter.notifyDataSetChanged();
+
         SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
+
         Map<String, ?> previousLocations = savedLocations.getAll();
 
         for (Map.Entry<String, ?> entry : previousLocations.entrySet()) {
 
-            listItems.add(entry.getKey());
+            if (!(listItems.contains(entry.getKey()))) {
+                listItems.add(entry.getKey());
+            }
             adapter.notifyDataSetChanged();
 
         }
-        getRegId();
     }
 
     @Override
@@ -204,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                 //no relationship was found including the user. Create a new request in the database
                 Firebase root = snapshot.getRef().getParent().child("requests");
                 Map<String, Object> newEntry = new HashMap<String, Object>();
-                String reqName = acct.getId();
+                String reqName = ID;
                 newEntry.put(reqName, "");
                 root.updateChildren(newEntry);
 
@@ -213,10 +239,10 @@ public class MainActivity extends AppCompatActivity {
                 Map<String, Object> senderEmail = new HashMap<String, Object>();
                 Map<String, Object> senderRegId = new HashMap<String, Object>();
                 Map<String, Object> receiverEmail = new HashMap<String, Object>();
-                senderName.put("senderName", acct.getDisplayName());
-                senderEmail.put("senderEmail", acct.getEmail());
-                senderRegId.put("senderRegId", regid);
-                Log.d("sendPartnerRequest","sending regid: "+regid);
+                senderName.put("senderName", name);
+                senderEmail.put("senderEmail", email);
+                senderRegId.put("senderRegId", myRegId);
+                Log.d("sendPartnerRequest","sending regid: "+myRegId);
                 receiverEmail.put("receiverEmail", entered_email);
 
                 //update the request in the database with the new information
@@ -245,36 +271,8 @@ public class MainActivity extends AppCompatActivity {
         respondToRequestDialogue.setPositiveButton("Accept",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        acceptRequest(secondName, secondEmail, secondRegId);
                         dialog.cancel();
-                        Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
-
-                        //no relationship was found including the user. Create a new request in the database
-                        Map<String, Object> newEntry = new HashMap<String, Object>();
-                        String relName = acct.getId();
-                        newEntry.put(relName, "");
-                        root.updateChildren(newEntry);
-
-                        //Create Maps to put data in for the database
-                        Map<String, Object> nameOne = new HashMap<String, Object>();
-                        Map<String, Object> emailOne = new HashMap<String, Object>();
-                        Map<String, Object> regIdOne = new HashMap<String, Object>();
-                        Map<String, Object> nameTwo = new HashMap<String, Object>();
-                        Map<String, Object> emailTwo = new HashMap<String, Object>();
-                        Map<String, Object> regIdTwo = new HashMap<String, Object>();
-                        nameOne.put("nameOne", name);
-                        emailOne.put("emailOne", email);
-                        regIdOne.put("regIdOne", regid);
-                        nameTwo.put("nameTwo", secondName);
-                        emailTwo.put("emailTwo", secondEmail);
-                        regIdTwo.put("regIdTwo", secondRegId);
-
-                        //update the request in the database with the new information
-                        root.child(relName).updateChildren(nameOne);
-                        root.child(relName).updateChildren(emailOne);
-                        root.child(relName).updateChildren(regIdOne);
-                        root.child(relName).updateChildren(nameTwo);
-                        root.child(relName).updateChildren(emailTwo);
-                        root.child(relName).updateChildren(regIdTwo);
                     }
                 });
 
@@ -285,6 +283,56 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         respondToRequestDialogue.show();
+    }
+
+    public void acceptRequest(String senderName, String senderEmail, String senderRegId){
+        Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+
+        //no relationship was found including the user. Create a new request in the database
+        Map<String, Object> newEntry = new HashMap<String, Object>();
+        String relName = ID;
+        newEntry.put(relName, "");
+        root.updateChildren(newEntry);
+
+        //Create Maps to put data in for the database
+        Map<String, Object> nameOne = new HashMap<String, Object>();
+        Map<String, Object> emailOne = new HashMap<String, Object>();
+        Map<String, Object> regIdOne = new HashMap<String, Object>();
+        Map<String, Object> nameTwo = new HashMap<String, Object>();
+        Map<String, Object> emailTwo = new HashMap<String, Object>();
+        Map<String, Object> regIdTwo = new HashMap<String, Object>();
+        nameOne.put("nameOne", name);
+        emailOne.put("emailOne", email);
+        regIdOne.put("regIdOne", myRegId);
+        nameTwo.put("nameTwo", senderName);
+        emailTwo.put("emailTwo", senderEmail);
+        regIdTwo.put("regIdTwo", senderRegId);
+
+        partnerName = senderName;
+        partnerEmail = senderEmail;
+        partnersRegId = senderRegId;
+
+        //update the request in the database with the new information
+        root.child(relName).updateChildren(nameOne);
+        root.child(relName).updateChildren(emailOne);
+        root.child(relName).updateChildren(regIdOne);
+        root.child(relName).updateChildren(nameTwo);
+        root.child(relName).updateChildren(emailTwo);
+        root.child(relName).updateChildren(regIdTwo);
+        rel_id = relName;
+    }
+
+    public void removeRelationship(){
+        Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+        root.child(rel_id).setValue(null);
+
+        Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
+        Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
+
+        addPartnerButton.setClickable(true);
+        addPartnerButton.setVisibility(View.VISIBLE);
+        removePartnerButton.setClickable(false);
+        removePartnerButton.setVisibility(View.GONE);
     }
 
     //Called by clicking the Add Partner button. Creates a dialogue that goes through the partner
@@ -320,6 +368,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void removePartner(View view){
+        AlertDialog.Builder removePartnerDialogue = new AlertDialog.Builder(MainActivity.this);
+        removePartnerDialogue.setTitle("Remove Partner");
+        removePartnerDialogue.setMessage("Are you sure you want to remove " + partnerName + "?");
+
+        removePartnerDialogue.setPositiveButton("Send",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        removeRelationship();
+                    }
+                });
+
+        removePartnerDialogue.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        removePartnerDialogue.show();
+    }
+
     //Called by clicking To Map button. Transitions to the map activity
     public void toMap(View view){
 
@@ -340,9 +410,9 @@ public class MainActivity extends AppCompatActivity {
                         gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
                     }
 
-                    regid = gcm.register(PROJECT_NUMBER);
-                    msg = "Device registered, registration ID=" + regid;
-                    Log.i("GCM", "!!!!! " + regid);
+                    myRegId = gcm.register(PROJECT_NUMBER);
+                    msg = "Device registered, registration ID=" + myRegId;
+                    Log.i("GCM", "!!!!! " + myRegId);
 
                 } catch(IOException ex) {
                     msg = "Error: " + ex.getMessage();
