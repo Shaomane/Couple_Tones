@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     public String partnerName = "";
     public String partnerEmail = "";
     public String rel_id = "";
-    public static String partnersRegId = "";
-    public static String myRegId = "";
+    public String partnersRegId = "";
+    public String myRegId = "";
     //protected static GoogleSignInAccount acct;
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
@@ -270,39 +270,8 @@ public class MainActivity extends AppCompatActivity {
         respondToRequestDialogue.setPositiveButton("Accept",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        acceptRequest(secondName, secondEmail, secondRegId);
                         dialog.cancel();
-                        Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
-
-                        //no relationship was found including the user. Create a new request in the database
-                        Map<String, Object> newEntry = new HashMap<String, Object>();
-                        String relName = ID;
-                        newEntry.put(relName, "");
-                        root.updateChildren(newEntry);
-
-                        //Create Maps to put data in for the database
-                        Map<String, Object> nameOne = new HashMap<String, Object>();
-                        Map<String, Object> emailOne = new HashMap<String, Object>();
-                        Map<String, Object> regIdOne = new HashMap<String, Object>();
-                        Map<String, Object> nameTwo = new HashMap<String, Object>();
-                        Map<String, Object> emailTwo = new HashMap<String, Object>();
-                        Map<String, Object> regIdTwo = new HashMap<String, Object>();
-                        nameOne.put("nameOne", name);
-                        emailOne.put("emailOne", email);
-                        regIdOne.put("regIdOne", myRegId);
-                        nameTwo.put("nameTwo", secondName);
-                        emailTwo.put("emailTwo", secondEmail);
-                        regIdTwo.put("regIdTwo", secondRegId);
-
-                        partnersRegId = secondRegId;
-
-                        //update the request in the database with the new information
-                        root.child(relName).updateChildren(nameOne);
-                        root.child(relName).updateChildren(emailOne);
-                        root.child(relName).updateChildren(regIdOne);
-                        root.child(relName).updateChildren(nameTwo);
-                        root.child(relName).updateChildren(emailTwo);
-                        root.child(relName).updateChildren(regIdTwo);
-                        rel_id = relName;
                     }
                 });
 
@@ -313,6 +282,43 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         respondToRequestDialogue.show();
+    }
+
+    public void acceptRequest(String senderName, String senderEmail, String senderRegId){
+        Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+
+        //no relationship was found including the user. Create a new request in the database
+        Map<String, Object> newEntry = new HashMap<String, Object>();
+        String relName = ID;
+        newEntry.put(relName, "");
+        root.updateChildren(newEntry);
+
+        //Create Maps to put data in for the database
+        Map<String, Object> nameOne = new HashMap<String, Object>();
+        Map<String, Object> emailOne = new HashMap<String, Object>();
+        Map<String, Object> regIdOne = new HashMap<String, Object>();
+        Map<String, Object> nameTwo = new HashMap<String, Object>();
+        Map<String, Object> emailTwo = new HashMap<String, Object>();
+        Map<String, Object> regIdTwo = new HashMap<String, Object>();
+        nameOne.put("nameOne", name);
+        emailOne.put("emailOne", email);
+        regIdOne.put("regIdOne", myRegId);
+        nameTwo.put("nameTwo", senderName);
+        emailTwo.put("emailTwo", senderEmail);
+        regIdTwo.put("regIdTwo", senderRegId);
+
+        partnerName = senderName;
+        partnerEmail = senderEmail;
+        partnersRegId = senderRegId;
+
+        //update the request in the database with the new information
+        root.child(relName).updateChildren(nameOne);
+        root.child(relName).updateChildren(emailOne);
+        root.child(relName).updateChildren(regIdOne);
+        root.child(relName).updateChildren(nameTwo);
+        root.child(relName).updateChildren(emailTwo);
+        root.child(relName).updateChildren(regIdTwo);
+        rel_id = relName;
     }
 
     public void removeRelationship(){
