@@ -39,16 +39,19 @@ public class SignInActivity extends AppCompatActivity implements
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
-    private static boolean loggedIn = true;
-    private static boolean accountFound = false;
-    private static String partnersRegId = "";
-    private static String myRegId = "";
+    private boolean loggedIn = true;
+    private boolean accountFound = false;
+    private String partnersRegId = "";
+    private String myRegId = "";
 
-    protected static GoogleSignInAccount acct = null;
+    protected GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
-    private static String partnerName = null;
-    private static String partnerEmail = null;
-    private static String rel_id;
+    private String name = null;
+    private String email = null;
+    private String ID = null;
+    private String partnerName = null;
+    private String partnerEmail = null;
+    private String rel_id;
 
     private TextView mStatusTextView;
 
@@ -153,6 +156,10 @@ public class SignInActivity extends AppCompatActivity implements
     // [END handleSignInResult]
 
     private synchronized void toMain(){
+        name = acct.getDisplayName();
+        email = acct.getEmail();
+        ID = acct.getId();
+
         //transition back to MainActivity and indicate logged in
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("logged_in", true);
@@ -161,9 +168,12 @@ public class SignInActivity extends AppCompatActivity implements
         intent.putExtra("rel_id", rel_id);
         intent.putExtra("myRegId", myRegId);
         intent.putExtra("partnersRegId", partnersRegId);
+        intent.putExtra("name",name);
+        intent.putExtra("email",email);
+        intent.putExtra("ID",ID);
 
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     //This method checks if the user already has an account with CoupleTones
@@ -206,6 +216,7 @@ public class SignInActivity extends AppCompatActivity implements
                         return;
                     }
                 }
+                //No relationship was found including the user
                 toMain();
             }
             @Override
