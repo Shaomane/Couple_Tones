@@ -285,6 +285,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Move to activity
         Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("rel_id", relationship.rel_id);
+        intent.putExtra("senderEmail", relationship.partnerOneEmail);
 
         startActivity(intent);
     }
