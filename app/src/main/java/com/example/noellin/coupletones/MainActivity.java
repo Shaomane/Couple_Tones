@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent backgroundIntent = new Intent(MainActivity.this, BackgroundListenerService.class);
+        startService(backgroundIntent);
+
         Firebase.setAndroidContext(this);
 
         setContentView(R.layout.activity_main);
