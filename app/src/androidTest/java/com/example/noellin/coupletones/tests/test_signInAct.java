@@ -46,9 +46,9 @@ public class test_signInAct extends ActivityInstrumentationTestCase2{
 
         boolean shown;
 
-        if (onView(withId(R.id.sign_out_button)).isShown() == true) {
+       // if (onView(withId(R.id.sign_out_button)).isShown() == true) {
 
-        }
+        //}
 
         //Check the map button
         onView(withId(R.id.sign_out_button)).check(matches(isDisplayed()));
