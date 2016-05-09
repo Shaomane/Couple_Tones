@@ -54,8 +54,8 @@ public class Test_0sendPartnerRequest_searchExisting extends ActivityInstrumenta
         final String entered_email = "bar@example.com";
 
         mainActivity.sendPartnerRequest(entered_email);
-        //mainActivity.sendPartnerRequest(entered_email);
-        //mainActivity.sendPartnerRequest("entered_email);
+        mainActivity.sendPartnerRequest(entered_email);
+        mainActivity.sendPartnerRequest(entered_email);
 
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
         //attach a listener to read the data
