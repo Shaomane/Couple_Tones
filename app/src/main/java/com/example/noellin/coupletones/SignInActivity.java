@@ -173,7 +173,7 @@ public class SignInActivity extends AppCompatActivity implements
         intent.putExtra("name",name);
         intent.putExtra("email",email);
         intent.putExtra("ID",ID);
-
+        Log.d("THIS IS MY ID", ID);
         startActivity(intent);
         finish();
     }

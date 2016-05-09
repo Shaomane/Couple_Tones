@@ -132,6 +132,7 @@ public class FireBaseInteractor {
         //String relName = myId;
         newEntry.put(relName, "");
         root.updateChildren(newEntry);
+        Log.d("relname", relName);
 
         //Update the Relationship from MainActivity
         callingActivity.relationship.partnerTwoName = senderName;
@@ -197,6 +198,7 @@ public class FireBaseInteractor {
                         callingActivity.myRegId = rel.child("regIdOne").getValue().toString();
                         callingActivity.partnersRegId = rel.child("regIdTwo").getValue().toString();
                         callingActivity.toMain();
+                        //Log.d("rel", "rel_id" +callingActivity.rel_id);
                         return;
                     }
                     //Check if current relationship has the user as Partner 2
@@ -209,6 +211,7 @@ public class FireBaseInteractor {
                         callingActivity.myRegId = rel.child("regIdTwo").getValue().toString();
                         callingActivity.partnersRegId = rel.child("regIdOne").getValue().toString();
                         callingActivity.toMain();
+                        //Log.d("rel", "rel_id" +callingActivity.rel_id);
                         return;
                     }
                 }

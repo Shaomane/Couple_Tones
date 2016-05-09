@@ -103,6 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             rel_id = extras.getString("rel_id");
+            //Log.d("rel", "rel_id" +rel_id);
             senderEmail = extras.getString("senderEmail");
             senderName = extras.getString("senderName");
         }
@@ -470,12 +471,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String coords = ""+(int)(location.getLatitude()+location.getLongitude());
 
         final String relationshipID = rel_id;
+        Log.d("rel", "rel_id" +rel_id);
 
         //Get a Firebase reference to our relationship
-        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id);
+        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id+"/notifications");
 
         Map<String, Object> newNotification = new HashMap<String, Object>();
         newNotification.put(coords, "");
+        //ref.updateChildren(newNotification);
 
         Map<String, Object> sender = new HashMap<String, Object>();
         sender.put("sender", senderEmail);
@@ -484,8 +487,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Map<String, Object> occuranceTime = new HashMap<String, Object>();
         //occuranceTime.put("occuranceTime", time);
 
-        ref.child("notifications").child(coords).updateChildren(sender);
-        ref.child("notifications").child(coords).updateChildren(message);
+        ref.child(coords).updateChildren(sender);
+        ref.child(coords).updateChildren(message);
         //ref.child("notifications").child(coords).updateChildren(occuranceTime);
     }
 

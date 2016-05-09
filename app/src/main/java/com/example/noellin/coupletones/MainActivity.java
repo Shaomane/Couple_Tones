@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         boolean logged_in = false;
         if (extras != null){
             relationship.rel_id = extras.getString("rel_id");
-
+            //Log.d("rel", "rel_id " +relationship.rel_id);
             relationship.partnerOneName = extras.getString("name");
             relationship.partnerOneEmail = extras.getString("email");
             relationship.partnerOneRegId = extras.getString("myRegId");
@@ -335,6 +335,7 @@ public class MainActivity extends AppCompatActivity {
         //Move to activity, sending relevant information
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("rel_id", relationship.rel_id);
+
         intent.putExtra("senderEmail", relationship.partnerOneEmail);
         intent.putExtra("senderName", relationship.partnerOneName);
 
