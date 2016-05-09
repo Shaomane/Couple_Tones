@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             startService(backgroundIntent);
         }
         else{
-            Log.d("else","background service was not started");
+            Log.d("else","background service was not started ");
         }
 
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
