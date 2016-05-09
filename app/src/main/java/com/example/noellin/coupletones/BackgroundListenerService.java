@@ -101,7 +101,7 @@ public class BackgroundListenerService extends Service {
     @Override
     public void onDestroy()
     {
-        //Toast.makeText(BackgroundListenerService.this, "Cooldown period over", Toast.LENGTH_SHORT).show();
+        Toast.makeText(BackgroundListenerService.this, "Not able to receive messages", Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
 

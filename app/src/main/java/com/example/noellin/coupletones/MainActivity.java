@@ -1,5 +1,7 @@
 package com.example.noellin.coupletones;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -48,12 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
     GoogleCloudMessaging gcm;
     String PROJECT_NUMBER = "290538927222";
+    Intent backgroundIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent backgroundIntent = new Intent(MainActivity.this, BackgroundListenerService.class);
+        backgroundIntent = new Intent(MainActivity.this, BackgroundListenerService.class);
 
         Firebase.setAndroidContext(this);
 
@@ -95,9 +98,12 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        backgroundIntent.putExtra("rel_id", relationship.rel_id);
-        backgroundIntent.putExtra("partner_email", relationship.partnerTwoEmail);
-        startService(backgroundIntent);
+        if (!isMyServiceRunning(BackgroundListenerService.class))
+        {
+            backgroundIntent.putExtra("rel_id", relationship.rel_id);
+            backgroundIntent.putExtra("partner_email", relationship.partnerTwoEmail);
+            startService(backgroundIntent);
+        }
 
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
@@ -321,6 +327,16 @@ public class MainActivity extends AppCompatActivity {
                 /*etRegId.setText(msg);*/
             }
         }.execute(null, null, null);
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
