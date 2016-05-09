@@ -9,8 +9,12 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import org.junit.Before;
+
 /**
  * Created by jeremy on 5/8/16.
+ *
+ * This test ensures that a request is not generated when the requested partner is already paired
  */
 public class Test_7sendPartnerRequest_alreadyPaired extends ActivityInstrumentationTestCase2<MainActivity> {
     MainActivity mainActivity;
@@ -19,6 +23,19 @@ public class Test_7sendPartnerRequest_alreadyPaired extends ActivityInstrumentat
         super(MainActivity.class);
     }
 
+    //GIVEN THAT the user is unpaired AND the requested partner is paired
+    @Before
+    public void test_before(){
+        mainActivity = getActivity();
+        mainActivity.relationship.partnerOneName = "whee";
+        mainActivity.relationship.partnerOneEmail = "whee@example.com";
+        mainActivity.relationship.partnerOneRegId = "1234512345";
+        mainActivity.relationship.partnerOneID = "5432154321";
+        final String entered_email = "bar@example.com";
+    }
+
+    //WHEN the user hits Add a Partner AND types in the requested email AND hits Send
+    //THEN a request is not sent to the requested partner that is already paired
     public void test_sendPartnerRequest_alreadyPaired(){
         mainActivity = getActivity();
         //mainActivity.relationship = new Relationship();
@@ -45,7 +62,6 @@ public class Test_7sendPartnerRequest_alreadyPaired extends ActivityInstrumentat
                             && req.child("senderEmail").getValue().toString().equals("whee@example.com")
                             && req.child("senderRegId").getValue().toString().equals("1234512345")
                             && req.child("receiverEmail").getValue().toString().equals(entered_email)) {
-                        //This is expected
                         Log.d("if statement","found a matching request");
                         fail("found a matching request");
                         return;

@@ -110,6 +110,7 @@ public class FireBaseInteractor {
                 root.child(reqName).updateChildren(senderEmail);
                 root.child(reqName).updateChildren(senderRegId);
                 root.child(reqName).updateChildren(receiverEmail);
+                callingActivity.showPartnerRequestConfirmation(entered_email);
 
             }
             @Override

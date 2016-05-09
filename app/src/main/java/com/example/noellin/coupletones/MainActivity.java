@@ -277,6 +277,10 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, "Error: "+entered_email+" is already paired", Toast.LENGTH_SHORT).show();
     }
 
+    public void showPartnerRequestConfirmation(String entered_email){
+        Toast.makeText(MainActivity.this, "Error: "+entered_email+" is already paired", Toast.LENGTH_SHORT).show();
+    }
+
     public void removePartner(View view){
         AlertDialog.Builder removePartnerDialogue = new AlertDialog.Builder(MainActivity.this);
         removePartnerDialogue.setTitle("Remove Partner");

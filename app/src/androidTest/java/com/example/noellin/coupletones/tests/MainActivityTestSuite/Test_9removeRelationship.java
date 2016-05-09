@@ -12,6 +12,8 @@ import com.firebase.client.ValueEventListener;
 
 /**
  * Created by jeremy on 5/8/16.
+ *
+ * This test ensures that removeRelationship correctly deletes a relationship from the database
  */
 public class Test_9removeRelationship extends ActivityInstrumentationTestCase2<MainActivity> {
 
@@ -21,6 +23,16 @@ public class Test_9removeRelationship extends ActivityInstrumentationTestCase2<M
         super(MainActivity.class);
     }
 
+    //GIVEN THAT the user is paired with a partner
+    public void test_before(){
+        mainActivity = getActivity();
+        mainActivity.relationship = new Relationship();
+        String rel_id = "11111111";
+        mainActivity.relationship.rel_id = rel_id;
+    }
+
+    //WHEN the user hits Remove Partner AND confirms the decision by pressing OK
+    //THEN the relationship involving the user is deleted from the database
     public void test_removeRelationship(){
 
         Firebase cleanup = new Firebase("https://dazzling-inferno-7112.firebaseio.com/requests/0987654321");
