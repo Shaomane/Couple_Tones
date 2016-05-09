@@ -58,6 +58,11 @@ import java.util.Map;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
+/*
+ * Activity that displays the google map and allows a user to add/remove/move favorite locations.
+ * Also tracks the users location in proximity to their favorite locations, and sends the
+ * partner a message to indicate this change in location.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private TextView mTxtAccountName;
@@ -86,10 +91,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean isSpecialMessageSent = false;
 
 
+    /*
+     * Called upon the creation of the activity. Sets up a listener to listen for location changes
+     * and determines if the user is in the proximity of a favorite location.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Get information from MainActivity for send message functionality
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             rel_id = extras.getString("rel_id");
@@ -106,6 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Initialize our favorite locations ArrayList
         favoriteLocations = new ArrayList<>();
 
+        // Listen for location changes, alert partner if user enters favorite location
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -117,16 +128,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     prevMarker.remove();
                 }
                 prevMarker = m;
+
+                //Make the map follow the user's changing location
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15.0f));
 
+                // Check the favorite locations to see if the user is near a favorite location
                 Location target;
                 for (Location point: favoriteLocations)
                 {
                     target = point;
-                    if (location.distanceTo(target) < METERS_160)
+                    if (location.distanceTo(target) < METERS_160) // "near" is < 160 meters
                     {
-                        //Log.d("success", "near location");
-                        if ((prevLocation == null) || (target.getLatitude() != prevLocation.getLatitude() && target.getLongitude() != prevLocation.getLongitude()))
+                        // only handle the location if the user has never visited a
+                        // favorite location before OR it is a different location
+                        // than the last location they visited
+                        if ((prevLocation == null) ||
+                                (target.getLatitude() != prevLocation.getLatitude() && target.getLongitude() != prevLocation.getLongitude()))
                         {
                             handleReachedFavoriteLocation(target);
                         }
@@ -190,10 +207,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap)
     {
         mMap = googleMap;
-        // add a partner in La Jolla and move the camera
-        //LatLng laJolla = new LatLng(32.882340, -117.233620);
         LatLng laJolla = new LatLng(32.882340, -117.233620);
-        //mMap.addMarker(new MarkerOptions().position(laJolla).title("Marker in La Jolla"));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom((laJolla), 15.0f));
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
@@ -255,6 +269,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         });
 
+        // Listen for marker movements so the user can change locations
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener()
         {
             Marker startMarker;
@@ -268,6 +283,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMarkerDrag (Marker duringMarker) {
 
             }
+
+            /*
+             * Moves the marker to the new location, and edits the shared preferences to update
+             * it accordingly. Also update the information of the favorite location with the
+             * new latitude and longitude.
+             */
             @Override
             public void onMarkerDragEnd (Marker endMarker) {
                 System.err.println ("Marker drag now ends");
@@ -292,10 +313,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 {
                     if ((favoriteLocations.get(i).getProvider().equals(startMarker.getTitle())))
                     {
-                        System.err.println("MOVE SUCCESSFUL");
-                        System.err.println("favorite location lat: " + favoriteLocations.get(i).getLatitude());
-                        System.err.println("startMarker lat: " + startMarker.getPosition().latitude);
-                        System.err.println("new lat: " + currLat);
                         favoriteLocations.get(i).setLatitude(currLat);
                         favoriteLocations.get(i).setLongitude(currLong);
                     }
@@ -362,45 +379,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         alertBuilder.show();
 
     }
-/*
-    // toggles the add location button
-    public void addLocation (View view)
-    {
-        final Button addLocationButton = (Button) findViewById(R.id.addLocationButton);
-        addLocationToggle++;
-        if ((addLocationToggle % 2 == 1))
-        {
-            addLocationButton.setText("Adding Location!");
-            addLocationButton.setTextColor(Color.BLUE);
-        }
-        else {
-            addLocationButton.setText("Not Adding Location.");
-            addLocationButton.setTextColor(Color.BLACK);
-          //  removeLocation();
-        }
-    }
 
-    // to remove location
-    public void removeLocation (View view)
-    {
-        final Button removeLocationButton = (Button) findViewById(R.id.removeLocationButton);
-        removeLocationToggle++;
-        if ((removeLocationToggle % 2 == 1))
-        {
-            removeLocationButton.setText("Removing Location!");
-            removeLocationButton.setTextColor(Color.RED);
-        }
-        else {
-            removeLocationButton.setText("Not Removing Location.");
-            removeLocationButton.setTextColor(Color.BLACK);
-
-            //  removeLocation();
-        }
-
-    }  */
+    /*
+     * populates the google map with information from sharedPreferences.
+     */
     public void populateMap ()
     {
-        // opens the sharedpreferences
+        // opens the shared preferences
         SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
         // adds a marker for each previously set marker
         Map<String, ?> previousLocations = savedLocations.getAll();
@@ -422,12 +407,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             favoriteLocations.add(currLoc);
         }
     }
+
+    /*
+     * Completes all actions needed when the user visits one of their favorite locations. Toasts
+     * the user that they reached a favorite location and calls sendMessage to send the message to
+     * their partner
+     */
     private void handleReachedFavoriteLocation(Location location)
     {
+        // Set up the toast
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
         CharSequence text = "Reached favorite location: " + location.getProvider();
         Toast t = Toast.makeText(context, text, duration);
+
+        // If cool down service is running, don't send a message to the partner. If not, proceed
         if (isMyServiceRunning(CoolDownService.class))
         {
             Log.d("running", "service is running in the background ");
@@ -439,12 +433,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             startService(intent);
             Log.d("success", "near location " + location.getProvider());
             t.show();
-            prevLocation = location;
+            prevLocation = location; //Set prevLocation so that a user can't reach the same fav location twice in a row
             sendMessage(location);
-            //sendMessage();
         }
     }
 
+    /*
+     * Tests whether a background service is running. Is useful for determining whether to start
+     * the messaging listener
+     */
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -455,6 +452,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 
+    /*
+     * Send a message using the Firebase database that will alert the user's partner of the
+     * favorite location that they visited
+     */
     private void sendMessage(Location location) {
         if (location == null){
             Log.e("sendMessage", "null location was received in sendMessage");
@@ -497,7 +498,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mTxtAccountName.setText(accountName);
             }
             else {
-                Log.v("grokkingandroid", "couldn't select account: " + resultCode);
+                Log.v("error", "couldn't select account: " + resultCode);
             }
         }
     }

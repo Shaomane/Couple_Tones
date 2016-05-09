@@ -22,6 +22,11 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+
+/*
+ * Background service that listens for new messages from the Firebase database. Will show a
+ * notification and a sound if the user receives a notification.
+ */
 public class BackgroundListenerService extends Service {
 
     String rel_id = null;
@@ -42,6 +47,9 @@ public class BackgroundListenerService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    /*
+     * Separate thread to run the Firebase listener.
+     */
     final class MyThread implements Runnable
     {
         int startId;
@@ -56,7 +64,7 @@ public class BackgroundListenerService extends Service {
         {
             synchronized (this)
             {
-                //TODO: write the listener in here
+                //Listener that will check if any new messages have been received
                 ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id+"/notifications");
                 listener = new ChildEventListener() {
                     @Override
@@ -87,6 +95,9 @@ public class BackgroundListenerService extends Service {
         }
     }
 
+    /*
+     * Starts a separate thread and toasts the user to let them know that their app is receiving messages
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
@@ -102,6 +113,9 @@ public class BackgroundListenerService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    /*
+     * Lets the user know that the service has been destroyed. Removes the listener and calls super.onDestroy
+     */
     @Override
     public void onDestroy()
     {
@@ -111,6 +125,9 @@ public class BackgroundListenerService extends Service {
         super.onDestroy();
     }
 
+    /*
+     * Shows a notification to the user, with sound
+     */
     private void showNotification(String msg) {
         NotificationManager mNotificationManager;
         mNotificationManager = (NotificationManager) this
