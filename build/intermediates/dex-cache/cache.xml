@@ -96,7 +96,7 @@
         jar="/Users/Chauncey/AndroidStudioProjects/CoupleTones (CSE 110)/110group-project/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="31c53fb14457fb7f8e351586607778706a2537a6">
+        sha1="70cdef2a1935241447de148513f1812c77aac6ec">
         <dex dex="/Users/Chauncey/AndroidStudioProjects/CoupleTones (CSE 110)/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_fe82860031e20ffd7ab629eadfeb103776791cb0/classes.dex" />
     </item>
     <item
@@ -187,7 +187,7 @@
         jar="/Users/Chauncey/AndroidStudioProjects/CoupleTones (CSE 110)/110group-project/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="f1c1894a732a023dc24a67f504857fb7b20db76f">
+        sha1="3621affcee78603ebd99561bbc3c5c282bf332fa">
         <dex dex="/Users/Chauncey/AndroidStudioProjects/CoupleTones (CSE 110)/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_7e6d2ad208d013e91b0e31c9eeec1af4244c5d77/classes.dex" />
     </item>
     <item

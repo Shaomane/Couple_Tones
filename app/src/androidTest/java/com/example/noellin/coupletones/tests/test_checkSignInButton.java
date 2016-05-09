@@ -38,8 +38,9 @@ public class test_checkSignInButton extends ActivityInstrumentationTestCase2<Mai
 
         mainActivity = getActivity();
 
+        //Sleep to let the emulator bring up the correct screen
         try {
-            Thread.sleep(5000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
