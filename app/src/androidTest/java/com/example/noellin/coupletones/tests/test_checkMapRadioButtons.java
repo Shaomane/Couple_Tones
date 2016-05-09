@@ -35,8 +35,9 @@ public class test_checkMapRadioButtons extends ActivityInstrumentationTestCase2<
     @Test
     public void test_checkMapsButtons() {
 
+        //Sleep to let the emulator bring up the correct screen
         try {
-            Thread.sleep(2000);
+            Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
