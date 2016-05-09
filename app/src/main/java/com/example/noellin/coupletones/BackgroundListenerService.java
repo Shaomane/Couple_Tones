@@ -29,6 +29,9 @@ public class BackgroundListenerService extends Service {
 
     final static String notifGroup = "group_notif";
     static int id = 0;
+    public Thread thread;
+    public Firebase ref;
+    public ChildEventListener listener;
 
     public BackgroundListenerService() {
     }
@@ -54,8 +57,8 @@ public class BackgroundListenerService extends Service {
             synchronized (this)
             {
                 //TODO: write the listener in here
-                Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id+"/notifications");
-                ref.addChildEventListener(new ChildEventListener() {
+                ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id+"/notifications");
+                listener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot notification, String s) {
                         if (notification.child("sender").getValue().equals(partner_email)){
@@ -77,7 +80,8 @@ public class BackgroundListenerService extends Service {
                     public void onCancelled(FirebaseError firebaseError) {
                         Log.d("Read failed", "Read failed in addChildEventListener");
                     }
-                });
+                };
+                ref.addChildEventListener(listener);
 
             }
         }
@@ -93,7 +97,7 @@ public class BackgroundListenerService extends Service {
         }
 
         Toast.makeText(BackgroundListenerService.this, "Able to receive messages", Toast.LENGTH_SHORT).show();
-        Thread thread = new Thread(new MyThread(startId));
+        thread = new Thread(new MyThread(startId));
         thread.start();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -102,6 +106,8 @@ public class BackgroundListenerService extends Service {
     public void onDestroy()
     {
         Toast.makeText(BackgroundListenerService.this, "Not able to receive messages", Toast.LENGTH_SHORT).show();
+        //thread.interrupt();
+        ref.removeEventListener(listener);
         super.onDestroy();
     }
 

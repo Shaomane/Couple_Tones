@@ -96,13 +96,16 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
             finish();
+            return;
         }
 
-        if (!isMyServiceRunning(BackgroundListenerService.class))
-        {
+        if (!isMyServiceRunning(BackgroundListenerService.class)) {
             backgroundIntent.putExtra("rel_id", relationship.rel_id);
             backgroundIntent.putExtra("partner_email", relationship.partnerTwoEmail);
             startService(backgroundIntent);
+        }
+        else{
+            Log.d("else","background service was not started");
         }
 
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
@@ -177,7 +180,9 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (id == R.id.action_signout){
             Intent intent = new Intent(this, SignInActivity.class);
+            stopService(backgroundIntent);
             startActivity(intent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
