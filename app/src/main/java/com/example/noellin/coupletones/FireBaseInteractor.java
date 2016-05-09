@@ -16,18 +16,18 @@ import java.util.Map;
 
 /**
  * Created by jeremy on 5/4/16.
+ *
+ * This class defines a FireBaseInteractor, which is used to interface with a Firebase database while
+ * "minding our own business."  Methods are defined that write or retrieve data.
  */
 public class FireBaseInteractor {
 
-    //public Relationship relationship;
+    public FireBaseInteractor(){}
 
-    public FireBaseInteractor(MainActivity mainActivity){
-        //this.relationship = mainActivity.relationship;
-    }
-    public FireBaseInteractor(SignInActivity signInActivity){
-        //this.relationship = new Relationship();
-    }
-
+    /*
+    This method checks the database for a pending request. A listener is set up to continuously listen
+    for new requests, and is additionally prompted to search upon creation
+     */
     public void checkForRequest(final MainActivity callingActivity){
         Log.d("checkForRequest","checking the database for pending request");
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/requests");
@@ -59,9 +59,11 @@ public class FireBaseInteractor {
         });
     }
 
-    //helper method to send a partner request from the Add Partner dialogue
-    public void sendPartnerRequest(final String entered_email,
-                                   final MainActivity callingActivity){
+    /*
+    This method attempts to send a Partner Request to another user. If the other user is already
+    paired, no request is generated
+     */
+    public void sendPartnerRequest(final String entered_email, final MainActivity callingActivity){
         Log.d("sendPartnerRequest","entered email: "+entered_email);
         final String id = callingActivity.relationship.partnerOneID;
         final String myName = callingActivity.relationship.partnerOneName;
@@ -73,16 +75,13 @@ public class FireBaseInteractor {
         ref.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public synchronized void onDataChange(DataSnapshot snapshot){
-                long counter = -1;
                 Log.d("sendPartnerRequest","calling onDataChange");
 
                 //Loop through each of the relationships in the database
                 for (DataSnapshot rel : snapshot.getChildren()){
-                    counter++;
                     //Check if current relationship has the requested partner
                     if (rel.child("emailOne").getValue().toString().equals(entered_email)
                             || rel.child("emailTwo").getValue().toString().equals(entered_email)) {
-                        //TODO: error, the requested partner already has a partner
                         callingActivity.showPartnerAlreadyPairedError(entered_email);
                         return;
                     }
@@ -120,6 +119,10 @@ public class FireBaseInteractor {
         });
     }
 
+    /*
+    This method accepts a request by adding in a new relationship to the database containing the
+    requester and the requested partner
+     */
     public void acceptRequest(String senderName, String senderEmail, String senderRegId, final MainActivity callingActivity){
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
 
@@ -130,6 +133,7 @@ public class FireBaseInteractor {
         newEntry.put(relName, "");
         root.updateChildren(newEntry);
 
+        //Update the Relationship from MainActivity
         callingActivity.relationship.partnerTwoName = senderName;
         callingActivity.relationship.partnerTwoEmail = senderEmail;
         callingActivity.relationship.partnerTwoRegId = senderRegId;
@@ -158,6 +162,9 @@ public class FireBaseInteractor {
         root.child(relName).updateChildren(regIdTwo);
     }
 
+    /*
+    This method erases an existing relationship from the database
+     */
     public void removeRelationship(MainActivity callingActivity){
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
         root.child(callingActivity.relationship.rel_id).setValue(null);
