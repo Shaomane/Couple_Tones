@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
     This method displays a confirmation Toast upon successfully sending a partner request
      */
     public void showPartnerRequestConfirmation(String entered_email){
-        Toast.makeText(MainActivity.this, "Error: "+entered_email+" is already paired", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Sent a request to "+ entered_email, Toast.LENGTH_SHORT).show();
     }
 
     /*
