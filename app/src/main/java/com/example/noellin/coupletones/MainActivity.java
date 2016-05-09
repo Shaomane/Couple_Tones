@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
 
     public Relationship relationship;
-    public FireBaseInteractor FBInteractor = new FireBaseInteractor(this);
+    public FireBaseInteractor FBInteractor = new FireBaseInteractor();
 
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored

@@ -43,7 +43,7 @@ public class SignInActivity extends AppCompatActivity implements
     public String partnersRegId = "";
     public String myRegId = "";
 
-    public FireBaseInteractor FBInteractor = new FireBaseInteractor(this);
+    public FireBaseInteractor FBInteractor = new FireBaseInteractor();
 
     protected GoogleSignInAccount acct = null;
     private GoogleApiClient mGoogleApiClient;
