@@ -12,6 +12,9 @@ import com.firebase.client.ValueEventListener;
 
 /**
  * Created by jeremy on 5/8/16.
+ *
+ * This test ensures that a relationship is correctly created given that the requested partner has
+ * accepted
  */
 public class Test_6acceptRequest extends ActivityInstrumentationTestCase2<MainActivity> {
     MainActivity mainActivity;// = getActivity();
@@ -20,23 +23,22 @@ public class Test_6acceptRequest extends ActivityInstrumentationTestCase2<MainAc
         super(MainActivity.class);
     }
 
+    //GIVEN THAT the user has been sent a request AND the user is unpaired
     public void test_first() {
         mainActivity = getActivity();
         mainActivity.relationship.partnerOneName = "foo";
         mainActivity.relationship.partnerOneEmail = "foo@example.com";
         mainActivity.relationship.partnerOneRegId = "1234567890";
         mainActivity.relationship.partnerOneID = "0987654321";
-        mainActivity.sendPartnerRequest("bar@example.com");
+        //mainActivity.sendPartnerRequest("bar@example.com");
     }
 
+    //WHEN the user logs in
+    //THEN they receive a notification
+    //AND WHEN the user hits accept
+    //THEN a new relationship is formed
     public void test_acceptRequest(){
-        //mainActivity = getActivity();
-        /*mainActivity.FBInteractor.relationship = new Relationship();
-        mainActivity.FBInteractor.relationship.partnerOneName = "bar";
-        mainActivity.FBInteractor.relationship.partnerOneEmail = "bar@example.com";
-        mainActivity.FBInteractor.relationship.partnerOneRegId = "0000000000";
-        mainActivity.FBInteractor.relationship.partnerOneID = "1111111111";
-*/
+
         mainActivity = getActivity();
         mainActivity.relationship.partnerOneName = "bar";
         mainActivity.relationship.partnerOneEmail = "bar@example.com";

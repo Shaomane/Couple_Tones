@@ -9,21 +9,45 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * Created by jeremy on 5/8/16.
+ *
+ * This test ensures that a request was created, given that the requested partner and the user
+ * both are unpaired
  */
 public class Test_3sendPartnerRequest_searchForRequest extends ActivityInstrumentationTestCase2<MainActivity>{
 
     MainActivity mainActivity;
+    String email;
+    String partnerOneName;
+    String partnerOneEmail;
+    String partnerOneRegId;
+    String partnerOneID;
 
     public Test_3sendPartnerRequest_searchForRequest(){
         super(MainActivity.class);
     }
 
+    //GIVEN THAT the user and the requested partner are unpaired
+    @Before
+    public void test_before(){
+
+        email = "bar@example.com";
+        partnerOneName = "foo";
+        partnerOneEmail = "foo@example.com";
+        partnerOneRegId = "1234567890";
+        partnerOneID = "0987654321";
+    }
+
+    //WHEN the user sends a request
+    //THEN there should be a matching request update in the database
+    @Test
     public void test_sendPartnerRequest_searchForRequest(){
         final String entered_email = "bar@example.com";
         mainActivity = getActivity();
-
         mainActivity.relationship.partnerOneName = "foo";
         mainActivity.relationship.partnerOneEmail = "foo@example.com";
         mainActivity.relationship.partnerOneRegId = "1234567890";
