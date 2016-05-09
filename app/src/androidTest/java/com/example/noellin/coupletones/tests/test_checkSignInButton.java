@@ -17,11 +17,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class test_checkSignInButtons extends ActivityInstrumentationTestCase2<MainActivity> {
+public class test_checkSignInButton extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private MainActivity mainActivity;
 
-    public test_checkSignInButtons() {
+    public test_checkSignInButton() {
         super(MainActivity.class);
     }
 
@@ -34,7 +34,7 @@ public class test_checkSignInButtons extends ActivityInstrumentationTestCase2<Ma
     }
 
     @Test
-    public void test_checkMainButtons() {
+    public void test_checkSignInButtons() {
 
         mainActivity = getActivity();
 
@@ -47,10 +47,10 @@ public class test_checkSignInButtons extends ActivityInstrumentationTestCase2<Ma
         //Button continueBtn = (Button) mainActivity.findViewById(R.id.continue_button);
         //continueBtn.performClick();
 
-        //Check the map button
+        //Check the sign out button
         onView(withId(R.id.sign_out_button)).check(matches(isDisplayed()));
 
-        //Check the Add Partner Button
+        //Check the sign in button
         onView(withId(R.id.continue_button)).check(matches(isDisplayed()));
 
     }

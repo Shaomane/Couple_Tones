@@ -430,7 +430,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast t = Toast.makeText(context, text, duration);
         if (isMyServiceRunning(CoolDownService.class))
         {
-            Log.d("running", "service is running in the background");
+            Log.d("running", "service is running in the background ");
         }
         else
         {
