@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
     public Relationship relationship;
     public FireBaseInteractor FBInteractor = new FireBaseInteractor(this);
 
-    public static String partnersRegId = "";
-
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
 
@@ -57,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //setup for the background intent listening for new notifications, as well as the Firebase database
         backgroundIntent = new Intent(MainActivity.this, BackgroundListenerService.class);
-
         Firebase.setAndroidContext(this);
 
         setContentView(R.layout.activity_main);
@@ -92,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("found extras", "result of partnersRegId: "+relationship.partnerTwoRegId);
         }
 
-        //if not logged in make em log in
+        //if not logged in make the user log in by transitioning to SignInActivity
         if (!logged_in) {
             Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
@@ -100,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        //Check if the BackgroundListenerService is running. Only start if not
         if (!isMyServiceRunning(BackgroundListenerService.class)) {
             backgroundIntent.putExtra("rel_id", relationship.rel_id);
             backgroundIntent.putExtra("partner_email", relationship.partnerTwoEmail);
@@ -109,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("else","background service was not started ");
         }
 
+        //Set up the Add/Remove Partner button accordingly depending on whether the user is paired
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
         if (relationship.partnerTwoName == null) {
@@ -158,8 +158,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
-        //if (relationship.partnerTwoName == null)
-        //    checkForRequest();
     }
 
     @Override
@@ -185,19 +183,27 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+    This method asks the Interactor to check if anyone has sent a partner request
+     */
     public void checkForRequest(){
         FBInteractor.checkForRequest(this);
     }
 
-    //helper method to send a partner request from the Add Partner dialogue
+    /*
+    This method asks the Interactor to send a partner request to the entered email address
+     */
     public void sendPartnerRequest(final String entered_email){
         FBInteractor.sendPartnerRequest(entered_email, this);
     }
 
+    /*
+    This method creates a dialogue that prompts the user to either accept or decline an
+    incoming partner request
+     */
     public void respondToRequest(String senderName, String senderEmail, String senderRegId){
 
         final String secondName = senderName;
@@ -224,16 +230,26 @@ public class MainActivity extends AppCompatActivity {
         respondToRequestDialogue.show();
     }
 
+    /*
+    This helper method is called from respondToRequest.  It asks the Interactor to accept
+    the request by creating a new relationship in the database involving the user and the
+    request sender
+     */
     public void acceptRequest(String senderName, String senderEmail, String senderRegId){
         FBInteractor.acceptRequest(senderName, senderEmail, senderRegId, this);
     }
 
+    /*
+    This method asks the Interactor to remove a relationship from the database, erasing the connection
+    between the partners
+     */
     public void removeRelationship(){
         FBInteractor.removeRelationship(this);
 
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
 
+        //update the add and remove partner buttons accordingly
         addPartnerButton.setClickable(true);
         addPartnerButton.setVisibility(View.VISIBLE);
         removePartnerButton.setClickable(false);
@@ -273,14 +289,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*
+    This method displays an error Toast upon sending a partner request to a user that is already paired
+     */
     public void showPartnerAlreadyPairedError(String entered_email){
         Toast.makeText(MainActivity.this, "Error: "+entered_email+" is already paired", Toast.LENGTH_SHORT).show();
     }
 
+    /*
+    This method displays a confirmation Toast upon successfully sending a partner request
+     */
     public void showPartnerRequestConfirmation(String entered_email){
         Toast.makeText(MainActivity.this, "Error: "+entered_email+" is already paired", Toast.LENGTH_SHORT).show();
     }
 
+    /*
+    This method opens a dialogue upon pressing the Remove a Partner button. It prompts for confirmation
+    before calling removeRelationship or cancelling
+     */
     public void removePartner(View view){
         AlertDialog.Builder removePartnerDialogue = new AlertDialog.Builder(MainActivity.this);
         removePartnerDialogue.setTitle("Remove Partner");
@@ -306,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
     //Called by clicking To Map button. Transitions to the map activity
     public void toMap(View view){
 
-        //Move to activity
+        //Move to activity, sending relevant information
         Intent intent = new Intent(this, MapsActivity.class);
         intent.putExtra("rel_id", relationship.rel_id);
         intent.putExtra("senderEmail", relationship.partnerOneEmail);
@@ -315,6 +341,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /*
+    This method gets the user's reg_id, which is used for Google cloud messaging
+     */
     public void getRegId() {
         new AsyncTask<Void, Void, String>() {
 
