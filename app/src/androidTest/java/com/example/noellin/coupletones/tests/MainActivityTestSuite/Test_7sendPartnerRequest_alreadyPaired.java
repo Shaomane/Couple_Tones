@@ -12,7 +12,7 @@ import com.firebase.client.ValueEventListener;
 import org.junit.Before;
 
 /**
- * Created by jeremy on 5/8/16.
+ * Created by jeremy.
  *
  * This test ensures that a request is not generated when the requested partner is already paired
  */

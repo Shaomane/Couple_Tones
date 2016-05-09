@@ -11,7 +11,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 /**
- * Created by jeremy on 5/8/16.
+ * Created by jeremy.
  *
  * This test ensures that removeRelationship correctly deletes a relationship from the database
  */

@@ -11,7 +11,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 /**
- * Created by jeremy on 5/8/16.
+ * Created by jeremy.
  *
  * This test ensures that a relationship is correctly created given that the requested partner has
  * accepted

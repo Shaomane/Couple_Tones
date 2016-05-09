@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Created by jeremy on 5/7/16.
+ * Created by jeremy.
  *
  * This test ensures that sendPartnerRequest does not automatically create a new relationship
  */
