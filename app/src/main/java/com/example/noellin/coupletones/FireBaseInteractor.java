@@ -3,6 +3,7 @@ package com.example.noellin.coupletones;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -82,7 +83,7 @@ public class FireBaseInteractor {
                     if (rel.child("emailOne").getValue().toString().equals(entered_email)
                             || rel.child("emailTwo").getValue().toString().equals(entered_email)) {
                         //TODO: error, the requested partner already has a partner
-                        Log.d("sendPartnerRequest","SOMETHING BAD HAPPENED");
+                        callingActivity.showPartnerAlreadyPairedError(entered_email);
                         return;
                     }
                 }

@@ -30,7 +30,7 @@ public class Test_9removeRelationship extends ActivityInstrumentationTestCase2<M
         mainActivity.relationship = new Relationship();
         String rel_id = "11111111";
         mainActivity.relationship.rel_id = rel_id;
-        mainActivity.removeRelationship();
+        mainActivity.FBInteractor.removeRelationship(mainActivity);
 
         //Check if a relationship was removed from the database
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");

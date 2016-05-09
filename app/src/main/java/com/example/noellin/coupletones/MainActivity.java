@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -270,6 +271,10 @@ public class MainActivity extends AppCompatActivity {
                 });
         addPartnerDialogue.show();
 
+    }
+
+    public void showPartnerAlreadyPairedError(String entered_email){
+        Toast.makeText(MainActivity.this, "Error: "+entered_email+" is already paired", Toast.LENGTH_SHORT).show();
     }
 
     public void removePartner(View view){
