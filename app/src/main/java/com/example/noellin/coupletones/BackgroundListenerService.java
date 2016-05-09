@@ -5,6 +5,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 
@@ -23,6 +26,12 @@ public class BackgroundListenerService extends Service {
 
     String rel_id = null;
     String partner_email = null;
+
+    final static String notifGroup = "group_notif";
+    static int id = 0;
+    public Thread thread;
+    public Firebase ref;
+    public ChildEventListener listener;
 
     public BackgroundListenerService() {
     }
@@ -48,8 +57,8 @@ public class BackgroundListenerService extends Service {
             synchronized (this)
             {
                 //TODO: write the listener in here
-                Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id+"/notifications");
-                ref.addChildEventListener(new ChildEventListener() {
+                ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id+"/notifications");
+                listener = new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot notification, String s) {
                         if (notification.child("sender").getValue().equals(partner_email)){
@@ -71,7 +80,8 @@ public class BackgroundListenerService extends Service {
                     public void onCancelled(FirebaseError firebaseError) {
                         Log.d("Read failed", "Read failed in addChildEventListener");
                     }
-                });
+                };
+                ref.addChildEventListener(listener);
 
             }
         }
@@ -87,7 +97,7 @@ public class BackgroundListenerService extends Service {
         }
 
         Toast.makeText(BackgroundListenerService.this, "Able to receive messages", Toast.LENGTH_SHORT).show();
-        Thread thread = new Thread(new MyThread(startId));
+        thread = new Thread(new MyThread(startId));
         thread.start();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -95,7 +105,9 @@ public class BackgroundListenerService extends Service {
     @Override
     public void onDestroy()
     {
-        //Toast.makeText(BackgroundListenerService.this, "Cooldown period over", Toast.LENGTH_SHORT).show();
+        Toast.makeText(BackgroundListenerService.this, "Not able to receive messages", Toast.LENGTH_SHORT).show();
+        //thread.interrupt();
+        ref.removeEventListener(listener);
         super.onDestroy();
     }
 
@@ -108,7 +120,7 @@ public class BackgroundListenerService extends Service {
         notificationIntent.setAction(com.example.noellin.coupletones.Constants.NOTIFICATION_ACTION);
         notificationIntent.putExtra(com.example.noellin.coupletones.Constants.KEY_MESSAGE_TXT, msg);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, 0);
 
@@ -116,9 +128,20 @@ public class BackgroundListenerService extends Service {
                 .setSmallIcon(R.drawable.ic_stat_collections_cloud)
                 .setContentTitle("CoupleTones Notification")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
+                .setGroup(notifGroup)
                 .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(com.example.noellin.coupletones.Constants.NOTIFICATION_NR, mBuilder.build());
+        //mNotificationManager.notify(com.example.noellin.coupletones.Constants.NOTIFICATION_NR, mBuilder.build());
+        mNotificationManager.notify(id, mBuilder.build());
+        id++;
+
+        try {
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+            r.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

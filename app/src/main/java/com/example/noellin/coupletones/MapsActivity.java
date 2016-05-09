@@ -464,7 +464,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
 
-        String msg = location.getProvider();
+        String msg = senderName + " visited " + location.getProvider();
         //long time = location.getTime();
         String coords = ""+(int)(location.getLatitude()+location.getLongitude());
 
