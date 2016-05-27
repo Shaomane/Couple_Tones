@@ -22,17 +22,26 @@ import java.util.Map;
  */
 public class FireBaseInteractor {
 
+    Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com");
+
     public FireBaseInteractor(){}
+
+    /*
+    When we are broken up with, remove all the listeners and remove relationship data from MainActivity
+     */
+    public void startListenerForCheatingHoe(MainActivity callingActivity){
+
+    }
 
     /*
     This method checks the database for a pending request. A listener is set up to continuously listen
     for new requests, and is additionally prompted to search upon creation
      */
-    public void checkForRequest(final MainActivity callingActivity){
-        Log.d("checkForRequest","checking the database for pending request");
-        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/requests");
+    public void startListenerForRequests(final MainActivity callingActivity){
+        Log.d("checkForRequests","checking the database for pending request");
+        //Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/requests");
         final String receiverEmail = callingActivity.relationship.partnerOneEmail;
-        ref.addChildEventListener(new ChildEventListener() {
+        ref.child("requests").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot req, String s) {
                 if (req.child("receiverEmail").getValue() != null
@@ -69,10 +78,10 @@ public class FireBaseInteractor {
         final String myName = callingActivity.relationship.partnerOneName;
         final String myEmail = callingActivity.relationship.partnerOneEmail;
         final String regId = callingActivity.relationship.partnerOneRegId;
-        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+        //Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
 
         //attach a listener to read the data
-        ref.addListenerForSingleValueEvent(new ValueEventListener(){
+        ref.child("relationships").addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public synchronized void onDataChange(DataSnapshot snapshot){
                 Log.d("sendPartnerRequest","calling onDataChange");
@@ -177,10 +186,10 @@ public class FireBaseInteractor {
     //This method checks if the user already has an account with CoupleTones
     //It should be called as the user logs in. The app transitions to MainActivity
     public void checkForAccount(final SignInActivity callingActivity){
-        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+        //Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
         Log.d("checkForAccount","checkForAccount called");
         //attach a listener to read the data
-        ref.addListenerForSingleValueEvent(new ValueEventListener(){
+        ref.child("relationships").addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public synchronized void onDataChange(DataSnapshot snapshot){
 
