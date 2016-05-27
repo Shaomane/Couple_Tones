@@ -23,11 +23,39 @@ import java.util.Map;
 public class FireBaseInteractor {
 
     Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com");
+    ChildEventListener listenerForAcceptedRequest = null;
+    ChildEventListener listenerForCheatingHoe = null;
+    ChildEventListener listenerForRequests = null;
+    ValueEventListener searchRelationshipListener = null;
+    ValueEventListener searchRequestListener = null;
+    ValueEventListener sendPartnerRequestListener = null;
 
     public FireBaseInteractor(){}
 
+    public void removeListeners(){/*
+        if (listenerForAcceptedRequest != null){
+            ref.removeEventListener(listenerForAcceptedRequest);
+        }
+        if (listenerForCheatingHoe != null){
+            ref.removeEventListener(listenerForCheatingHoe);
+        }
+        if (listenerForRequests != null){
+            ref.removeEventListener(listenerForRequests);
+        }
+
+        if (searchRelationshipListener != null){
+            ref.removeEventListener(searchRelationshipListener);
+        }
+        if (searchRequestListener != null){
+            ref.removeEventListener(searchRequestListener);
+        }
+        if (sendPartnerRequestListener != null){
+            ref.removeEventListener(sendPartnerRequestListener);
+        }*/
+    }
+
     public void startListenerForAcceptedRequest(final MainActivity callingActivity){
-        ref.child("relationships").addChildEventListener(new ChildEventListener() {
+        ref.child("relationships").addChildEventListener(listenerForAcceptedRequest = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d("accepted", "relationship request was accepted");
@@ -48,7 +76,7 @@ public class FireBaseInteractor {
     }
     public void searchRelationships(final MainActivity callingActivity){
         try{Thread.sleep(500);}catch(InterruptedException e){}
-        ref.child("relationships").addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.child("relationships").addListenerForSingleValueEvent(searchRelationshipListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot relationship : dataSnapshot.getChildren()){
@@ -58,6 +86,7 @@ public class FireBaseInteractor {
                                     relationship.child("emailTwo").getValue().toString().equals(callingActivity.relationship.partnerOneEmail))){
                         //Someone accepted our request
                         Log.d("accepted", "OUR request was accepted");
+                        removeListeners();
                         callingActivity.relationship.partnerTwoEmail = (relationship.child("emailOne").getValue()
                                 .toString().equals(callingActivity.relationship.partnerOneEmail)) ? relationship.child("emailTwo").getValue()
                                 .toString() : relationship.child("emailOne").getValue().toString();
@@ -83,7 +112,7 @@ public class FireBaseInteractor {
     When we are broken up with, remove all the listeners and remove relationship data from MainActivity
      */
     public void startListenerForCheatingHoe(final MainActivity callingActivity){
-        ref.child("relationships").addChildEventListener(new ChildEventListener() {
+        ref.child("relationships").addChildEventListener(listenerForCheatingHoe = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
             @Override
@@ -94,7 +123,8 @@ public class FireBaseInteractor {
                 if (dataSnapshot.child("emailOne").getValue() != null && dataSnapshot.child("emailTwo").getValue() != null &&
                         (dataSnapshot.child("emailOne").getValue().toString().equals(callingActivity.relationship.partnerOneEmail) ||
                         dataSnapshot.child("emailTwo").getValue().toString().equals(callingActivity.relationship.partnerOneEmail))){
-                    //Fuck that bitch
+                    //TODO: if this causes a last minute problem put it in its own method with a delay
+                    removeListeners();
                     getBrokenUpWith(callingActivity);
                     return;
                 }
@@ -112,8 +142,8 @@ public class FireBaseInteractor {
     }
 
     private void getBrokenUpWith(MainActivity callingActivity) {
-        //Dunno if it works like this
-        ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com");
+
+        //removeListeners();
 
         Log.d("cheating hoe", "cheating hoe detected");
         callingActivity.stopService(callingActivity.backgroundIntent);
@@ -124,9 +154,10 @@ public class FireBaseInteractor {
     }
 
     public void searchRequests(final MainActivity callingActivity){
+
         try{Thread.sleep(500);}catch(InterruptedException e){}
         final String receiverEmail = callingActivity.relationship.partnerOneEmail;
-        ref.child("requests").addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.child("requests").addListenerForSingleValueEvent(searchRequestListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot request : dataSnapshot.getChildren()){
@@ -134,6 +165,7 @@ public class FireBaseInteractor {
                     if (request.child("receiverEmail").getValue() != null &&
                             request.child("receiverEmail").getValue().toString().equals(receiverEmail)){
                         //Found a request! We are loved.
+                        removeListeners();
                         String senderName = request.child("senderName").getValue().toString();
                         String senderEmail = request.child("senderEmail").getValue().toString();
                         String senderRegId = request.child("senderRegId").getValue().toString();
@@ -141,6 +173,7 @@ public class FireBaseInteractor {
                         callingActivity.respondToRequest(senderName, senderEmail, senderRegId);
                     }
                 }
+                ref.removeEventListener(searchRequestListener);
             }
 
             @Override
@@ -156,9 +189,9 @@ public class FireBaseInteractor {
      */
     public void startListenerForRequests(final MainActivity callingActivity){
         Log.d("checkForRequests","checking the database for pending request");
-        //Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/requests");
+
         final String receiverEmail = callingActivity.relationship.partnerOneEmail;
-        ref.child("requests").addChildEventListener(new ChildEventListener() {
+        ref.child("requests").addChildEventListener(listenerForRequests = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot req, String s) {
 
@@ -190,10 +223,9 @@ public class FireBaseInteractor {
         final String myName = callingActivity.relationship.partnerOneName;
         final String myEmail = callingActivity.relationship.partnerOneEmail;
         final String regId = callingActivity.relationship.partnerOneRegId;
-        //Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
 
         //attach a listener to read the data
-        ref.child("relationships").addListenerForSingleValueEvent(new ValueEventListener(){
+        ref.child("relationships").addListenerForSingleValueEvent(sendPartnerRequestListener = new ValueEventListener(){
             @Override
             public synchronized void onDataChange(DataSnapshot snapshot){
                 Log.d("sendPartnerRequest","calling onDataChange");
@@ -247,8 +279,7 @@ public class FireBaseInteractor {
     public void acceptRequest(String senderName, String senderEmail, String senderRegId, final MainActivity callingActivity){
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
 
-        //this is getting rid of the request listener right??
-        ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com");
+        removeListeners();
 
         //no relationship was found including the user. Create a new request in the database
         Map<String, Object> newEntry = new HashMap<String, Object>();
@@ -259,9 +290,6 @@ public class FireBaseInteractor {
         Log.d("relname", relName);
 
         //Update the Relationship from MainActivity
-        //callingActivity.relationship.partnerTwoName = senderName;
-        //callingActivity.relationship.partnerTwoEmail = senderEmail;
-        //callingActivity.relationship.partnerTwoRegId = senderRegId;
         callingActivity.relationship.rel_id = relName;
 
         //Create Maps to put data in for the database
@@ -289,11 +317,13 @@ public class FireBaseInteractor {
         startListenerForCheatingHoe(callingActivity);
     }
 
+
     /*
     This method erases an existing relationship from the database
      */
     public void removeRelationship(MainActivity callingActivity){
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+        removeListeners();
         root.child(callingActivity.relationship.rel_id).setValue(null);
         callingActivity.relationship.partnerTwoName = null;
         callingActivity.relationship.partnerTwoEmail = null;
@@ -303,7 +333,7 @@ public class FireBaseInteractor {
     //This method checks if the user already has an account with CoupleTones
     //It should be called as the user logs in. The app transitions to MainActivity
     public void checkForAccount(final SignInActivity callingActivity){
-        //Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
+
         Log.d("checkForAccount","checkForAccount called");
         //attach a listener to read the data
         ref.child("relationships").addListenerForSingleValueEvent(new ValueEventListener(){
