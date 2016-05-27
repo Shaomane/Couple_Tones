@@ -42,7 +42,11 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.EditText;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -74,8 +78,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Marker prevMarker;
     Location prevLocation;
     static ArrayList<LatLng> arrayLatLng = new ArrayList<LatLng>();
-   // static int addLocationToggle = 0;              // counter to check for addlocation toggle
-   // static int removeLocationToggle = 0;            // counter to check for remove location toggle
+    // static int addLocationToggle = 0;              // counter to check for addlocation toggle
+    // static int removeLocationToggle = 0;            // counter to check for remove location toggle
     public static String placeName;
 
     /* these lines below save user favorite locations between app sessions */
@@ -89,6 +93,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String senderName;
 
     boolean isSpecialMessageSent = false;
+
+    boolean currentlyVisiting = false;
 
 
     /*
@@ -135,19 +141,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // Check the favorite locations to see if the user is near a favorite location
                 Location target;
-                for (Location point: favoriteLocations)
+
+                if (!currentlyVisiting)
                 {
-                    target = point;
-                    if (location.distanceTo(target) < METERS_160) // "near" is < 160 meters
-                    {
-                        // only handle the location if the user has never visited a
-                        // favorite location before OR it is a different location
-                        // than the last location they visited
-                        if ((prevLocation == null) ||
-                                (target.getLatitude() != prevLocation.getLatitude() && target.getLongitude() != prevLocation.getLongitude()))
+                    for (Location point : favoriteLocations) {
+                        target = point;
+                        if (location.distanceTo(target) < METERS_160) // "near" is < 160 meters
                         {
-                            handleReachedFavoriteLocation(target);
+                            // only handle the location if the user has never visited a
+                            // favorite location before OR it is a different location
+                            // than the last location they visited
+                            if ((prevLocation == null) ||
+                                    (target.getLatitude() != prevLocation.getLatitude() && target.getLongitude() != prevLocation.getLongitude())) {
+                                currentlyVisiting = true;
+                                handleReachedFavoriteLocation(target);
+                            }
                         }
+                    }
+                }
+                else
+                {
+                    target = prevLocation;
+                    if (location.distanceTo(target) >= METERS_160)
+                    {
+                        currentlyVisiting = false;
+                        handleLeftFavoriteLocation(target);
                     }
                 }
             }
@@ -254,7 +272,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     {
                         Location currLoc = favoriteLocations.get(i);
                         if ((currLoc.getProvider().equals(clickedMarker.getTitle())) &&
-                            (currLoc.getLatitude() == clickedMarker.getPosition().latitude) &&
+                                (currLoc.getLatitude() == clickedMarker.getPosition().latitude) &&
                                 (currLoc.getLongitude() == clickedMarker.getPosition().longitude))
                         {
                             System.err.println("REMOVE SUCCESSFUL");
@@ -346,7 +364,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 placeName = input.getText().toString();
 
                 mMap.addMarker (new MarkerOptions()
-                                .title(placeName).position(currPoint).draggable(true)).showInfoWindow();
+                        .title(placeName).position(currPoint).draggable(true)).showInfoWindow();
 
                 Double currLat = currPoint.latitude;
                 Double currLong = currPoint.longitude;
@@ -435,8 +453,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d("success", "near location " + location.getProvider());
             t.show();
             prevLocation = location; //Set prevLocation so that a user can't reach the same fav location twice in a row
-            sendMessage(location);
+            sendMessage(location, false);
         }
+    }
+
+    /*
+     * Completes the actions needed when the user leaves their most recent favorite location. Toasts the
+     * user that they left a favorite location and calls sendMessage to alert their partner.
+     */
+    private void handleLeftFavoriteLocation(Location location)
+    {
+        // Set up the toast
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        CharSequence text = "Left favorite location: " + location.getProvider();
+        Toast t = Toast.makeText(context, text, duration);
+        Log.d("departed success", "left location " + location.getProvider());
+        t.show();
+        sendMessage(location, true);
     }
 
     /*
@@ -457,7 +491,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * Send a message using the Firebase database that will alert the user's partner of the
      * favorite location that they visited
      */
-    private void sendMessage(Location location) {
+    private void sendMessage(final Location location, boolean leavingMessage) {
         if (location == null){
             Log.e("sendMessage", "null location was received in sendMessage");
             return;
@@ -466,30 +500,61 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
 
-        String msg = senderName + " visited " + location.getProvider();
-        //long time = location.getTime();
+        String msg;
+        if (leavingMessage)
+        {
+            msg = senderName + " left " + location.getProvider();
+        }
+        else
+        {
+            msg = senderName + " visited " + location.getProvider();
+        }
+        final String msgFinal = msg;
         String coords = ""+(int)(location.getLatitude()+location.getLongitude());
 
         final String relationshipID = rel_id;
         Log.d("rel", "rel_id" +rel_id);
 
         //Get a Firebase reference to our relationship
-        Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id+"/notifications");
+        final Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id+"/notifications");
+
+        Query queryRef = new Firebase("https://dazzling-inferno-7112.firebaseio.com/").orderByChild("relationships").equalTo(rel_id);
+        queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot == null || dataSnapshot.getValue() == null) {
+                    Log.d("FUCK YOU", "FUCK YOU");
+                    rel_id = null;
+                }
+                else{
+                    Map<String, Object> sender = new HashMap<String, Object>();
+                    sender.put("sender", senderEmail);
+                    Map<String, Object> message = new HashMap<String, Object>();
+                    sender.put("message", msgFinal);
+
+                    String loc = location.getProvider();
+                    ref.child(loc).updateChildren(sender);
+                    ref.child(loc).updateChildren(message);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
         Map<String, Object> newNotification = new HashMap<String, Object>();
         newNotification.put(coords, "");
-        //ref.updateChildren(newNotification);
 
         Map<String, Object> sender = new HashMap<String, Object>();
         sender.put("sender", senderEmail);
         Map<String, Object> message = new HashMap<String, Object>();
         sender.put("message", msg);
-        //Map<String, Object> occuranceTime = new HashMap<String, Object>();
-        //occuranceTime.put("occuranceTime", time);
 
         ref.child(coords).updateChildren(sender);
         ref.child(coords).updateChildren(message);
-        //ref.child("notifications").child(coords).updateChildren(occuranceTime);
+
     }
 
     @Override
