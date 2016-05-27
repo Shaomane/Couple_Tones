@@ -522,7 +522,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot == null || dataSnapshot.getValue() == null) {
+                if (dataSnapshot == null) {
                     Log.d("FUCK YOU", "FUCK YOU");
                     rel_id = null;
                 }
@@ -543,17 +543,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-
-        Map<String, Object> newNotification = new HashMap<String, Object>();
-        newNotification.put(coords, "");
-
-        Map<String, Object> sender = new HashMap<String, Object>();
-        sender.put("sender", senderEmail);
-        Map<String, Object> message = new HashMap<String, Object>();
-        sender.put("message", msg);
-
-        ref.child(coords).updateChildren(sender);
-        ref.child(coords).updateChildren(message);
 
     }
 

@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 startListenerForRequests();
+                startListenerForAcceptedRequest();
             }
 
         }
@@ -103,11 +104,15 @@ public class MainActivity extends AppCompatActivity {
         getRegId();
     }
 
+    private void startListenerForAcceptedRequest(){
+        FBInteractor.startListenerForAcceptedRequest(this);
+    }
+
     private void startListenerForCheatingHoe(){
         FBInteractor.startListenerForCheatingHoe(this);
     }
 
-    private void updateUI() {
+    public void updateUI() {
         //Set up the Add/Remove Partner button accordingly depending on whether the user is paired
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
