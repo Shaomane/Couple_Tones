@@ -21,19 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.MutableData;
-import com.firebase.client.ValueEventListener;
-import com.firebase.client.snapshot.IndexedNode;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
 
     public Relationship relationship;
-    public FireBaseInteractor FBInteractor = new FireBaseInteractor();
+    public FireBaseInteractor FBInteractor;// = new FireBaseInteractor();
 
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
@@ -59,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         backgroundIntent = new Intent(MainActivity.this, BackgroundListenerService.class);
         Firebase.setAndroidContext(this);
 
+        FBInteractor = new FireBaseInteractor();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,10 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
-        boolean logged_in = false;
+        //boolean logged_in = false;
         if (extras != null){
             relationship.rel_id = extras.getString("rel_id");
-            //Log.d("rel", "rel_id " +relationship.rel_id);
             relationship.partnerOneName = extras.getString("name");
             relationship.partnerOneEmail = extras.getString("email");
             relationship.partnerOneRegId = extras.getString("myRegId");
@@ -80,39 +73,46 @@ public class MainActivity extends AppCompatActivity {
             relationship.partnerTwoEmail = extras.getString("partnerEmail");
             relationship.partnerTwoRegId = extras.getString("partnersRegId");
 
-            logged_in = extras.getBoolean("logged_in");
+            //Check if the BackgroundListenerService is running. Only start if not AND we are in a relationship
+            if (relationship.partnerTwoName != null && !isMyServiceRunning(BackgroundListenerService.class)) {
+                backgroundIntent.putExtra("rel_id", relationship.rel_id);
+                backgroundIntent.putExtra("partner_email", relationship.partnerTwoEmail);
+                startService(backgroundIntent);
+                startListenerForCheatingHoe();
+            }
+            else{
+                startListenerForRequests();
+            }
 
-            Log.d("found extras", "result of name: " + relationship.partnerOneName);
-            Log.d("found extras", "result of email: " + relationship.partnerOneEmail);
-            Log.d("found extras", "result of partnerName: "+relationship.partnerTwoName);
-            Log.d("found extras", "result of partnerEmail: "+relationship.partnerTwoEmail);
-            Log.d("found extras", "result of myRegId: "+relationship.partnerOneRegId);
-            Log.d("found extras", "result of partnersRegId: "+relationship.partnerTwoRegId);
         }
-
         //if not logged in make the user log in by transitioning to SignInActivity
-        if (!logged_in) {
+        else {
             Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
             finish();
             return;
         }
 
-        //Check if the BackgroundListenerService is running. Only start if not
-        if (!isMyServiceRunning(BackgroundListenerService.class)) {
-            backgroundIntent.putExtra("rel_id", relationship.rel_id);
-            backgroundIntent.putExtra("partner_email", relationship.partnerTwoEmail);
-            startService(backgroundIntent);
-        }
-        else{
-            Log.d("else","background service was not started ");
-        }
+        //Update the UI depending on whether we are in a relationship or not
+        updateUI();
 
+        ListView list = (ListView) findViewById(R.id.list);
+        adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
+        list.setAdapter(adapter);
+
+        getRegId();
+    }
+
+    private void startListenerForCheatingHoe(){
+        FBInteractor.startListenerForCheatingHoe(this);
+    }
+
+    private void updateUI() {
         //Set up the Add/Remove Partner button accordingly depending on whether the user is paired
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
         if (relationship.partnerTwoName == null) {
-            checkForRequest();
+            //startListenerForRequests();
             addPartnerButton.setClickable(true);
             addPartnerButton.setVisibility(View.VISIBLE);
             removePartnerButton.setClickable(false);
@@ -125,12 +125,6 @@ public class MainActivity extends AppCompatActivity {
             removePartnerButton.setVisibility(View.VISIBLE);
             removePartnerButton.setClickable(true);
         }
-
-        ListView list = (ListView) findViewById(R.id.list);
-        adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
-        list.setAdapter(adapter);
-
-        getRegId();
     }
 
     // loads up the locations from shared preferences and lists them on the main screen using Map<>.
@@ -189,8 +183,8 @@ public class MainActivity extends AppCompatActivity {
     /*
     This method asks the Interactor to check if anyone has sent a partner request
      */
-    public void checkForRequest(){
-        FBInteractor.checkForRequest(this);
+    public void startListenerForRequests(){
+        FBInteractor.startListenerForRequests(this);
     }
 
     /*
@@ -237,6 +231,11 @@ public class MainActivity extends AppCompatActivity {
      */
     public void acceptRequest(String senderName, String senderEmail, String senderRegId){
         FBInteractor.acceptRequest(senderName, senderEmail, senderRegId, this);
+
+        relationship.partnerTwoName = senderName;
+        relationship.partnerTwoEmail = senderEmail;
+        startService(backgroundIntent);
+        updateUI();
     }
 
     /*
@@ -246,14 +245,11 @@ public class MainActivity extends AppCompatActivity {
     public void removeRelationship(){
         FBInteractor.removeRelationship(this);
 
-        Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
-        Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
+        relationship.partnerTwoEmail = null;
+        relationship.partnerTwoName = null;
+        stopService(backgroundIntent);
 
-        //update the add and remove partner buttons accordingly
-        addPartnerButton.setClickable(true);
-        addPartnerButton.setVisibility(View.VISIBLE);
-        removePartnerButton.setClickable(false);
-        removePartnerButton.setVisibility(View.GONE);
+        updateUI();
     }
 
     //Called by clicking the Add Partner button. Creates a dialogue that goes through the partner
@@ -312,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         removePartnerDialogue.setTitle("Remove Partner");
         removePartnerDialogue.setMessage("Are you sure you want to remove " + relationship.partnerTwoName + "?");
 
-        removePartnerDialogue.setPositiveButton("Send",
+        removePartnerDialogue.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
