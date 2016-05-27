@@ -129,6 +129,15 @@ public class BackgroundListenerService extends Service {
      * Shows a notification to the user, with sound
      */
     private void showNotification(String msg) {
+        Uri uri;
+        if (msg.contains("visited"))
+        {
+            uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.arpeggio);
+        }
+        else
+        {
+            uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.droplet);
+        }
         NotificationManager mNotificationManager;
         mNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -146,19 +155,20 @@ public class BackgroundListenerService extends Service {
                 .setContentTitle("CoupleTones Notification")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setGroup(notifGroup)
-                .setContentText(msg);
+                .setContentText(msg)
+                .setSound(uri);
 
         mBuilder.setContentIntent(contentIntent);
         //mNotificationManager.notify(com.example.noellin.coupletones.Constants.NOTIFICATION_NR, mBuilder.build());
         mNotificationManager.notify(id, mBuilder.build());
         id++;
 
-        try {
+        /*try {
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
             r.play();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
