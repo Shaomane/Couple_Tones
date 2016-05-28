@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
+    MyCustomAdapter myCustomAdapter;
 
     public Relationship relationship;
     public FireBaseInteractor FBInteractor;// = new FireBaseInteractor();
@@ -103,8 +104,9 @@ public class MainActivity extends AppCompatActivity {
         updateUI();
 
         ListView list = (ListView) findViewById(R.id.list);
-        adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
-        list.setAdapter(adapter);
+        //adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
+        myCustomAdapter = new MyCustomAdapter(listItems, this);
+        list.setAdapter(myCustomAdapter);
 
         getRegId();
     }
@@ -142,8 +144,10 @@ public class MainActivity extends AppCompatActivity {
     // attempts to refresh favorite locations page upon returning from maps
     protected void onResume() {
         super.onResume();
-        adapter.clear();
-        adapter.notifyDataSetChanged();
+        //adapter.clear();
+        //adapter.notifyDataSetChanged();
+
+
 
         SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
 
@@ -154,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
             if (!(listItems.contains(entry.getKey()))) {
                 listItems.add(entry.getKey());
             }
-            adapter.notifyDataSetChanged();
-
+            //adapter.notifyDataSetChanged();
+            myCustomAdapter.notifyDataSetChanged();
         }
     }
 

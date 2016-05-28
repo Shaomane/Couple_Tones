@@ -62,7 +62,6 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
             @Override
             public void onClick(View v) {
                 //do something
-                list.remove(position); //or some other task
                 notifyDataSetChanged();
             }
         });
