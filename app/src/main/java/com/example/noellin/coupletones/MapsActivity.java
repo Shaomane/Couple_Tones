@@ -96,6 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     boolean currentlyVisiting = false;
 
+    LocationUpdater locationUpdater = null;
 
     /*
      * Called upon the creation of the activity. Sets up a listener to listen for location changes
@@ -112,6 +113,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Log.d("rel", "rel_id" +rel_id);
             senderEmail = extras.getString("senderEmail");
             senderName = extras.getString("senderName");
+        }
+
+        if (locationUpdater == null){
+            locationUpdater = new LocationUpdater(rel_id);
         }
 
         setContentView(R.layout.activity_maps);
@@ -275,6 +280,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 (currLoc.getLongitude() == clickedMarker.getPosition().longitude))
                         {
                             System.err.println("REMOVE SUCCESSFUL");
+                            locationUpdater.removeFavoriteLocation(favoriteLocations.get(i), senderName);
                             favoriteLocations.remove(i);
                         }
                     }
@@ -333,6 +339,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     {
                         favoriteLocations.get(i).setLatitude(currLat);
                         favoriteLocations.get(i).setLongitude(currLong);
+
+                        //update the firebase with the moved location
+                        locationUpdater.addFavoriteLocation(favoriteLocations.get(i), senderName);
                     }
                 }
             }
@@ -380,6 +389,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 currLoc.setLongitude(currLong);
                 favoriteLocations.add(currLoc);
 
+                locationUpdater.addFavoriteLocation(currLoc, senderName);
+
                 // err messages for debugging purposes
                 System.err.println("Hello from line 278");
                 System.err.println(savedLocations.getAll());
@@ -423,6 +434,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             currLoc.setLatitude(thisLocationLatLng.latitude);
             currLoc.setLongitude(thisLocationLatLng.longitude);
             favoriteLocations.add(currLoc);
+
+            //TODO: possibly redundant but should not cause issues
+            locationUpdater.addFavoriteLocation(currLoc, senderName);
         }
     }
 

@@ -35,6 +35,7 @@ public class FireBaseInteractor {
     public FireBaseInteractor(){}
 
     public void startListenerForAcceptedRequest(final MainActivity callingActivity){
+        Log.d("startListener", "starting Listener for Accepted Request");
         ref.child("relationships").addChildEventListener(listenerForAcceptedRequest = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
