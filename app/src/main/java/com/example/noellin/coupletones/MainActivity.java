@@ -11,9 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     String PROJECT_NUMBER = "290538927222";
     Intent backgroundIntent;
 
+    private AlertDialog.Builder builder;
+    ArrayList mSelectedItems;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         relationship = new Relationship();
 
@@ -154,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onStart(){
         super.onStart();
@@ -174,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            settingDialog();
             return true;
         }
         else if (id == R.id.action_signout){
@@ -386,6 +393,44 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    /*
+     * This is the method to run the dialog box when the settings button is pressed
+     */
+    private void settingDialog() {
+
+        mSelectedItems = new ArrayList();
+
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("Settings").setCancelable(true);
+        builder.setMultiChoiceItems(R.array.settings_choices, null,
+                new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if(isChecked) {
+                            mSelectedItems.add(which);
+
+                        } else if(mSelectedItems.contains(which)) {
+                            mSelectedItems.remove(Integer.valueOf(which));
+                        }
+                    }
+                });
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }
