@@ -240,7 +240,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapClick(LatLng point)
             {
-                //if (addLocationToggle % 2 == 1)
                 if (rg.getCheckedRadioButtonId() == R.id.addLocation)
                 {
                     showInputDialog(point);

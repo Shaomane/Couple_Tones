@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import android.os.Vibrator;
 import android.util.Log;
 
 import android.support.v4.app.NotificationCompat;
@@ -37,6 +38,9 @@ public class BackgroundListenerService extends Service {
     public Thread thread;
     public Firebase ref;
     public ChildEventListener listener;
+    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    long arrivalVibe [] = {0, 200, 800, 200, 800, 200};
+    long leavingVibe [] = {0, 800, 200, 800, 200, 800};
 
     public BackgroundListenerService() {
     }
@@ -130,13 +134,22 @@ public class BackgroundListenerService extends Service {
      */
     private void showNotification(String msg) {
         Uri uri;
+        // when partner arrives at a location
         if (msg.contains("visited"))
         {
             uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.arpeggio);
+
+            // TODO add check for vibe mode
+            v.vibrate (arrivalVibe, -1);
+
         }
+        // when partner leaves location
         else
         {
             uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.droplet);
+
+            //TODO add check for vibrate mode
+            v.vibrate (leavingVibe, -1);
         }
         NotificationManager mNotificationManager;
         mNotificationManager = (NotificationManager) this
