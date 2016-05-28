@@ -41,6 +41,9 @@ public class BackgroundListenerService extends Service {
     long arrivalVibe [] = {0, 200, 800, 200, 800, 200};
     long leavingVibe [] = {0, 800, 200, 800, 200, 800};
 
+    long customVibes[][] = new long[10][];
+    Uri customTones[] = new Uri[10];
+
     public BackgroundListenerService() {
     }
 
@@ -104,6 +107,8 @@ public class BackgroundListenerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
+        setupVibetones();
+        setupTones();
         Bundle extras = intent.getExtras();
         if (extras != null){
             rel_id = extras.getString("rel_id");
@@ -187,5 +192,56 @@ public class BackgroundListenerService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
+    }
+
+    /*
+     * Vibetones are accessed by calling customVibes[5] for vibeTone5 etc
+     */
+    private void setupVibetones()
+    {
+        long[] currVibe = {0, 1000};
+        customVibes[0] = currVibe;
+        currVibe = new long[]{0, 1000, 500, 1000};
+        customVibes[1] = currVibe;
+        currVibe = new long[]{0, 500, 200, 500, 200, 500};
+        customVibes[2] = currVibe;
+        currVibe = new long[]{0, 200, 200, 500};
+        customVibes[3] = currVibe;
+        currVibe = new long[]{0, 500, 500, 500, 500, 500 ,500, 500};
+        customVibes[4] = currVibe;
+        currVibe = new long[]{0, 500, 500, 500, 500, 500 ,500, 500, 500, 500, 500, 500};
+        customVibes[5] = currVibe;
+        currVibe = new long[]{0, 3000};
+        customVibes[6] = currVibe;
+        currVibe = new long[]{0, 500};
+        customVibes[7] = currVibe;
+        currVibe = new long[]{0, 300, 500, 1000, 500, 300};
+        customVibes[8] = currVibe;
+        currVibe = new long[]{0, 300, 300, 300, 300, 1000, 300, 300, 300, 300};
+        customVibes[9] = currVibe;
+    }
+
+    private void setupTones()
+    {
+        Uri currUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.beep1);
+        customTones[0] = currUri;
+        currUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.beep10);
+        customTones[1] = currUri;
+        currUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.beep19);
+        customTones[2] = currUri;
+        currUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.beep21);
+        customTones[3] = currUri;
+        currUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.beep50);
+        customTones[4] = currUri;
+        currUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.beep39);
+        customTones[5] = currUri;
+        currUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.beep40);
+        customTones[6] = currUri;
+        currUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.beep41);
+        customTones[7] = currUri;
+        currUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.beep46);
+        customTones[8] = currUri;
+        currUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.beep49);
+        customTones[9] = currUri;
     }
 }

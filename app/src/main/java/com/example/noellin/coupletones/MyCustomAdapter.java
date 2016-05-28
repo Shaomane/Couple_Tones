@@ -55,8 +55,24 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         listItemText.setText(list.get(position));
 
         //Handle buttons and add onClickListeners
-        Button vibetoneBtn = (Button)view.findViewById(R.id.vibetone_btn);
+        Button viewButton = (Button)view.findViewById(R.id.view_btn);
         Button toneBtn = (Button)view.findViewById(R.id.tone_btn);
+        Button vibetoneBtn = (Button)view.findViewById(R.id.vibetone_btn);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        toneBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //do something
+                notifyDataSetChanged();
+            }
+        });
 
         vibetoneBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -65,13 +81,10 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 notifyDataSetChanged();
             }
         });
-        toneBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                //do something
-                notifyDataSetChanged();
-            }
-        });
+
+
+
+
 
         return view;
     }
