@@ -38,7 +38,6 @@ public class BackgroundListenerService extends Service {
     public Thread thread;
     public Firebase ref;
     public ChildEventListener listener;
-    Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     long arrivalVibe [] = {0, 200, 800, 200, 800, 200};
     long leavingVibe [] = {0, 800, 200, 800, 200, 800};
 
@@ -134,6 +133,8 @@ public class BackgroundListenerService extends Service {
      */
     private void showNotification(String msg) {
         Uri uri;
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
         // when partner arrives at a location
         if (msg.contains("visited"))
         {
@@ -141,6 +142,7 @@ public class BackgroundListenerService extends Service {
 
             // TODO add check for vibe mode
             v.vibrate (arrivalVibe, -1);
+            System.err.println ("Arrival vibe tone!!!");
 
         }
         // when partner leaves location
@@ -150,6 +152,8 @@ public class BackgroundListenerService extends Service {
 
             //TODO add check for vibrate mode
             v.vibrate (leavingVibe, -1);
+            System.err.println ("Departure vibe tone!!!");
+
         }
         NotificationManager mNotificationManager;
         mNotificationManager = (NotificationManager) this
