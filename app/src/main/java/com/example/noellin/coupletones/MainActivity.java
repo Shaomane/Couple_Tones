@@ -105,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
 
         ListView list = (ListView) findViewById(R.id.list);
         //adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
+
+        FBInteractor.getPartnerFavoriteLocationsList(this, listItems);
+
         myCustomAdapter = new MyCustomAdapter(listItems, this);
         list.setAdapter(myCustomAdapter);
 

@@ -17,9 +17,11 @@ import java.util.Map;
 public class LocationUpdater {
 
     Firebase ref; //= new Firebase("https://dazzling-inferno-7112.firebaseio.com");
+    String rel_id = null;
 
     public LocationUpdater(String rel_id){
         ref =  new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id);
+        this.rel_id = rel_id;
     }
 
 
@@ -27,17 +29,22 @@ public class LocationUpdater {
     This method adds a favorite location to the Firebase database
      */
     public void addFavoriteLocation(Location location, String myName){
+
+        if (rel_id == null) return;
+
         Map<String, Object> newLoc = new HashMap<String, Object>();
 
-        newLoc.put(location.getProvider(), location.getProvider());
+        newLoc.put("name", location.getProvider());
 
-        ref.child(myName+"_Locations").updateChildren(newLoc);
+        ref.child(myName+"_Locations").child(location.getProvider()).updateChildren(newLoc);
     }
 
     /*
     This method removes a favorite location from the Firebase database
      */
     public void removeFavoriteLocation(final Location location, String myName){
+
+        if (rel_id == null) return;
 
         ref.child(myName+"_Locations").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

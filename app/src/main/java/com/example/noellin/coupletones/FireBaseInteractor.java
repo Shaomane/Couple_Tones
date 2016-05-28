@@ -11,6 +11,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -367,6 +368,30 @@ public class FireBaseInteractor {
                 Log.d("Read failed", "Read failed in addValueListener");
             }
         });
+    }
+
+    public void getPartnerFavoriteLocationsList(MainActivity callingActivity, final ArrayList<String> listItems){
+
+        if (callingActivity.relationship.rel_id == null){
+            return;
+        }
+
+        ref.child("relationships").child(callingActivity.relationship.rel_id)
+                .child(callingActivity.relationship.partnerTwoName+"_Locations")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot loc : dataSnapshot.getChildren()){
+                            listItems.add(loc.getKey());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+
     }
 
 }
