@@ -38,7 +38,10 @@ public class BackgroundListenerService extends Service {
     public Thread thread;
     public Firebase ref;
     public ChildEventListener listener;
+<<<<<<< HEAD
     //Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+=======
+>>>>>>> 37862d1deee4b3bddfa580e3cd95dbb730bdbcc5
     long arrivalVibe [] = {0, 200, 800, 200, 800, 200};
     long leavingVibe [] = {0, 800, 200, 800, 200, 800};
 
@@ -134,13 +137,20 @@ public class BackgroundListenerService extends Service {
      */
     private void showNotification(String msg) {
         Uri uri;
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
         // when partner arrives at a location
         if (msg.contains("visited"))
         {
             uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.arpeggio);
 
             // TODO add check for vibe mode
+<<<<<<< HEAD
             //v.vibrate (arrivalVibe, -1);
+=======
+            v.vibrate (arrivalVibe, -1);
+            System.err.println ("Arrival vibe tone!!!");
+>>>>>>> 37862d1deee4b3bddfa580e3cd95dbb730bdbcc5
 
         }
         // when partner leaves location
@@ -149,7 +159,13 @@ public class BackgroundListenerService extends Service {
             uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.droplet);
 
             //TODO add check for vibrate mode
+<<<<<<< HEAD
             //v.vibrate (leavingVibe, -1);
+=======
+            v.vibrate (leavingVibe, -1);
+            System.err.println ("Departure vibe tone!!!");
+
+>>>>>>> 37862d1deee4b3bddfa580e3cd95dbb730bdbcc5
         }
         NotificationManager mNotificationManager;
         mNotificationManager = (NotificationManager) this
