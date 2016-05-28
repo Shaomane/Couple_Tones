@@ -30,29 +30,9 @@ public class FireBaseInteractor {
     ValueEventListener searchRequestListener = null;
     ValueEventListener sendPartnerRequestListener = null;
 
+    boolean started = false;
+
     public FireBaseInteractor(){}
-
-    public void removeListeners(){/*
-        if (listenerForAcceptedRequest != null){
-            ref.removeEventListener(listenerForAcceptedRequest);
-        }
-        if (listenerForCheatingHoe != null){
-            ref.removeEventListener(listenerForCheatingHoe);
-        }
-        if (listenerForRequests != null){
-            ref.removeEventListener(listenerForRequests);
-        }
-
-        if (searchRelationshipListener != null){
-            ref.removeEventListener(searchRelationshipListener);
-        }
-        if (searchRequestListener != null){
-            ref.removeEventListener(searchRequestListener);
-        }
-        if (sendPartnerRequestListener != null){
-            ref.removeEventListener(sendPartnerRequestListener);
-        }*/
-    }
 
     public void startListenerForAcceptedRequest(final MainActivity callingActivity){
         ref.child("relationships").addChildEventListener(listenerForAcceptedRequest = new ChildEventListener() {
@@ -86,7 +66,7 @@ public class FireBaseInteractor {
                                     relationship.child("emailTwo").getValue().toString().equals(callingActivity.relationship.partnerOneEmail))){
                         //Someone accepted our request
                         Log.d("accepted", "OUR request was accepted");
-                        removeListeners();
+
                         callingActivity.relationship.partnerTwoEmail = (relationship.child("emailOne").getValue()
                                 .toString().equals(callingActivity.relationship.partnerOneEmail)) ? relationship.child("emailTwo").getValue()
                                 .toString() : relationship.child("emailOne").getValue().toString();
@@ -96,6 +76,10 @@ public class FireBaseInteractor {
                         callingActivity.relationship.rel_id = relationship.getKey();
                         callingActivity.updateUI();
                         startListenerForCheatingHoe(callingActivity);
+
+                        started = false;
+                        ref.child("requests").removeEventListener(listenerForRequests);
+
                         return;
                     }
                 }
@@ -124,7 +108,7 @@ public class FireBaseInteractor {
                         (dataSnapshot.child("emailOne").getValue().toString().equals(callingActivity.relationship.partnerOneEmail) ||
                         dataSnapshot.child("emailTwo").getValue().toString().equals(callingActivity.relationship.partnerOneEmail))){
                     //TODO: if this causes a last minute problem put it in its own method with a delay
-                    removeListeners();
+
                     getBrokenUpWith(callingActivity);
                     return;
                 }
@@ -165,7 +149,6 @@ public class FireBaseInteractor {
                     if (request.child("receiverEmail").getValue() != null &&
                             request.child("receiverEmail").getValue().toString().equals(receiverEmail)){
                         //Found a request! We are loved.
-                        removeListeners();
                         String senderName = request.child("senderName").getValue().toString();
                         String senderEmail = request.child("senderEmail").getValue().toString();
                         String senderRegId = request.child("senderRegId").getValue().toString();
@@ -173,7 +156,7 @@ public class FireBaseInteractor {
                         callingActivity.respondToRequest(senderName, senderEmail, senderRegId);
                     }
                 }
-                ref.removeEventListener(searchRequestListener);
+                ref.child("requests").removeEventListener(searchRequestListener);
             }
 
             @Override
@@ -190,7 +173,9 @@ public class FireBaseInteractor {
     public void startListenerForRequests(final MainActivity callingActivity){
         Log.d("checkForRequests","checking the database for pending request");
 
-        final String receiverEmail = callingActivity.relationship.partnerOneEmail;
+        if (started == true) return;
+        started = true;
+
         ref.child("requests").addChildEventListener(listenerForRequests = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot req, String s) {
@@ -264,6 +249,8 @@ public class FireBaseInteractor {
                 root.child(reqName).updateChildren(receiverEmail);
                 callingActivity.showPartnerRequestConfirmation(entered_email);
 
+                startListenerForAcceptedRequest(callingActivity);
+
             }
             @Override
             public void onCancelled(FirebaseError fireBaseError){
@@ -279,7 +266,8 @@ public class FireBaseInteractor {
     public void acceptRequest(String senderName, String senderEmail, String senderRegId, final MainActivity callingActivity){
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
 
-        removeListeners();
+        started = false;
+        ref.child("requests").removeEventListener(listenerForRequests);
 
         //no relationship was found including the user. Create a new request in the database
         Map<String, Object> newEntry = new HashMap<String, Object>();
@@ -323,7 +311,6 @@ public class FireBaseInteractor {
      */
     public void removeRelationship(MainActivity callingActivity){
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
-        removeListeners();
         root.child(callingActivity.relationship.rel_id).setValue(null);
         callingActivity.relationship.partnerTwoName = null;
         callingActivity.relationship.partnerTwoEmail = null;
