@@ -41,6 +41,9 @@ public class BackgroundListenerService extends Service {
     long arrivalVibe [] = {0, 200, 800, 200, 800, 200};
     long leavingVibe [] = {0, 800, 200, 800, 200, 800};
 
+    long customVibes[][];
+    Uri customTones[] = new Uri[10];
+
     public BackgroundListenerService() {
     }
 
@@ -104,6 +107,8 @@ public class BackgroundListenerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
+        setupVibetones();
+        setupTones();
         Bundle extras = intent.getExtras();
         if (extras != null){
             rel_id = extras.getString("rel_id");
@@ -187,5 +192,20 @@ public class BackgroundListenerService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
+    }
+
+    /*
+     * Vibetones are accessed by calling customVibes[5] for vibeTone5 etc
+     */
+    private void setupVibetones()
+    {
+        ToneContainer t = new ToneContainer(getApplicationContext());
+        customVibes = t.getVibeTones();
+    }
+
+    private void setupTones()
+    {
+        ToneContainer t = new ToneContainer(getApplicationContext());
+        customTones = t.getTones();
     }
 }

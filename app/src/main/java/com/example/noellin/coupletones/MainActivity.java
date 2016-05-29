@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -108,9 +109,10 @@ public class MainActivity extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.list);
         //adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
 
+        final Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         FBInteractor.getPartnerFavoriteLocationsList(this, listItems);
 
-        myCustomAdapter = new MyCustomAdapter(listItems, this);
+        myCustomAdapter = new MyCustomAdapter(listItems, this, v);
         list.setAdapter(myCustomAdapter);
 
         getRegId();
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
+        /*SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
 
         Map<String, ?> previousLocations = savedLocations.getAll();
 
@@ -165,7 +167,11 @@ public class MainActivity extends AppCompatActivity {
             //}
             //adapter.notifyDataSetChanged();
             myCustomAdapter.notifyDataSetChanged();
+
         }
+
+
+        }*/
 
     }
 

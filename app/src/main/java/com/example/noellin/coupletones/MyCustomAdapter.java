@@ -1,12 +1,20 @@
 package com.example.noellin.coupletones;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Vibrator;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,12 +25,28 @@ import java.util.ArrayList;
 public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
+    private AlertDialog.Builder builder;
+
+    long customVibes[][];
+    Uri customTones[];
+    ToneContainer t;
+
+    int selectedTone = 0;
+    int selectedVibetone = 0;
+
+    private LocationController locationController;
 
 
-
-    public MyCustomAdapter(ArrayList<String> list, Context context) {
+    public MyCustomAdapter(ArrayList<String> list, MainActivity context, Vibrator vibrator) {
         this.list = list;
         this.context = context;
+
+        locationController = new LocationController(context);
+        locationController.readFromDatabase();
+
+        t = new ToneContainer(context);
+        customVibes = t.getVibeTones();
+        customTones = t.getTones();
     }
 
     @Override
@@ -55,21 +79,92 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         listItemText.setText(list.get(position));
 
         //Handle buttons and add onClickListeners
-        Button vibetoneBtn = (Button)view.findViewById(R.id.vibetone_btn);
+        Button viewButton = (Button)view.findViewById(R.id.view_btn);
         Button toneBtn = (Button)view.findViewById(R.id.tone_btn);
+        Button vibetoneBtn = (Button)view.findViewById(R.id.vibetone_btn);
+
+        viewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        toneBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //do something
+                notifyDataSetChanged();
+
+                builder = new AlertDialog.Builder(context);
+                builder.setTitle("Tone selection").setCancelable(true);
+                final CharSequence[] items = {"Tone 0", "Tone 1", "Tone 2", "Tone 3", "Tone 4", "Tone 5",
+                        "Tone 6", "Tone 7", "Tone 8", "Tone 9"};
+                builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        Ringtone r = RingtoneManager.getRingtone(context, customTones[item]);
+                        r.play();
+                        selectedTone = item;
+                        //levelDialog.dismiss();
+                    }
+                });
+
+                builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
 
         vibetoneBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 //do something
                 notifyDataSetChanged();
-            }
-        });
-        toneBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                //do something
-                notifyDataSetChanged();
+
+                builder = new AlertDialog.Builder(context);
+                builder.setTitle("VibeTone selection").setCancelable(true);
+
+                final CharSequence[] items = {"VibeTone 0", "VibeTone 1", "VibeTone 2", "VibeTone 3", "VibeTone 4", "VibeTone 5",
+                        "VibeTone 6", "VibeTone 7", "VibeTone 8", "VibeTone 9"};
+                builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                        v.vibrate (customVibes[item], -1);
+                        selectedVibetone = item;
+                        //levelDialog.dismiss();
+                    }
+                });
+
+                builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
             }
         });
 
