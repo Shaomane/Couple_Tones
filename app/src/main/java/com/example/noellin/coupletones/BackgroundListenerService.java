@@ -120,6 +120,7 @@ public class BackgroundListenerService extends Service {
             this.uri = uri;
             System.err.println("NOTIFICATION THREAD CONSTRUCTOR");
             String currTone = locationController.getSoundTone(location);
+            if (currTone.equals("")) System.err.println("NULL NULL NULL");
             System.err.println(currTone);
             String currToneNumberString = currTone.substring(9);
             locSoundTone = Integer.parseInt(currToneNumberString);
@@ -171,6 +172,7 @@ public class BackgroundListenerService extends Service {
             partner_name = extras.getString("partner_name");
         }
         locationController = new LocationController(rel_id, partner_name);
+        locationController.readFromDatabase();
 
         Toast.makeText(BackgroundListenerService.this, "Able to receive messages", Toast.LENGTH_SHORT).show();
         thread = new Thread(new MyThread(startId));
@@ -202,6 +204,7 @@ public class BackgroundListenerService extends Service {
         String msgArray[] = msg.split(": ");
         System.err.println(msgArray[1]);
         location = msgArray[1];
+        if (location.equals("CSE Building")) System.err.println("SAME STRING");
 
         // when partner arrives at a location
         if (msg.contains("visited"))
@@ -225,7 +228,7 @@ public class BackgroundListenerService extends Service {
             //v.vibrate (leavingVibe, -1);
             System.err.println ("Departure vibe tone!!!");
 
-            notifThread = new Thread(new NotificationThread(startId, leavingVibe, uri, location));
+            notifThread = new Thread(new NotificationThread(13, leavingVibe, uri, location));
             notifThread.start();
 
         }
