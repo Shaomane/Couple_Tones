@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             if (relationship.partnerTwoName != null && !isMyServiceRunning(BackgroundListenerService.class)) {
                 backgroundIntent.putExtra("rel_id", relationship.rel_id);
                 backgroundIntent.putExtra("partner_email", relationship.partnerTwoEmail);
+                backgroundIntent.putExtra("partner_name", relationship.partnerTwoName);
                 startService(backgroundIntent);
                 startListenerForCheatingHoe();
             }
@@ -263,6 +264,12 @@ public class MainActivity extends AppCompatActivity {
 
         relationship.partnerTwoName = senderName;
         relationship.partnerTwoEmail = senderEmail;
+
+        //TODO: this wasn't here before. Make sure that everything still works with it here
+        backgroundIntent.putExtra("rel_id", relationship.rel_id);
+        backgroundIntent.putExtra("partner_email", relationship.partnerTwoEmail);
+        backgroundIntent.putExtra("partner_name", relationship.partnerTwoName);
+
         startService(backgroundIntent);
         updateUI();
     }

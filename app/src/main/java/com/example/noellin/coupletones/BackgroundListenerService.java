@@ -32,6 +32,7 @@ public class BackgroundListenerService extends Service {
 
     String rel_id = null;
     String partner_email = null;
+    String partner_name = null;
 
     final static String notifGroup = "group_notif";
     static int id = 0;
@@ -43,6 +44,8 @@ public class BackgroundListenerService extends Service {
 
     long customVibes[][];
     Uri customTones[] = new Uri[10];
+
+    private LocationController locationController;
 
     public BackgroundListenerService() {
     }
@@ -149,7 +152,9 @@ public class BackgroundListenerService extends Service {
         if (extras != null){
             rel_id = extras.getString("rel_id");
             partner_email = extras.getString("partner_email");
+            partner_name = extras.getString("partner_name");
         }
+        locationController = new LocationController(rel_id, partner_name);
 
         Toast.makeText(BackgroundListenerService.this, "Able to receive messages", Toast.LENGTH_SHORT).show();
         thread = new Thread(new MyThread(startId));

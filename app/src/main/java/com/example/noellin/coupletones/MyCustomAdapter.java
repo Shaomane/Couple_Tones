@@ -45,7 +45,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         this.list = list;
         this.context = context;
 
-        locationController = new LocationController(context);
+        locationController = new LocationController(context.relationship.rel_id, context.relationship.partnerTwoName);
         locationController.readFromDatabase();
 
         t = new ToneContainer(context);

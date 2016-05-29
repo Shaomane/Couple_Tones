@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class LocationController {
 
-    MainActivity callingActivity;
+    //MainActivity callingActivity;
     String rel_id = null;
     String partnerTwo = null;
 
@@ -26,10 +26,10 @@ public class LocationController {
 
     Firebase ref;
 
-    public LocationController(MainActivity callingActivity){
-        this.callingActivity = callingActivity;
-        this.rel_id = callingActivity.relationship.rel_id;
-        this.partnerTwo = callingActivity.relationship.partnerTwoName;
+    public LocationController(String rel_id, String partnerTwo){
+        //this.callingActivity = callingActivity;
+        this.rel_id = rel_id;//callingActivity.relationship.rel_id;
+        this.partnerTwo = partnerTwo;//callingActivity.relationship.partnerTwoName;
 
         Log.d("rel_id","rel_id in LocationController.java:"+rel_id);
         Log.d("partnerTwo","partnerTwo in LocationController.jaa: "+partnerTwo);
