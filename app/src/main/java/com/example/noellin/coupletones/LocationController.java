@@ -60,10 +60,20 @@ public class LocationController {
 
     public void setVibeTone(String locationName, String vibeTone){
         ref.child(locationName).setValue(vibeTone);
+        for (int i = 0; i < locationNames.size(); i++){
+            if (locationNames.get(i).equals(locationName)){
+                locationVibeTones.set(i, vibeTone);
+            }
+        }
     }
 
     public void setSoundTone(String locationName, String soundTone){
         ref.child(locationName).setValue(soundTone);
+        for (int i = 0; i < locationNames.size(); i++){
+            if (locationNames.get(i).equals(locationName)){
+                locationSoundTones.set(i, soundTone);
+            }
+        }
     }
 
     public String getVibeTone(String locationName){
