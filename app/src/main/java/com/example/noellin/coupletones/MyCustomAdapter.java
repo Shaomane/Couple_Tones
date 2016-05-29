@@ -26,7 +26,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
     private AlertDialog.Builder builder;
-    int selectedItem;
+
     long customVibes[][];
     Uri customTones[];
     ToneContainer t;
@@ -161,10 +161,6 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
 
             }
         });
-
-
-
-
 
         return view;
     }
