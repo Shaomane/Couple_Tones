@@ -101,6 +101,42 @@ public class BackgroundListenerService extends Service {
         }
     }
 
+    final class NotificationThread implements Runnable
+    {
+        int startId;
+        Uri uri;
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        long[] vibeTone;
+        int locVibeTone;
+        int locSoundTone;
+
+        public NotificationThread(int startId, long[] vibeTone, Uri uri, String location)
+        {
+            this.startId = startId;
+            this.vibeTone = vibeTone;
+            this.uri = uri;
+        }
+
+        /*
+         * Run the 5 second wait
+         */
+        @Override
+        public void run()
+        {
+            synchronized (this)
+            {
+                try
+                {
+                    wait(5000);
+                } catch(InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+                stopSelf(startId);
+            }
+        }
+    }
+
     /*
      * Starts a separate thread and toasts the user to let them know that their app is receiving messages
      */
@@ -177,8 +213,8 @@ public class BackgroundListenerService extends Service {
                 .setContentTitle("CoupleTones Notification")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setGroup(notifGroup)
-                .setContentText(msg)
-                .setSound(uri);
+                .setContentText(msg);
+                //.setSound(uri);
 
         mBuilder.setContentIntent(contentIntent);
         //mNotificationManager.notify(com.example.noellin.coupletones.Constants.NOTIFICATION_NR, mBuilder.build());
