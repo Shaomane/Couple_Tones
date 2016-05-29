@@ -35,8 +35,11 @@ public class LocationUpdater {
         Map<String, Object> newLoc = new HashMap<String, Object>();
 
         newLoc.put("name", location.getProvider());
+        newLoc.put("vibeTone","VibeTone0");
+        newLoc.put("soundTone","SoundTone0");
 
         ref.child(myName+"_Locations").child(location.getProvider()).updateChildren(newLoc);
+        //ref.child(myName+"_Locations").child(location.getProvider()).updateChildren(newLoc);
     }
 
     /*

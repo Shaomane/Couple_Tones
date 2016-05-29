@@ -84,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /* these lines below save user favorite locations between app sessions */
     static final int PREFERENCE_MODE_PRIVATE = 0;
-    public static final String SAVED_LOCATIONS = "Saved_locations_file";
+    public static String SAVED_LOCATIONS = "Saved_locations_file";
 
     private static final int METERS_160 = 160;
 
@@ -113,6 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Log.d("rel", "rel_id" +rel_id);
             senderEmail = extras.getString("senderEmail");
             senderName = extras.getString("senderName");
+            SAVED_LOCATIONS+=senderName;
         }
 
         if (locationUpdater == null){

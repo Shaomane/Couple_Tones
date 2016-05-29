@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public FireBaseInteractor FBInteractor;// = new FireBaseInteractor();
 
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
-    public static final String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
+    public static String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
 
     GoogleCloudMessaging gcm;
     String PROJECT_NUMBER = "290538927222";
@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
             relationship.partnerTwoName = extras.getString("partnerName");
             relationship.partnerTwoEmail = extras.getString("partnerEmail");
             relationship.partnerTwoRegId = extras.getString("partnersRegId");
+
+            SAVED_LOCATIONS+=relationship.partnerOneName;
 
             //Check if the BackgroundListenerService is running. Only start if not AND we are in a relationship
             if (relationship.partnerTwoName != null && !isMyServiceRunning(BackgroundListenerService.class)) {
@@ -158,12 +160,13 @@ public class MainActivity extends AppCompatActivity {
 
         for (Map.Entry<String, ?> entry : previousLocations.entrySet()) {
 
-            if (!(listItems.contains(entry.getKey()))) {
-                listItems.add(entry.getKey());
-            }
+            //if (!(listItems.contains(entry.getKey()))) {
+            //    listItems.add(entry.getKey());
+            //}
             //adapter.notifyDataSetChanged();
             myCustomAdapter.notifyDataSetChanged();
         }
+
     }
 
 
