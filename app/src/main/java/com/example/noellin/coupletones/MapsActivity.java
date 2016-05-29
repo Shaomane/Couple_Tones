@@ -113,7 +113,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Log.d("rel", "rel_id" +rel_id);
             senderEmail = extras.getString("senderEmail");
             senderName = extras.getString("senderName");
-            SAVED_LOCATIONS+=senderName;
+            //SAVED_LOCATIONS+=senderName;
+            SAVED_LOCATIONS = "Saved_locations_file" + senderName;
         }
 
         if (locationUpdater == null){

@@ -59,7 +59,7 @@ public class LocationController {
     }
 
     public void setVibeTone(String locationName, String vibeTone){
-        ref.child(locationName).setValue(vibeTone);
+        ref.child(locationName).child("vibeTone").setValue(vibeTone);
         for (int i = 0; i < locationNames.size(); i++){
             if (locationNames.get(i).equals(locationName)){
                 locationVibeTones.set(i, vibeTone);
@@ -68,7 +68,7 @@ public class LocationController {
     }
 
     public void setSoundTone(String locationName, String soundTone){
-        ref.child(locationName).setValue(soundTone);
+        ref.child(locationName).child("soundTone").setValue(soundTone);
         for (int i = 0; i < locationNames.size(); i++){
             if (locationNames.get(i).equals(locationName)){
                 locationSoundTones.set(i, soundTone);

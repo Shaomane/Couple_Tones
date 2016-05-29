@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
             relationship.partnerTwoEmail = extras.getString("partnerEmail");
             relationship.partnerTwoRegId = extras.getString("partnersRegId");
 
-            SAVED_LOCATIONS+=relationship.partnerOneName;
+            //SAVED_LOCATIONS+=relationship.partnerOneName;
+            SAVED_LOCATIONS = "Saved_locations_file" + relationship.partnerOneName;
 
             //Check if the BackgroundListenerService is running. Only start if not AND we are in a relationship
             if (relationship.partnerTwoName != null && !isMyServiceRunning(BackgroundListenerService.class)) {

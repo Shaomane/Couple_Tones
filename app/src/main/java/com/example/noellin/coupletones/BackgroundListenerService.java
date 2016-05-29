@@ -185,6 +185,7 @@ public class BackgroundListenerService extends Service {
         mNotificationManager.notify(id, mBuilder.build());
         id++;
 
+
         /*try {
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);

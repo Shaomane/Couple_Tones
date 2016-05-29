@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -33,6 +35,8 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
 
     int selectedTone = 0;
     int selectedVibetone = 0;
+
+    String currLoc;
 
     private LocationController locationController;
 
@@ -78,6 +82,9 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         TextView listItemText = (TextView)view.findViewById(R.id.list_item_string);
         listItemText.setText(list.get(position));
 
+        //currLoc = list.get(position);
+        //System.err.println(currLoc);
+
         //Handle buttons and add onClickListeners
         Button viewButton = (Button)view.findViewById(R.id.view_btn);
         Button toneBtn = (Button)view.findViewById(R.id.tone_btn);
@@ -100,20 +107,28 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 builder.setTitle("Tone selection").setCancelable(true);
                 final CharSequence[] items = {"Tone 0", "Tone 1", "Tone 2", "Tone 3", "Tone 4", "Tone 5",
                         "Tone 6", "Tone 7", "Tone 8", "Tone 9"};
-                builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+
+
+                LinearLayout linearLayout = (LinearLayout)v.getParent().getParent();
+                TextView textView = (TextView)linearLayout.findViewById(R.id.list_item_string);
+                final String currLoc = textView.getText().toString();
+                String currTone = locationController.getSoundTone(currLoc);
+                String currToneNumberString = currTone.substring(9);
+                int currToneNumber = Integer.parseInt(currToneNumberString);
+
+                builder.setSingleChoiceItems(items, currToneNumber, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
 
                         Ringtone r = RingtoneManager.getRingtone(context, customTones[item]);
                         r.play();
                         selectedTone = item;
-                        //levelDialog.dismiss();
                     }
                 });
 
                 builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        locationController.setSoundTone(currLoc, "SoundTone"+selectedTone);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -139,20 +154,27 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
 
                 final CharSequence[] items = {"VibeTone 0", "VibeTone 1", "VibeTone 2", "VibeTone 3", "VibeTone 4", "VibeTone 5",
                         "VibeTone 6", "VibeTone 7", "VibeTone 8", "VibeTone 9"};
-                builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+
+                LinearLayout linearLayout = (LinearLayout)v.getParent().getParent();
+                TextView textView = (TextView)linearLayout.findViewById(R.id.list_item_string);
+                final String currLoc = textView.getText().toString();
+                String currVibeTone = locationController.getVibeTone(currLoc);
+                String currVibeToneNumberString = currVibeTone.substring(8);
+                int currVibeToneNumber = Integer.parseInt(currVibeToneNumberString);
+
+                builder.setSingleChoiceItems(items, currVibeToneNumber, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
 
                         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                         v.vibrate (customVibes[item], -1);
                         selectedVibetone = item;
-                        //levelDialog.dismiss();
                     }
                 });
 
                 builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        locationController.setVibeTone(currLoc, "VibeTone"+selectedVibetone);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
