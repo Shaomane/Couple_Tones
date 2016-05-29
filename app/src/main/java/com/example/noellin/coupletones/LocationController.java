@@ -46,6 +46,8 @@ public class LocationController {
                     locationNames.add(location.child("name").getValue().toString());
                     locationVibeTones.add(location.child("vibeTone").getValue().toString());
                     locationSoundTones.add(location.child("soundTone").getValue().toString());
+                    locationLatitudes.add(location.child("latitude").getValue().toString());
+                    locationLongitudes.add(location.child("longitude").getValue().toString());
 
                 }
             }

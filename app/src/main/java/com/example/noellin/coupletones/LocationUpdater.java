@@ -37,6 +37,8 @@ public class LocationUpdater {
         newLoc.put("name", location.getProvider());
         newLoc.put("vibeTone","VibeTone0");
         newLoc.put("soundTone","SoundTone0");
+        newLoc.put("latitude",""+location.getLatitude());
+        newLoc.put("longitude",""+location.getLongitude());
 
         ref.child(myName+"_Locations").child(location.getProvider()).updateChildren(newLoc);
         //ref.child(myName+"_Locations").child(location.getProvider()).updateChildren(newLoc);
