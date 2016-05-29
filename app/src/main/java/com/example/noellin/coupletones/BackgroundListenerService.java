@@ -81,7 +81,7 @@ public class BackgroundListenerService extends Service {
                         if (notification.child("sender").getValue().equals(partner_email)){
                             //notification came from partner
                             String msg = notification.child("message").getValue().toString();
-                            showNotification(msg);
+                            showNotification(msg, startId);
                             notification.getRef().setValue(null);
 
                         }
@@ -118,6 +118,15 @@ public class BackgroundListenerService extends Service {
             this.startId = startId;
             this.vibeTone = vibeTone;
             this.uri = uri;
+            System.err.println("NOTIFICATION THREAD CONSTRUCTOR");
+            String currTone = locationController.getSoundTone(location);
+            System.err.println(currTone);
+            String currToneNumberString = currTone.substring(9);
+            locSoundTone = Integer.parseInt(currToneNumberString);
+
+            String currVibeTone = locationController.getVibeTone(location);
+            String currVibeToneNumberString = currVibeTone.substring(8);
+            locVibeTone = Integer.parseInt(currVibeToneNumberString);
         }
 
         /*
@@ -130,7 +139,14 @@ public class BackgroundListenerService extends Service {
             {
                 try
                 {
-                    wait(5000);
+                    v.vibrate(vibeTone, -1);
+                    Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), uri);
+                    r.play();
+                    wait(3000);
+                    v.vibrate(customVibes[locVibeTone], -1);
+                    r = RingtoneManager.getRingtone(getApplicationContext(), customTones[locSoundTone]);
+                    r.play();
+                    wait(3000);
                 } catch(InterruptedException e)
                 {
                     e.printStackTrace();
@@ -177,9 +193,15 @@ public class BackgroundListenerService extends Service {
     /*
      * Shows a notification to the user, with sound
      */
-    private void showNotification(String msg) {
+    private void showNotification(String msg, int startId) {
         Uri uri;
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        Thread notifThread;
+
+        String location = "";
+        String msgArray[] = msg.split(": ");
+        System.err.println(msgArray[1]);
+        location = msgArray[1];
 
         // when partner arrives at a location
         if (msg.contains("visited"))
@@ -187,8 +209,11 @@ public class BackgroundListenerService extends Service {
             uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.arpeggio);
 
             // TODO add check for vibe mode
-            v.vibrate (arrivalVibe, -1);
+            //v.vibrate (arrivalVibe, -1);
             System.err.println ("Arrival vibe tone!!!");
+
+            notifThread = new Thread(new NotificationThread(29, arrivalVibe, uri, location));
+            notifThread.start();
 
         }
         // when partner leaves location
@@ -197,8 +222,11 @@ public class BackgroundListenerService extends Service {
             uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.droplet);
 
             //TODO add check for vibrate mode
-            v.vibrate (leavingVibe, -1);
+            //v.vibrate (leavingVibe, -1);
             System.err.println ("Departure vibe tone!!!");
+
+            notifThread = new Thread(new NotificationThread(startId, leavingVibe, uri, location));
+            notifThread.start();
 
         }
         NotificationManager mNotificationManager;

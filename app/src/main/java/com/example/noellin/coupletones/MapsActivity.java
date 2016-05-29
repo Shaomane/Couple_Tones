@@ -518,11 +518,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String msg;
         if (leavingMessage)
         {
-            msg = senderName + " left " + location.getProvider();
+            msg = senderName + " left: " + location.getProvider();
         }
         else
         {
-            msg = senderName + " visited " + location.getProvider();
+            msg = senderName + " visited: " + location.getProvider();
         }
         final String msgFinal = msg;
         String coords = ""+(int)(location.getLatitude()+location.getLongitude());
