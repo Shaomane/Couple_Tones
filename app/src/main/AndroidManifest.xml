@@ -23,8 +23,7 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <!-- Permission for vibrate -->
-    <uses-permission android:name="android.permission.VIBRATE"/>
-
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <permission
         android:name="com.example.noellin.coupletones.permission.C2D_MESSAGE"
@@ -74,7 +73,11 @@
         <service
             android:name=".BackgroundListenerService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:name=".PartnerLocationMapActivity"
+            android:label="@string/title_activity_partner_location_map"></activity>
     </application>
 
 </manifest>

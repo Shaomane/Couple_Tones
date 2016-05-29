@@ -2,6 +2,7 @@ package com.example.noellin.coupletones;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -93,7 +94,19 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         viewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LinearLayout linearLayout = (LinearLayout)view.getParent().getParent();
+                TextView textView = (TextView)linearLayout.findViewById(R.id.list_item_string);
+                final String currLoc = textView.getText().toString();
+                String strLat = locationController.getLatitude(currLoc);
+                String strLong = locationController.getLongitude(currLoc);
+                double latitude = Double.parseDouble(strLat);
+                double longitude = Double.parseDouble(strLong);
 
+                Intent intent = new Intent(context, PartnerLocationMapActivity.class);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("name", currLoc);
+                context.startActivity(intent);
             }
         });
 
