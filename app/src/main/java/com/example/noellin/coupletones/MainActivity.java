@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         SharedPreferences sharedPreferences = getSharedPreferences("user_settings", MODE_PRIVATE);
+    //    sharedPreferences.edit().remove("La Jolla Village Dr.").commit();
         String soundSetting = sharedPreferences.getString("sound", "");
         String vibeSetting = sharedPreferences.getString("vibe", "");
         if (soundSetting.equals("") || vibeSetting.equals(""))

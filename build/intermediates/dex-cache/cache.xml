@@ -1,2 +1,306 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/Users/noellin/.gradle/caches/modules-2/files-2.1/com.firebase/firebase-client-android/2.5.2/f19f10d6276aa0b380e2d05d2ab3272d693a5433/firebase-client-android-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="f19f10d6276aa0b380e2d05d2ab3272d693a5433">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/firebase-client-android-2.5.2_4822fb6bcf459bd2cdd97794bbe1c7ecb8f8f925/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="78ea232052df889856dcb7b7b542707c89bb3bfb">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-multidex-1.0.1_2ff900a43a859e128bc402349650894175d9ccc2/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-panorama/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="744c49c02a27569cc4cc049685d3649e4ef439f2">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-panorama-8.3.0_4b67dc7a30adbaabaa7233e6b07d456ff1319442/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.3.0_8894c821716015668590d3d30d26d62cac56bfca/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-safetynet/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="ea34579b1be157cd792376362157e9c54ebb4cd7">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-safetynet-8.3.0_1358baf2ca13d6f8d807a134d35849be56935b19/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="0c3e81d3eb86b86d194b5cdb6a4de78203f6f7fd">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-appindexing-8.3.0_5d4b394d60bc58e019f2757b5bb423e1eed340f2/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="55202bf4696c01b8f66966d8ff6a5d3e1ff9a525">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_be8cca52c448cdbe5a889bcef12351dac9f54b79/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-identity/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4b8df1b1e51fe14b0e89b3845dc2e215a024a09f">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-identity-8.3.0_285f464afd8b2b16346e83269de7695f90857b85/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="27775d59b16610ac76f1b83693fedd9520396332">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-ads-8.3.0_eb61a6d447c1c2cc4082bdbacdef5114df266be1/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="77f9593d979f4347344be233bd0d888315f79517">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-maps-8.3.0_a466480fdf1d21a4d3ccef1a32e743389ba85b11/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-drive/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="0a1897426566e408a5c20a3d931f77d89771d07f">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-drive-8.3.0_feb8a6cd9e7512983adc6cf6b0f56154773e63e5/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.3.0_7b72b0b21f62af7ddc7a7ded42e6da7fdd065c94/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-analytics/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="af6ee25641df3142059c0828517aa7ee6eba08d6">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-analytics-8.3.0_8deb2bda6d321fed4fffc0a460c35a02d5e5ac11/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.3.0/support-annotations-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-23.3.0_eb55c9e39f33e6238fd979ac7a2b6709ea2bc01c/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/libs/internal_impl-23.3.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.3.0_d5eafb60eecb650c805721e80d6ee492ea5146d0/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/.gradle/caches/modules-2/files-2.1/com.firebase/firebase-client-jvm/2.5.2/91731b8f5868a3e8a8a773f29b8d06b5c358f5bb/firebase-client-jvm-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="91731b8f5868a3e8a8a773f29b8d06b5c358f5bb">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/firebase-client-jvm-2.5.2_32fc6a09eec57321ed4d730f8aff82633a402bc4/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="a0b5d60246cd9d4f3f2443611b3b4c25265840b5">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-23.3.0_3716618c87557d364bec1ee7990a7414f064106f/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-fitness/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="697679619b00837e3d09e9988a2e1e2a9009d502">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-fitness-8.3.0_f89960eca2f490396dace657a0d9d843cb128dbe/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-plus/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="0af4f577b4a21eb9be2a7f52e33b077b67e6d9f8">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-plus-8.3.0_3b5d2cb22791b5855eae318d05dda9c3a994d59b/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="cb4af597d079ffdc0984a3ec2c03cbf6a1b9f869">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-cast-8.3.0_b0e86a722245c5549fa504656e67fcd38608375d/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="9aedc597d74c6d77258ce5236e9abff0c3cc65e3">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-wearable-8.3.0_5fbd7a5c442c26a21cab6b1b56ea2535c861004f/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.2.2/3c8f6018eaa72d43b261181e801e6f8676c16ef6/jackson-databind-2.2.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="3c8f6018eaa72d43b261181e801e6f8676c16ef6">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/jackson-databind-2.2.2_b677b28783b5e5e58434f022194f4f91899eba2b/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-vision/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="724ce977487ab3a215d4d2eb47d8dccd9f30013f">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-vision-8.3.0_3897f3a9368260d44772a049834ad123c4c54a39/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.2.2/285cb9c666f0f0f3dd8a1be04e1f457eb7b15113/jackson-annotations-2.2.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="285cb9c666f0f0f3dd8a1be04e1f457eb7b15113">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/jackson-annotations-2.2.2_e2c82ac60aa77401d2f67f1303f218cb13a9ea34/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/de.keyboardsurfer.android.widget/crouton/1.8.4/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="ef6e7d100ebc7feca53c3e2445b8e63ce4dea90c">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/de.keyboardsurfer.android.widget-crouton-1.8.4_46c8048ea5fcd142d5abfcb320f45f3250caa49e/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="58adcfbe2c8393765e84c5489d01bba6a5159eb2">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-appinvite-8.3.0_0520708a907383d0bd67d988ac8dfa371e00bec8/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-measurement/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="b000ecceb9877fefcdc7ab1959ff03df91551656">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-measurement-8.3.0_864d0d7b5de7e7ebc4196e1ecca2e4bba8823956/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="316e5b9f38587f4ba079cea90131dab797cb7cd1">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_9733f93d3d317d6e90685d91fc1e94ca72597c32/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="dcf8c83c3dead00a6c4fe313e95f7aaca20dc641">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-mediarouter-v7-22.2.0_f7ab8f87611440672212af33a9156475cc279cb8/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/.gradle/caches/modules-2/files-2.1/com.firebase/tubesock/0.0.12/6ec0bbd3e161a73ed672284b587fd32309a86d7a/tubesock-0.0.12.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="6ec0bbd3e161a73ed672284b587fd32309a86d7a">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/tubesock-0.0.12_a18ab6e561b22df5708bd9177575194b8558b95c/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.android.support/design/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="f0001e71cea6ae432a00021c6f727f5ef0f3d27e">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-23.3.0_fda35f75b11a167bfec497d26d831a3d87b57ddf/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="fd76d95678a6b2b8a49bb8a9fb5bcef7aedb70e7">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-auth-8.3.0_b951cb47729a9a13b86f9a6c9ba258cbc99c9e1b/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.2.2/d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b/jackson-core-2.2.2.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/jackson-core-2.2.2_74991ba2319cc62fb08bb6c3edacdec7ad6f4931/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="71eda10e33212e44245524b5087366ff8d805825">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-gcm-8.3.0_70817e9fd568874b586f78381a35ffef085766ed/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="01a90bbb9495a8bbf6f3cfdf12f1b35caaa9524b">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-base-8.3.0_82233a3a6130f678d000aea6d81c38e6d84dc338/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="debf30ce0a7560396b6235edef77e447006454c2">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-23.3.0_2377699004f681912deab3e0e13b5b617440d9d9/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="0632f06970823b7e3436f649bfa65b47035c91d0">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-22.2.0_7c7f3d0560e4bad1ea3191060624c7dc55c05133/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-23.3.0_b42b4108e647c2a2d96690f0acea974604331415/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="345a1b5cf5b144ce18ba6962bc66a7e2f26c1c1b">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-basement-8.3.0_cd07e06564ed03c822e30e6db902eba98a041f90/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="6d9ed9a288364688e7fcf6704776284dac1eb42e">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-location-8.3.0_ee8a9c8f450738703bf9825750d52fee715f3e04/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-nearby/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="eb576427887e497cd958a475475f9206e38dc314">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-nearby-8.3.0_dd78f1b2ac40ba022bc58f8d451dee96ac3f8f7c/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-wallet/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="9c9bdb4b2497465a6cf7d5e8f57c5298f828a380">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-wallet-8.3.0_130474383c9d721b7e2780ad9de27646047cb8bb/classes.dex" />
+    </item>
+    <item
+        jar="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-games/8.3.0/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="2c6fcd6267cbac6509a2e72a61127534a1d616cf">
+        <dex dex="/Users/noellin/AndroidStudioProjects/110group-project/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-games-8.3.0_ed3be35e0fef776d090e3681aea07b9ee7ab824a/classes.dex" />
+    </item>
+
+</items>

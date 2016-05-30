@@ -44,16 +44,10 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Partner Favorites"
-                    android:id="@+id/partnerFavorites" />
-                <!-- android:onClick="viewPartnerFavorites" /> -->
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="Partner visits"
                     android:id="@+id/partnerVisits"
                     android:onClick="toPartnerVisits"/>
+
             </LinearLayout>
 
 

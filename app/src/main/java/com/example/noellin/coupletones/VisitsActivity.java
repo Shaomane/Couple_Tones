@@ -12,6 +12,10 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by noellin on 5/29/16.
@@ -26,7 +30,6 @@ public class VisitsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d ("abc", "@@@@@@@@@@@@@@@@@@@@@WE ARE IN VISITSACTIVITY");
         relationship = new Relationship();
         Bundle extras = getIntent().getExtras();
         setContentView(R.layout.activity_visits);
@@ -52,13 +55,47 @@ public class VisitsActivity extends FragmentActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listItems.clear();
+                HashMap<String, Integer> map = new HashMap<String, Integer>();
+
+
                 for (DataSnapshot location: dataSnapshot.getChildren())
                 {
-                    System.err.println("Adding "+location.getKey()+" @@@@@@@@@@@@@@@@@@@");
-                    listItems.add (location.getKey());
+                    if (location.child ("lastTimeVisited").getValue() != null) {
+                        int timeInSeconds = 0;
+                        System.err.println ("@@@@@@@@@"+location.getKey());
+                        System.err.println ("@@@@@@@@@ "+location.child("lastTimeVisited/").child("day").getValue());
+                        System.err.println ("@@@@@@@@@ "+location.child("lastTimeVisited/").child("hour").getValue());
+                        System.err.println ("@@@@@@@@@ "+location.child("lastTimeVisited/").child("minute").getValue());
+                        System.err.println ("@@@@@@@@@ "+location.child("lastTimeVisited/").child("second").getValue());
+
+                        timeInSeconds += Integer.parseInt((String) location.child("lastTimeVisited/")
+                                                            .child("day").getValue())*86400;
+                        timeInSeconds += Integer.parseInt((String) location.child("lastTimeVisited/")
+                                                            .child("hour").getValue())*3600;
+                        timeInSeconds += Integer.parseInt((String) location.child("lastTimeVisited/")
+                                                            .child("minute").getValue())*60;
+                        timeInSeconds += Integer.parseInt((String) location.child("lastTimeVisited/")
+                                                            .child("second").getValue());
+                        System.err.println ("@@@@@@@@@ Total ime in seconds: "+timeInSeconds);
+
+
+                        map.put(location.getKey(), timeInSeconds);
+                    }
+
+                    Object[] a = map.entrySet().toArray();
+                    Arrays.sort(a, new Comparator() {
+                        public int compare(Object o1, Object o2) {
+                            return ((Map.Entry<String, Integer>) o2).getValue().compareTo(
+                                    ((Map.Entry<String, Integer>) o1).getValue());
+                        }
+                    });
+
+                    for (Object e : a) {
+                        listItems.add (((Map.Entry<String, Integer>) e).getKey());
+
+                    }
                 }
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override
