@@ -56,6 +56,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -523,6 +524,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         else
         {
             msg = senderName + " visited: " + location.getProvider();
+
+            Calendar rightNow = Calendar.getInstance();
+            int day = rightNow.get(Calendar.DAY_OF_YEAR);
+            int hour = rightNow.get(Calendar.HOUR_OF_DAY);
+            int minute = rightNow.get(Calendar.MINUTE);
+            int second = rightNow.get(Calendar.SECOND);
+            locationUpdater.updateTime(location, day, hour, minute, second);
         }
         final String msgFinal = msg;
         String coords = ""+(int)(location.getLatitude()+location.getLongitude());

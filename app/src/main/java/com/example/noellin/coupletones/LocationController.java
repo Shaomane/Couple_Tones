@@ -43,6 +43,8 @@ public class LocationController {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot location : dataSnapshot.getChildren()){
 
+                    Log.d("","in readFromDatabase, location: "+location);
+                    Log.d("","in readFromDatabase, location name: "+location.child("name").getValue());
                     locationNames.add(location.child("name").getValue().toString());
                     locationVibeTones.add(location.child("vibeTone").getValue().toString());
                     locationSoundTones.add(location.child("soundTone").getValue().toString());

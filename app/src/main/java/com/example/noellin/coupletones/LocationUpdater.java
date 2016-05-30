@@ -25,6 +25,13 @@ public class LocationUpdater {
     }
 
 
+    public void updateTime(Location location, int day, int hour, int minute, int second){
+
+        Map<String, Object> updatedTime = new HashMap<String, Object>();
+        updatedTime.put("lastTimeVisited","");
+
+    }
+
     /*
     This method adds a favorite location to the Firebase database
      */
