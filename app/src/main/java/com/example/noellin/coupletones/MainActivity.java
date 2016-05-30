@@ -27,7 +27,6 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     String PROJECT_NUMBER = "290538927222";
     Intent backgroundIntent;
 
-    private AlertDialog.Builder builder;
+    AlertDialog.Builder builder;
     ArrayList mSelectedItems;
 
     SharedPreferences sharedPreferences;
@@ -507,6 +506,13 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    /*
+     * This is a getter to return the dialog box
+     */
+    public AlertDialog.Builder getAboutBox() {
+        return this.builder;
     }
 
 }
