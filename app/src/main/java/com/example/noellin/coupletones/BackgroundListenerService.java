@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -112,6 +113,8 @@ public class BackgroundListenerService extends Service {
         long[] vibeTone;
         int locVibeTone;
         int locSoundTone;
+        boolean sound;
+        boolean vibe;
 
         public NotificationThread(int startId, long[] vibeTone, Uri uri, String location)
         {
@@ -128,6 +131,13 @@ public class BackgroundListenerService extends Service {
             String currVibeTone = locationController.getVibeTone(location);
             String currVibeToneNumberString = currVibeTone.substring(8);
             locVibeTone = Integer.parseInt(currVibeToneNumberString);
+
+            SharedPreferences sharedPreferences = getSharedPreferences("user_settings", MODE_PRIVATE);
+            String soundSetting = sharedPreferences.getString("sound", "");
+            String vibeSetting = sharedPreferences.getString("vibe", "");
+
+            if (soundSetting.equals("true")) sound = true;
+            if (vibeSetting.equals("true")) vibe = true;
         }
 
         /*
@@ -140,13 +150,20 @@ public class BackgroundListenerService extends Service {
             {
                 try
                 {
-                    v.vibrate(vibeTone, -1);
-                    Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), uri);
-                    r.play();
+                    Ringtone r;
+                    if (vibe) v.vibrate(vibeTone, -1);
+                    if (sound)
+                    {
+                        r = RingtoneManager.getRingtone(getApplicationContext(), uri);
+                        r.play();
+                    }
                     wait(3000);
-                    v.vibrate(customVibes[locVibeTone], -1);
-                    r = RingtoneManager.getRingtone(getApplicationContext(), customTones[locSoundTone]);
-                    r.play();
+                    if (vibe) v.vibrate(customVibes[locVibeTone], -1);
+                    if (sound)
+                    {
+                        r = RingtoneManager.getRingtone(getApplicationContext(), customTones[locSoundTone]);
+                        r.play();
+                    }
                     wait(3000);
                 } catch(InterruptedException e)
                 {
