@@ -530,7 +530,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             int hour = rightNow.get(Calendar.HOUR_OF_DAY);
             int minute = rightNow.get(Calendar.MINUTE);
             int second = rightNow.get(Calendar.SECOND);
-            locationUpdater.updateTime(location, day, hour, minute, second);
+            locationUpdater.updateTime(location.getProvider(), senderName, day, hour, minute, second);
         }
         final String msgFinal = msg;
         String coords = ""+(int)(location.getLatitude()+location.getLongitude());

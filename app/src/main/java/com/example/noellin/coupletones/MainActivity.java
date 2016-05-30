@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder builder;
     ArrayList mSelectedItems;
 
+    SharedPreferences sharedPreferences;
+    String soundSetting;
+    String vibeSetting;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +66,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        SharedPreferences sharedPreferences = getSharedPreferences("user_settings", MODE_PRIVATE);
+        String soundSetting = sharedPreferences.getString("sound", "");
+        String vibeSetting = sharedPreferences.getString("vibe", "");
+        if (soundSetting.equals("") || vibeSetting.equals(""))
+        {
+            soundSetting = "true";
+            vibeSetting = "true";
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.putString("sound", soundSetting);
+            editor.putString("vibe", vibeSetting);
+            editor.apply();
+        }
 
         relationship = new Relationship();
 
@@ -424,25 +440,61 @@ public class MainActivity extends AppCompatActivity {
      */
     private void settingDialog() {
 
+        sharedPreferences = getSharedPreferences("user_settings", MODE_PRIVATE);
+        soundSetting = sharedPreferences.getString("sound", "");
+        vibeSetting = sharedPreferences.getString("vibe", "");
+        if (soundSetting.equals("") || vibeSetting.equals(""))
+        {
+            soundSetting = "true";
+            vibeSetting = "true";
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.putString("sound", soundSetting);
+            editor.putString("vibe", vibeSetting);
+            editor.apply();
+        }
+
+        boolean arr[] = new boolean[2];
+        if (soundSetting.equals("true")) arr[0] = true;
+        else arr[0] = false;
+        if (vibeSetting.equals("true")) arr[1] = true;
+        else arr[1] = false;
+
         mSelectedItems = new ArrayList();
 
         builder = new AlertDialog.Builder(this);
         builder.setTitle("Settings").setCancelable(true);
-        builder.setMultiChoiceItems(R.array.settings_choices, null,
+        builder.setMultiChoiceItems(R.array.settings_choices, arr,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if(isChecked) {
                             mSelectedItems.add(which);
+                            if (which == 0) soundSetting = "true";
+                            else vibeSetting = "true";
+                            System.err.println("IN TRUE WHICH IS: " + which);
 
                         } else if(mSelectedItems.contains(which)) {
                             mSelectedItems.remove(Integer.valueOf(which));
+                        }
+                        if (!isChecked)
+                        {
+                            if (which == 0) soundSetting = "false";
+                            else vibeSetting = "false";
+                            System.err.println("IN FALSE WHICH IS: " + which);
                         }
                     }
                 });
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.putString("sound", soundSetting);
+                editor.putString("vibe", vibeSetting);
+                editor.apply();
 
             }
         });
