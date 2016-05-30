@@ -170,7 +170,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 else
                 {
                     target = prevLocation;
-                    if (location.distanceTo(target) >= METERS_160)
+                    if (target == null || location == null)
+                    {
+                        currentlyVisiting = false;
+                    }
+                    else if (location.distanceTo(target) >= METERS_160)
                     {
                         currentlyVisiting = false;
                         handleLeftFavoriteLocation(target);
