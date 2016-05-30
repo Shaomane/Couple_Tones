@@ -23,6 +23,7 @@ public class LocationController {
     ArrayList<String> locationSoundTones = new ArrayList<>();
     ArrayList<String> locationLatitudes = new ArrayList<>();
     ArrayList<String> locationLongitudes = new ArrayList<>();
+    ArrayList<ArrayList<String>> locationTimes = new ArrayList<ArrayList<String>>();
 
     Firebase ref;
 
@@ -48,6 +49,22 @@ public class LocationController {
                     locationSoundTones.add(location.child("soundTone").getValue().toString());
                     locationLatitudes.add(location.child("latitude").getValue().toString());
                     locationLongitudes.add(location.child("longitude").getValue().toString());
+
+                    ArrayList<String> times = new ArrayList<String>();
+                    if (location.child("lastTimeVisited").getValue() == null){
+                        times.add("NONE");
+                        times.add("NONE");
+                        times.add("NONE");
+                        times.add("NONE");
+                    }
+                    else {
+                        times.add(location.child("lastTimeVisited").child("day").getValue().toString());
+                        times.add(location.child("lastTimeVisited").child("hour").getValue().toString());
+                        times.add(location.child("lastTimeVisited").child("minute").getValue().toString());
+                        times.add(location.child("lastTimeVisited").child("second").getValue().toString());
+
+                        locationTimes.add(times);
+                    }
 
                 }
             }
@@ -75,6 +92,27 @@ public class LocationController {
             }
         }
     }
+
+    /*
+    Returns an ArrayList<String> where:
+    list.get(0) == DAY_OF_YEAR that location was last visited
+    list.get(1) == HOUR_OF_DAY that location was last visited (24 hour time)
+    list.get(2) == MINUTE_OF_HOUR that location was last visited
+    list.get(3) == SECOND_OF_MINUTE that location was last visited
+
+    IMPORTANT: if the location has not been visited yet, the ArrayList will be populated with "NONE"
+     */
+    public ArrayList<String> getTime(String locationName){
+
+        for (int i = 0; i < locationNames.size(); i++){
+            if (locationNames.get(i).equals(locationName)){
+                return locationTimes.get(i);
+            }
+        }
+
+        return new ArrayList<String>();
+    }
+
 
     public String getVibeTone(String locationName){
         for (int i = 0; i < locationNames.size(); i++){

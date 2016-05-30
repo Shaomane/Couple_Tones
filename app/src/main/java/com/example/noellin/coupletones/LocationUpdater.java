@@ -25,6 +25,30 @@ public class LocationUpdater {
     }
 
 
+    public void updateTime(String locName, String myName, int day, int hour, int minute, int second){
+
+        Map<String, Object> lastTimeVisited = new HashMap<String, Object>();
+        lastTimeVisited.put("lastTimeVisited","");
+
+        ref.child(myName+"_Locations").child(locName).updateChildren(lastTimeVisited);
+
+        Map<String, Object> dayMap = new HashMap<String, Object>();
+        Map<String, Object> hourMap = new HashMap<String, Object>();
+        Map<String, Object> minuteMap = new HashMap<String, Object>();
+        Map<String, Object> secondMap = new HashMap<String, Object>();
+
+        dayMap.put("day",""+day);
+        hourMap.put("hour",""+hour);
+        minuteMap.put("minute",""+minute);
+        secondMap.put("second",""+minute);
+
+        ref.child(myName+"_Locations").child(locName).child("lastTimeVisited").updateChildren(dayMap);
+        ref.child(myName+"_Locations").child(locName).child("lastTimeVisited").updateChildren(hourMap);
+        ref.child(myName+"_Locations").child(locName).child("lastTimeVisited").updateChildren(minuteMap);
+        ref.child(myName+"_Locations").child(locName).child("lastTimeVisited").updateChildren(secondMap);
+
+    }
+
     /*
     This method adds a favorite location to the Firebase database
      */
