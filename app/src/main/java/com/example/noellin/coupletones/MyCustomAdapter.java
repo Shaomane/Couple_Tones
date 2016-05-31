@@ -47,7 +47,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         this.context = context;
 
         locationController = new LocationController(context.relationship.rel_id, context.relationship.partnerTwoName);
-        locationController.readFromDatabase();
+        //locationController.readFromDatabase();
 
         t = new ToneContainer(context);
         customVibes = t.getVibeTones();

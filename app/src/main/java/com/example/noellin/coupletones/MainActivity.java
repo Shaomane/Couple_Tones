@@ -22,7 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         SharedPreferences sharedPreferences = getSharedPreferences("user_settings", MODE_PRIVATE);
+    //    sharedPreferences.edit().remove("La Jolla Village Dr.").commit();
         String soundSetting = sharedPreferences.getString("sound", "");
         String vibeSetting = sharedPreferences.getString("vibe", "");
         if (soundSetting.equals("") || vibeSetting.equals(""))
@@ -190,6 +194,17 @@ public class MainActivity extends AppCompatActivity {
 
         }*/
 
+    }
+
+    // moves to VisitsActivity
+    public void toPartnerVisits (View view){
+        //Move to activity, sending relevant information
+        Intent intent = new Intent(this, VisitsActivity.class);
+
+        intent.putExtra("rel_id", relationship.rel_id);
+        intent.putExtra("partnerName", relationship.partnerTwoName);
+
+        startActivity(intent);
     }
 
 
