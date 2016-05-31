@@ -58,43 +58,42 @@ public class VisitsActivity extends FragmentActivity {
                 HashMap<String, Integer> map = new HashMap<String, Integer>();
 
 
-                for (DataSnapshot location: dataSnapshot.getChildren())
-                {
-                    if (location.child ("lastTimeVisited").getValue() != null) {
+                for (DataSnapshot location: dataSnapshot.getChildren()) {
+                    if (location.child("lastTimeVisited").getValue() != null) {
                         int timeInSeconds = 0;
-                        System.err.println ("@@@@@@@@@"+location.getKey());
-                        System.err.println ("@@@@@@@@@ "+location.child("lastTimeVisited/").child("day").getValue());
-                        System.err.println ("@@@@@@@@@ "+location.child("lastTimeVisited/").child("hour").getValue());
-                        System.err.println ("@@@@@@@@@ "+location.child("lastTimeVisited/").child("minute").getValue());
-                        System.err.println ("@@@@@@@@@ "+location.child("lastTimeVisited/").child("second").getValue());
+                        System.err.println("@@@@@@@@@" + location.getKey());
+                        System.err.println("@@@@@@@@@ " + location.child("lastTimeVisited/").child("day").getValue());
+                        System.err.println("@@@@@@@@@ " + location.child("lastTimeVisited/").child("hour").getValue());
+                        System.err.println("@@@@@@@@@ " + location.child("lastTimeVisited/").child("minute").getValue());
+                        System.err.println("@@@@@@@@@ " + location.child("lastTimeVisited/").child("second").getValue());
 
                         timeInSeconds += Integer.parseInt((String) location.child("lastTimeVisited/")
-                                                            .child("day").getValue())*86400;
+                                .child("day").getValue()) * 86400;
                         timeInSeconds += Integer.parseInt((String) location.child("lastTimeVisited/")
-                                                            .child("hour").getValue())*3600;
+                                .child("hour").getValue()) * 3600;
                         timeInSeconds += Integer.parseInt((String) location.child("lastTimeVisited/")
-                                                            .child("minute").getValue())*60;
+                                .child("minute").getValue()) * 60;
                         timeInSeconds += Integer.parseInt((String) location.child("lastTimeVisited/")
-                                                            .child("second").getValue());
-                        System.err.println ("@@@@@@@@@ Total ime in seconds: "+timeInSeconds);
-
+                                .child("second").getValue());
+                        System.err.println("@@@@@@@@@ Total ime in seconds: " + timeInSeconds);
 
                         map.put(location.getKey(), timeInSeconds);
                     }
-
-                    Object[] a = map.entrySet().toArray();
-                    Arrays.sort(a, new Comparator() {
-                        public int compare(Object o1, Object o2) {
-                            return ((Map.Entry<String, Integer>) o2).getValue().compareTo(
-                                    ((Map.Entry<String, Integer>) o1).getValue());
-                        }
-                    });
-
-                    for (Object e : a) {
-                        listItems.add (((Map.Entry<String, Integer>) e).getKey());
-
-                    }
                 }
+                Object[] a = map.entrySet().toArray();
+                Arrays.sort(a, new Comparator() {
+                    public int compare(Object o1, Object o2) {
+                        return ((Map.Entry<String, Integer>) o2).getValue().compareTo(
+                                ((Map.Entry<String, Integer>) o1).getValue());
+                    }
+                });
+
+                for (Object e : a) {
+                    System.err.println (((Map.Entry<String, Integer>) e).getKey());
+                    listItems.add (((Map.Entry<String, Integer>) e).getKey());
+
+                }
+
                 adapter.notifyDataSetChanged();
             }
 
