@@ -45,27 +45,21 @@ public class LocationController {
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                for (DataSnapshot location : dataSnapshot.getChildren()){
-                    updateLists(location);
-
-                }
+                updateLists(dataSnapshot);
+                //for (DataSnapshot location : dataSnapshot.getChildren()){
+                //    updateLists(location);
+                //}
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot){
-                for (DataSnapshot location : dataSnapshot.getChildren()){
-                    updateLists(location);
-
-                }
+                updateLists(dataSnapshot);
 
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s){
-                for (DataSnapshot location : dataSnapshot.getChildren()){
-                    updateLists(location);
-
-                }
+                updateLists(dataSnapshot);
 
             }
 
@@ -86,6 +80,7 @@ public class LocationController {
         locationLongitudes = new ArrayList<String>();
         locationTimes = new ArrayList<ArrayList<String>>();
 
+        Log.d("updateList","Location: "+location);
         locationNames.add(location.child("name").getValue().toString());
         locationVibeTones.add(location.child("vibeTone").getValue().toString());
         locationSoundTones.add(location.child("soundTone").getValue().toString());
