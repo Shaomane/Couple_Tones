@@ -189,7 +189,7 @@ public class BackgroundListenerService extends Service {
             partner_name = extras.getString("partner_name");
         }
         locationController = new LocationController(rel_id, partner_name);
-        locationController.readFromDatabase();
+        //locationController.readFromDatabase();
 
         Toast.makeText(BackgroundListenerService.this, "Able to receive messages", Toast.LENGTH_SHORT).show();
         thread = new Thread(new MyThread(startId));
