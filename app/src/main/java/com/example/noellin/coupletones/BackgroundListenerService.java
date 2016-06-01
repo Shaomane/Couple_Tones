@@ -123,8 +123,10 @@ public class BackgroundListenerService extends Service {
             this.uri = uri;
             System.err.println("NOTIFICATION THREAD CONSTRUCTOR");
             String currTone = locationController.getSoundTone(location);
+
             if (currTone.equals("")) System.err.println("NULL NULL NULL");
             System.err.println(currTone);
+
             String currToneNumberString = currTone.substring(9);
             locSoundTone = Integer.parseInt(currToneNumberString);
 
@@ -277,15 +279,6 @@ public class BackgroundListenerService extends Service {
         //mNotificationManager.notify(com.example.noellin.coupletones.Constants.NOTIFICATION_NR, mBuilder.build());
         mNotificationManager.notify(id, mBuilder.build());
         id++;
-
-
-        /*try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-            r.play();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
     /*
