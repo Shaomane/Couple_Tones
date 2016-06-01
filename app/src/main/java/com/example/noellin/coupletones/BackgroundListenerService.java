@@ -180,6 +180,10 @@ public class BackgroundListenerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
+        if (intent==null){
+            Log.d("onStartCommand","onStartCommand intent is null");
+            return -1;
+        }
         setupVibetones();
         setupTones();
         Bundle extras = intent.getExtras();
@@ -189,7 +193,6 @@ public class BackgroundListenerService extends Service {
             partner_name = extras.getString("partner_name");
         }
         locationController = new LocationController(rel_id, partner_name);
-        //locationController.readFromDatabase();
 
         Toast.makeText(BackgroundListenerService.this, "Able to receive messages", Toast.LENGTH_SHORT).show();
         thread = new Thread(new MyThread(startId));
@@ -213,6 +216,7 @@ public class BackgroundListenerService extends Service {
      * Shows a notification to the user, with sound
      */
     private void showNotification(String msg, int startId) {
+        //try{Thread.sleep(2000);}catch(InterruptedException e){}
         Uri uri;
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         Thread notifThread;

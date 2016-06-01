@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         SharedPreferences sharedPreferences = getSharedPreferences("user_settings", MODE_PRIVATE);
-    //    sharedPreferences.edit().remove("La Jolla Village Dr.").commit();
         String soundSetting = sharedPreferences.getString("sound", "");
         String vibeSetting = sharedPreferences.getString("vibe", "");
         if (soundSetting.equals("") || vibeSetting.equals(""))
@@ -128,10 +127,10 @@ public class MainActivity extends AppCompatActivity {
         updateUI();
 
         ListView list = (ListView) findViewById(R.id.list);
+        FBInteractor.getPartnerFavoriteLocationsList(this, listItems);
         //adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
 
         final Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        FBInteractor.getPartnerFavoriteLocationsList(this, listItems);
 
         myCustomAdapter = new MyCustomAdapter(listItems, this, v);
         list.setAdapter(myCustomAdapter);
