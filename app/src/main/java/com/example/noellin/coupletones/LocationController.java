@@ -6,7 +6,6 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -19,12 +18,12 @@ public class LocationController {
     String rel_id = null;
     String partnerTwo = null;
 
-    ArrayList<String> locationNames;// = new ArrayList<>();
-    ArrayList<String> locationVibeTones;// = new ArrayList<>();
-    ArrayList<String> locationSoundTones;// = new ArrayList<>();
-    ArrayList<String> locationLatitudes;// = new ArrayList<>();
-    ArrayList<String> locationLongitudes;// = new ArrayList<>();
-    ArrayList<ArrayList<String>> locationTimes;// = new ArrayList<ArrayList<String>>();
+    ArrayList<String> locationNames = new ArrayList<>();
+    ArrayList<String> locationVibeTones = new ArrayList<>();
+    ArrayList<String> locationSoundTones = new ArrayList<>();
+    ArrayList<String> locationLatitudes = new ArrayList<>();
+    ArrayList<String> locationLongitudes = new ArrayList<>();
+    ArrayList<ArrayList<String>> locationTimes = new ArrayList<ArrayList<String>>();
 
     Firebase ref;
 
@@ -45,21 +44,18 @@ public class LocationController {
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                updateLists(dataSnapshot);
-                //for (DataSnapshot location : dataSnapshot.getChildren()){
-                //    updateLists(location);
-                //}
+                addToLists(dataSnapshot);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot){
-                updateLists(dataSnapshot);
+                removeFromLists(dataSnapshot);
 
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s){
-                updateLists(dataSnapshot);
+                changeInLists(dataSnapshot);
 
             }
 
@@ -72,13 +68,36 @@ public class LocationController {
         });
     }
 
-    private void updateLists(DataSnapshot location) {
-        locationNames = new ArrayList<String>();
-        locationVibeTones= new ArrayList<String>();
-        locationSoundTones = new ArrayList<String>();
-        locationLatitudes = new ArrayList<String>();
-        locationLongitudes = new ArrayList<String>();
-        locationTimes = new ArrayList<ArrayList<String>>();
+    private void changeInLists(DataSnapshot location){
+
+        for (int i = 0; i < locationNames.size(); i++){
+            if (locationNames.get(i).equals(location.child("name").getValue().toString())){
+
+                //Log.d("changeInLists","THIS SHOULD NOT BE HAPPENING: changeInLists");
+                locationNames.set(i,location.child("name").getValue().toString());
+                locationVibeTones.set(i,location.child("vibeTone").getValue().toString());
+                locationSoundTones.set(i,location.child("soundTone").getValue().toString());
+                locationLatitudes.set(i,location.child("latitude").getValue().toString());
+                locationLongitudes.set(i,location.child("longitude").getValue().toString());
+            }
+        }
+    }
+
+    private void removeFromLists(DataSnapshot location){
+        for (int i = 0; i < locationNames.size(); i++){
+            if (locationNames.get(i).equals(location.child("name").getValue().toString())){
+
+                //Log.d("removeFromLists","THIS SHOULD NOT BE HAPPENING: removeFromLists");
+                locationNames.remove(i);
+                locationVibeTones.remove(i);
+                locationSoundTones.remove(i);
+                locationLatitudes.remove(i);
+                locationLongitudes.remove(i);
+            }
+        }
+    }
+
+    private void addToLists(DataSnapshot location) {
 
         Log.d("updateList","Location: "+location);
         locationNames.add(location.child("name").getValue().toString());
