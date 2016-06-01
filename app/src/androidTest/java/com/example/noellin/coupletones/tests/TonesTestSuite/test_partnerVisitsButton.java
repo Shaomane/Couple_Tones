@@ -24,12 +24,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class test_Settings extends ActivityInstrumentationTestCase2<MainActivity> {
+public class test_partnerVisitsButton extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private MainActivity mainActivity;
     //private Instrumentation instrumentation;
 
-    public test_Settings() { super(MainActivity.class); }
+    public test_partnerVisitsButton() { super(MainActivity.class); }
 
     @Before
     public void setUp() throws Exception {
@@ -40,7 +40,7 @@ public class test_Settings extends ActivityInstrumentationTestCase2<MainActivity
     }
 
     @Test
-    public void testSettingsBox() {
+    public void testPartnerVisitsButton() {
         mainActivity = getActivity();
 
         try {
@@ -56,15 +56,16 @@ public class test_Settings extends ActivityInstrumentationTestCase2<MainActivity
             e.printStackTrace();
         }
 
-        //Button overflowMenu = (Button) mainActivity.findViewById(R.id.overflowMenu);
-        //overflowMenu.performClick();
+        onView(withId(R.id.partnerVisits)).check(matches(isDisplayed()));
+        onView(withId(R.id.partnerVisits)).perform(click());
+
+        /* Check the partner's list is displayed */
+
         try {
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        onView(withId(R.id.action_settings)).check(matches(isDisplayed()));
-        onView(withId(R.id.action_signout)).check(matches(isDisplayed()));
     }
 }
