@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -13,6 +14,7 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +50,14 @@ public class VisitsActivity extends FragmentActivity {
         adapter.clear();
         adapter.notifyDataSetChanged();
 
+        TextView textView = (TextView) findViewById(R.id.textView2);
+        if (relationship.partnerTwoName != null) {
+            textView.setText(relationship.partnerTwoName + " visited: ");
+        }
+        else{
+            textView.setText("When paired, the locations your partner visits throughout the day will be displayed here");
+        }
+
         Firebase ref1 = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+relationship.rel_id+
                 "/"+relationship.partnerTwoName+"_Locations/");
 
@@ -67,6 +77,26 @@ public class VisitsActivity extends FragmentActivity {
                         System.err.println("@@@@@@@@@ " + location.child("lastTimeVisited/").child("minute").getValue());
                         System.err.println("@@@@@@@@@ " + location.child("lastTimeVisited/").child("second").getValue());
 
+                        int hour =  Integer.parseInt((String) location.child("lastTimeVisited/")
+                                .child("hour").getValue());
+
+                        //Delete the list of visited locations "at" 3AM. In reality this happens when the user next
+                        //goes to this activity after 3, but the result is the same
+                        if (hour < 3 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 3){
+                            location.child("lastTimeVisited/").getRef().setValue(null);
+                            return;
+                        }
+
+                        //Construct the String to display, depending on when the hour is
+                        String hourString;
+                        if (hour > 12){
+                            hour = hour - 12;
+                            hourString = hour + "PM";
+                        }
+                        else{
+                            hourString = hour + "AM";
+                        }
+
                         timeInSeconds += Integer.parseInt((String) location.child("lastTimeVisited/")
                                 .child("day").getValue()) * 86400;
                         timeInSeconds += Integer.parseInt((String) location.child("lastTimeVisited/")
@@ -77,7 +107,7 @@ public class VisitsActivity extends FragmentActivity {
                                 .child("second").getValue());
                         System.err.println("@@@@@@@@@ Total ime in seconds: " + timeInSeconds);
 
-                        map.put(location.getKey(), timeInSeconds);
+                        map.put(location.getKey() + "   " + hourString, timeInSeconds);
                     }
                 }
                 Object[] a = map.entrySet().toArray();

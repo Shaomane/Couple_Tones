@@ -8,12 +8,37 @@
     tools:context="com.example.noellin.coupletones.VisitsActivity">
 
 
-    <ListView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/visitsList"
-        android:layout_weight="90"
-        android:visibility="visible">
-    </ListView>
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="90">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="When paired, the locations your partner visits throughout the day will be displayed here"
+            android:id="@+id/textView2"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="90"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="90">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/visitsList"
+            android:layout_weight="90"
+            android:visibility="visible">
+        </ListView>
+    </LinearLayout>
 
 </LinearLayout>

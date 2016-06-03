@@ -206,7 +206,7 @@ public class BackgroundListenerService extends Service {
         }
         locationController = new LocationController(rel_id, partner_name);
 
-        Toast.makeText(BackgroundListenerService.this, "Able to receive messages", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(BackgroundListenerService.this, "Able to receive messages", Toast.LENGTH_SHORT).show();
         System.err.println("ABLE TO RECEIVE MESSAGES");
         thread = new Thread(new MyThread(startId));
         thread.start();
@@ -219,7 +219,7 @@ public class BackgroundListenerService extends Service {
     @Override
     public void onDestroy()
     {
-        Toast.makeText(BackgroundListenerService.this, "Not able to receive messages", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(BackgroundListenerService.this, "Not able to receive messages", Toast.LENGTH_SHORT).show();
         //thread.interrupt();
         if (ref != null && listener != null) ref.removeEventListener(listener);
         super.onDestroy();

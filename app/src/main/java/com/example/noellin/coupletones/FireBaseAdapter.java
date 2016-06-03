@@ -1,7 +1,9 @@
 package com.example.noellin.coupletones;
 
 
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -23,13 +25,15 @@ public class FireBaseAdapter {
 
     Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com");
     ChildEventListener listenerForAcceptedRequest = null;
-    ChildEventListener listenerForCheatingHoe = null;
+    ChildEventListener listenerForBreakup = null;
     ChildEventListener listenerForRequests = null;
     ValueEventListener searchRelationshipListener = null;
     ValueEventListener searchRequestListener = null;
     ValueEventListener sendPartnerRequestListener = null;
 
     boolean started = false;
+    boolean ended = false;
+    boolean accepted = false;
 
     public FireBaseAdapter(){}
 
@@ -99,7 +103,7 @@ public class FireBaseAdapter {
     When we are broken up with, remove all the listeners and remove relationship data from MainActivity
      */
     public void startListenerForBreakup(final MainActivity callingActivity){
-        ref.child("relationships").addChildEventListener(listenerForCheatingHoe = new ChildEventListener() {
+        ref.child("relationships").addChildEventListener(listenerForBreakup = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
             @Override
@@ -130,12 +134,23 @@ public class FireBaseAdapter {
 
     private void getBrokenUpWith(MainActivity callingActivity) {
 
+        if (ended)
+            return;
+
         callingActivity.stopService(callingActivity.backgroundIntent);
         callingActivity.relationship.partnerTwoEmail = null;
         callingActivity.relationship.partnerTwoName = null;
         callingActivity.updateUI();
         callingActivity.myCustomAdapter.removeRelationship();
         startListenerForRequests(callingActivity);
+
+        Intent intent = new Intent(callingActivity, SignInActivity.class);
+        callingActivity.stopService(callingActivity.backgroundIntent);
+        callingActivity.startActivity(intent);
+
+        Toast.makeText(callingActivity, "Unfortunately, you have been broken up with.", Toast.LENGTH_LONG).show();
+
+        callingActivity.finish();
     }
 
     public void searchRequests(final MainActivity callingActivity){
@@ -149,12 +164,18 @@ public class FireBaseAdapter {
                     Log.d("request", "request: "+request);
                     if (request.child("receiverEmail").getValue() != null &&
                             request.child("receiverEmail").getValue().toString().equals(receiverEmail)){
+
+                        if (accepted == true)
+                            return;
+
                         //Found a request! We are loved.
+                        accepted = true;//temporarily true. will return to false if we decline
+
                         String senderName = request.child("senderName").getValue().toString();
                         String senderEmail = request.child("senderEmail").getValue().toString();
                         String senderRegId = request.child("senderRegId").getValue().toString();
                         request.getRef().setValue(null);
-                        callingActivity.respondToRequest(senderName, senderEmail, senderRegId);
+                        callingActivity.respondToRequest(senderName, senderEmail, senderRegId, request);
                     }
                 }
                 ref.child("requests").removeEventListener(searchRequestListener);
@@ -165,6 +186,10 @@ public class FireBaseAdapter {
 
             }
         });
+    }
+
+    public void declineRequest(){
+        accepted = false;
     }
 
     /*
@@ -311,12 +336,23 @@ public class FireBaseAdapter {
     This method erases an existing relationship from the database
      */
     public void removeRelationship(MainActivity callingActivity){
+        Toast.makeText(callingActivity, "You are no longer paired with "+
+                callingActivity.relationship.partnerTwoName, Toast.LENGTH_LONG).show();
+
+        ended = true;
+
+        ref.removeEventListener(listenerForBreakup);
+
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
         root.child(callingActivity.relationship.rel_id).setValue(null);
         callingActivity.myCustomAdapter.removeRelationship();
         callingActivity.relationship.partnerTwoName = null;
         callingActivity.relationship.partnerTwoEmail = null;
         callingActivity.relationship.partnerTwoRegId = null;
+        Intent intent = new Intent(callingActivity, SignInActivity.class);
+        callingActivity.stopService(callingActivity.backgroundIntent);
+        callingActivity.startActivity(intent);
+        callingActivity.finish();
     }
 
     //This method checks if the user already has an account with CoupleTones

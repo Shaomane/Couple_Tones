@@ -44,12 +44,20 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Partner visits"
+                    android:text="Partner Activities"
                     android:id="@+id/partnerVisits"
                     android:onClick="toPartnerVisits"/>
 
             </LinearLayout>
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="When paired, your partner&apos;s favorite locations will be displayed here"
+                android:id="@+id/textView"
+                android:layout_gravity="center_horizontal"
+                android:textAlignment="center" />
 
             <ListView
                 android:layout_width="match_parent"

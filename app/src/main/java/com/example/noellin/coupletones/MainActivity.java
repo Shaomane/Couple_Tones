@@ -20,8 +20,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
@@ -147,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         //Set up the Add/Remove Partner button accordingly depending on whether the user is paired
         Button removePartnerButton = (Button)findViewById(R.id.removePartnerButton);
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
+        TextView textView = (TextView) findViewById(R.id.textView);
         if (relationship.partnerTwoName == null) {
             //startListenerForRequests();
             listItems = new ArrayList<String>();
@@ -155,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
             addPartnerButton.setVisibility(View.VISIBLE);
             removePartnerButton.setClickable(false);
             removePartnerButton.setVisibility(View.GONE);
+            textView.setText("When paired, your partner's favorite locations will be displayed here");
         }
         else{
             //We are in a relationship. Do not allow another add
@@ -162,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
             addPartnerButton.setVisibility(View.GONE);
             removePartnerButton.setVisibility(View.VISIBLE);
             removePartnerButton.setClickable(true);
+            textView.setText(relationship.partnerTwoName +"'s favorite locations:");
         }
     }
 
@@ -256,11 +261,14 @@ public class MainActivity extends AppCompatActivity {
     This method creates a dialogue that prompts the user to either accept or decline an
     incoming partner request
      */
-    public void respondToRequest(String senderName, String senderEmail, String senderRegId){
+    public void respondToRequest(String senderName, String senderEmail, String senderRegId, DataSnapshot request){
 
         final String secondName = senderName;
         final String secondEmail = senderEmail;
         final String secondRegId = senderRegId;
+        if (isFinishing())
+            return;
+
         AlertDialog.Builder respondToRequestDialogue = new AlertDialog.Builder(MainActivity.this);
         respondToRequestDialogue.setTitle("Partner Request:");
         respondToRequestDialogue.setMessage(senderName+" ("+senderEmail+") sent you a partner request!");
@@ -270,16 +278,20 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         acceptRequest(secondName, secondEmail, secondRegId);
                         dialog.cancel();
+                        Toast.makeText(MainActivity.this, "Congratulations, you are now paired with "+
+                                relationship.partnerTwoName, Toast.LENGTH_SHORT).show();
                     }
                 });
 
         respondToRequestDialogue.setNegativeButton("Decline",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        FBInteractor.declineRequest();
                         dialog.cancel();
                     }
                 });
         respondToRequestDialogue.show();
+        //request.getRef().setValue(null);
     }
 
     /*
