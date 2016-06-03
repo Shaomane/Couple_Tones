@@ -219,7 +219,7 @@ public class BackgroundListenerService extends Service {
     {
         Toast.makeText(BackgroundListenerService.this, "Not able to receive messages", Toast.LENGTH_SHORT).show();
         //thread.interrupt();
-        ref.removeEventListener(listener);
+        if (ref != null && listener != null) ref.removeEventListener(listener);
         super.onDestroy();
     }
 

@@ -21,7 +21,7 @@ import java.util.Map;
  * This class defines a FireBaseInteractor, which is used to interface with a Firebase database while
  * "minding our own business."  Methods are defined that write or retrieve data.
  */
-public class FireBaseInteractor {
+public class FireBaseAdapter {
 
     Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com");
     ChildEventListener listenerForAcceptedRequest = null;
@@ -33,7 +33,7 @@ public class FireBaseInteractor {
 
     boolean started = false;
 
-    public FireBaseInteractor(){}
+    public FireBaseAdapter(){}
 
     public void startListenerForAcceptedRequest(final MainActivity callingActivity){
         Log.d("startListener", "starting Listener for Accepted Request");

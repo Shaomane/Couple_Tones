@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     MyCustomAdapter myCustomAdapter;
 
     public Relationship relationship;
-    public FireBaseInteractor FBInteractor;// = new FireBaseInteractor();
+    public FireBaseAdapter FBInteractor;// = new FireBaseInteractor();
 
     static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         backgroundIntent = new Intent(MainActivity.this, BackgroundListenerService.class);
         Firebase.setAndroidContext(this);
 
-        FBInteractor = new FireBaseInteractor();
+        FBInteractor = new FireBaseAdapter();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

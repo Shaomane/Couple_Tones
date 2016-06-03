@@ -16,6 +16,7 @@ import java.util.Map;
  */
 public class LocationUpdater {
 
+    // Composes an internal firebase referance and interfaces between the app and the database
     Firebase ref; //= new Firebase("https://dazzling-inferno-7112.firebaseio.com");
     String rel_id = null;
 
@@ -40,7 +41,7 @@ public class LocationUpdater {
         dayMap.put("day",""+day);
         hourMap.put("hour",""+hour);
         minuteMap.put("minute",""+minute);
-        secondMap.put("second",""+minute);
+        secondMap.put("second",""+second);
 
         ref.child(myName+"_Locations").child(locName).child("lastTimeVisited").updateChildren(dayMap);
         ref.child(myName+"_Locations").child(locName).child("lastTimeVisited").updateChildren(hourMap);
