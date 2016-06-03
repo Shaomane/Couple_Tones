@@ -175,27 +175,6 @@ public class MainActivity extends AppCompatActivity {
     // attempts to refresh favorite locations page upon returning from maps
     protected void onResume() {
         super.onResume();
-        //adapter.clear();
-        //adapter.notifyDataSetChanged();
-
-
-
-        /*SharedPreferences savedLocations = getSharedPreferences(SAVED_LOCATIONS, PREFERENCE_MODE_PRIVATE);
-
-        Map<String, ?> previousLocations = savedLocations.getAll();
-
-        for (Map.Entry<String, ?> entry : previousLocations.entrySet()) {
-
-            //if (!(listItems.contains(entry.getKey()))) {
-            //    listItems.add(entry.getKey());
-            //}
-            //adapter.notifyDataSetChanged();
-            myCustomAdapter.notifyDataSetChanged();
-
-        }
-
-
-        }*/
 
     }
 
