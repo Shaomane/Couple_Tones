@@ -115,6 +115,7 @@ public class BackgroundListenerService extends Service {
         int locSoundTone;
         boolean sound;
         boolean vibe;
+        String currVibeTone = "";
 
         public NotificationThread(int startId, long[] vibeTone, Uri uri, String location)
         {
@@ -130,7 +131,7 @@ public class BackgroundListenerService extends Service {
             String currToneNumberString = currTone.substring(9);
             locSoundTone = Integer.parseInt(currToneNumberString);
 
-            String currVibeTone = locationController.getVibeTone(location);
+            currVibeTone = locationController.getVibeTone(location);
             String currVibeToneNumberString = currVibeTone.substring(8);
             locVibeTone = Integer.parseInt(currVibeToneNumberString);
 
@@ -153,14 +154,22 @@ public class BackgroundListenerService extends Service {
                 try
                 {
                     Ringtone r;
-                    if (vibe) v.vibrate(vibeTone, -1);
+                    if (vibe)
+                    {
+                        v.vibrate(vibeTone, -1);
+                        Log.d("vibration confirmation", "Phone is currently vibrating");
+                    }
                     if (sound)
                     {
                         r = RingtoneManager.getRingtone(getApplicationContext(), uri);
                         r.play();
                     }
                     wait(3000);
-                    if (vibe) v.vibrate(customVibes[locVibeTone], -1);
+                    if (vibe)
+                    {
+                        v.vibrate(customVibes[locVibeTone], -1);
+                        Log.d("vibration confirmation", "Phone is currently vibrating with " + currVibeTone);
+                    }
                     if (sound)
                     {
                         r = RingtoneManager.getRingtone(getApplicationContext(), customTones[locSoundTone]);
