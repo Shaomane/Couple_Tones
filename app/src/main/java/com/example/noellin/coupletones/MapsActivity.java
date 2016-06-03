@@ -549,8 +549,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot == null) {
-                    Log.d("FUCK YOU", "FUCK YOU");
+                if (!isMyServiceRunning(BackgroundListenerService.class)) {
+
                     rel_id = null;
                 }
                 else{

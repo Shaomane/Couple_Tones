@@ -83,6 +83,21 @@ public class LocationController {
         }
     }
 
+    public void removeRelationship(){
+
+        //MainActivity callingActivity;
+        rel_id = null;
+        partnerTwo = null;
+
+        locationNames = new ArrayList<>();
+        locationVibeTones = new ArrayList<>();
+        locationSoundTones = new ArrayList<>();
+        locationLatitudes = new ArrayList<>();
+        locationLongitudes = new ArrayList<>();
+        locationTimes = new ArrayList<ArrayList<String>>();
+
+    }
+
     private void removeFromLists(DataSnapshot location){
         for (int i = 0; i < locationNames.size(); i++){
             if (locationNames.get(i).equals(location.child("name").getValue().toString())){

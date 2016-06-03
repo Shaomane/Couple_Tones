@@ -54,6 +54,10 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         customTones = t.getTones();
     }
 
+    public void removeRelationship(){
+        locationController.removeRelationship();
+    }
+
     @Override
     public int getCount() {
         return list.size();

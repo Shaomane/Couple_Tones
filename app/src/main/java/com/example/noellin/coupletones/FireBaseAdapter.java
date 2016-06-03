@@ -1,9 +1,7 @@
 package com.example.noellin.coupletones;
 
 
-import android.app.Activity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -77,7 +75,7 @@ public class FireBaseAdapter {
                                 .toString() : relationship.child("nameOne").getValue().toString();
                         callingActivity.relationship.rel_id = relationship.getKey();
                         callingActivity.updateUI();
-                        startListenerForCheatingHoe(callingActivity);
+                        startListenerForBreakup(callingActivity);
 
                         started = false;
                         ref.child("requests").removeEventListener(listenerForRequests);
@@ -97,7 +95,7 @@ public class FireBaseAdapter {
     /*
     When we are broken up with, remove all the listeners and remove relationship data from MainActivity
      */
-    public void startListenerForCheatingHoe(final MainActivity callingActivity){
+    public void startListenerForBreakup(final MainActivity callingActivity){
         ref.child("relationships").addChildEventListener(listenerForCheatingHoe = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {}
@@ -129,9 +127,6 @@ public class FireBaseAdapter {
 
     private void getBrokenUpWith(MainActivity callingActivity) {
 
-        //removeListeners();
-
-        Log.d("cheating hoe", "cheating hoe detected");
         callingActivity.stopService(callingActivity.backgroundIntent);
         callingActivity.relationship.partnerTwoEmail = null;
         callingActivity.relationship.partnerTwoName = null;
@@ -304,7 +299,7 @@ public class FireBaseAdapter {
         root.child(relName).updateChildren(emailTwo);
         root.child(relName).updateChildren(regIdTwo);
 
-        startListenerForCheatingHoe(callingActivity);
+        startListenerForBreakup(callingActivity);
     }
 
 

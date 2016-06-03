@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startListenerForCheatingHoe(){
-        FBInteractor.startListenerForCheatingHoe(this);
+        FBInteractor.startListenerForBreakup(this);
     }
 
     public void updateUI() {
@@ -149,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
         if (relationship.partnerTwoName == null) {
             //startListenerForRequests();
+            listItems = new ArrayList<String>();
+            myCustomAdapter.removeRelationship();
             addPartnerButton.setClickable(true);
             addPartnerButton.setVisibility(View.VISIBLE);
             removePartnerButton.setClickable(false);
