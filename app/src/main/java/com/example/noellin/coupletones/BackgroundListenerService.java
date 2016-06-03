@@ -1,5 +1,6 @@
 package com.example.noellin.coupletones;
 
+import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -191,7 +192,7 @@ public class BackgroundListenerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-        if (intent==null){
+        if (intent == null){
             Log.d("onStartCommand","onStartCommand intent is null");
             return -1;
         }
@@ -206,6 +207,7 @@ public class BackgroundListenerService extends Service {
         locationController = new LocationController(rel_id, partner_name);
 
         Toast.makeText(BackgroundListenerService.this, "Able to receive messages", Toast.LENGTH_SHORT).show();
+        System.err.println("ABLE TO RECEIVE MESSAGES");
         thread = new Thread(new MyThread(startId));
         thread.start();
         return super.onStartCommand(intent, flags, startId);
@@ -303,5 +305,19 @@ public class BackgroundListenerService extends Service {
     {
         ToneContainer t = new ToneContainer(getApplicationContext());
         customTones = t.getTones();
+    }
+
+    /*
+     * Tests whether a background service is running. Is useful for determining whether to start
+     * the messaging listener
+     */
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

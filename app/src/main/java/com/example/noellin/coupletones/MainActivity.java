@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         if (relationship.partnerTwoName == null) {
             //startListenerForRequests();
             listItems = new ArrayList<String>();
-            myCustomAdapter.removeRelationship();
+            //myCustomAdapter.removeRelationship();
             addPartnerButton.setClickable(true);
             addPartnerButton.setVisibility(View.VISIBLE);
             removePartnerButton.setClickable(false);
@@ -313,6 +313,13 @@ public class MainActivity extends AppCompatActivity {
         relationship.partnerTwoName = null;
         stopService(backgroundIntent);
 
+        ArrayList<String> tempList = new ArrayList<>();
+        final Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        myCustomAdapter = new MyCustomAdapter(tempList, this, v);
+        ListView list = (ListView) findViewById(R.id.list);
+        list.setAdapter(myCustomAdapter);
+
+
         updateUI();
     }
 
@@ -437,7 +444,7 @@ public class MainActivity extends AppCompatActivity {
      * Tests whether a background service is running. Is useful for determining whether to start
      * the messaging listener
      */
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
+    public boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {

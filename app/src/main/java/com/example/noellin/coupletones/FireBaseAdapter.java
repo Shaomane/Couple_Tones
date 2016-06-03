@@ -76,7 +76,10 @@ public class FireBaseAdapter {
                         callingActivity.relationship.rel_id = relationship.getKey();
                         callingActivity.updateUI();
                         startListenerForBreakup(callingActivity);
-
+                        if (!callingActivity.isMyServiceRunning(BackgroundListenerService.class))
+                        {
+                            callingActivity.startService(callingActivity.backgroundIntent);
+                        }
                         started = false;
                         ref.child("requests").removeEventListener(listenerForRequests);
 
@@ -131,6 +134,7 @@ public class FireBaseAdapter {
         callingActivity.relationship.partnerTwoEmail = null;
         callingActivity.relationship.partnerTwoName = null;
         callingActivity.updateUI();
+        callingActivity.myCustomAdapter.removeRelationship();
         startListenerForRequests(callingActivity);
     }
 
@@ -309,6 +313,7 @@ public class FireBaseAdapter {
     public void removeRelationship(MainActivity callingActivity){
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
         root.child(callingActivity.relationship.rel_id).setValue(null);
+        callingActivity.myCustomAdapter.removeRelationship();
         callingActivity.relationship.partnerTwoName = null;
         callingActivity.relationship.partnerTwoEmail = null;
         callingActivity.relationship.partnerTwoRegId = null;

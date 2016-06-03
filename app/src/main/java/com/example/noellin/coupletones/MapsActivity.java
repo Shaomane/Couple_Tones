@@ -545,7 +545,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Get a Firebase reference to our relationship
         final Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships/"+rel_id+"/notifications");
 
-        Query queryRef = new Firebase("https://dazzling-inferno-7112.firebaseio.com/").orderByChild("relationships").equalTo(rel_id);
+        Query queryRef = new Firebase("https://dazzling-inferno-7112.firebaseio.com").orderByChild("relationships").equalTo(rel_id);
         queryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
