@@ -80,6 +80,10 @@ public class FireBaseAdapter {
                         callingActivity.relationship.rel_id = relationship.getKey();
                         callingActivity.updateUI();
                         startListenerForBreakup(callingActivity);
+
+                        Toast.makeText(callingActivity, "Congratulations, you are now paired with "+
+                                callingActivity.relationship.partnerTwoName, Toast.LENGTH_SHORT).show();
+
                         if (!callingActivity.isMyServiceRunning(BackgroundListenerService.class))
                         {
                             callingActivity.startService(callingActivity.backgroundIntent);
@@ -114,7 +118,6 @@ public class FireBaseAdapter {
                 if (dataSnapshot.child("emailOne").getValue() != null && dataSnapshot.child("emailTwo").getValue() != null &&
                         (dataSnapshot.child("emailOne").getValue().toString().equals(callingActivity.relationship.partnerOneEmail) ||
                         dataSnapshot.child("emailTwo").getValue().toString().equals(callingActivity.relationship.partnerOneEmail))){
-                    //TODO: if this causes a last minute problem put it in its own method with a delay
 
                     getBrokenUpWith(callingActivity);
                     return;
@@ -136,6 +139,8 @@ public class FireBaseAdapter {
 
         if (ended)
             return;
+
+        ended = true;
 
         callingActivity.stopService(callingActivity.backgroundIntent);
         callingActivity.relationship.partnerTwoEmail = null;
@@ -233,7 +238,6 @@ public class FireBaseAdapter {
         final String id = callingActivity.relationship.partnerOneID;
         final String myName = callingActivity.relationship.partnerOneName;
         final String myEmail = callingActivity.relationship.partnerOneEmail;
-        final String regId = callingActivity.relationship.partnerOneRegId;
 
         //attach a listener to read the data
         ref.child("relationships").addListenerForSingleValueEvent(sendPartnerRequestListener = new ValueEventListener(){
@@ -264,8 +268,6 @@ public class FireBaseAdapter {
                 Map<String, Object> receiverEmail = new HashMap<String, Object>();
                 senderName.put("senderName", myName);
                 senderEmail.put("senderEmail", myEmail);
-                senderRegId.put("senderRegId", regId);
-                Log.d("sendPartnerRequest","sending regid: "+regId);
                 receiverEmail.put("receiverEmail", entered_email);
 
                 //update the request in the database with the new information
@@ -298,7 +300,6 @@ public class FireBaseAdapter {
         //no relationship was found including the user. Create a new request in the database
         Map<String, Object> newEntry = new HashMap<String, Object>();
         String relName = callingActivity.relationship.partnerOneID;
-        //String relName = myId;
         newEntry.put(relName, "");
         root.updateChildren(newEntry);
         Log.d("relname", relName);
@@ -315,10 +316,8 @@ public class FireBaseAdapter {
         Map<String, Object> regIdTwo = new HashMap<String, Object>();
         nameOne.put("nameOne", callingActivity.relationship.partnerOneName);
         emailOne.put("emailOne", callingActivity.relationship.partnerOneEmail);
-        regIdOne.put("regIdOne", callingActivity.relationship.partnerOneRegId);
         nameTwo.put("nameTwo", senderName);
         emailTwo.put("emailTwo", senderEmail);
-        regIdTwo.put("regIdTwo", senderRegId);
 
         //update the request in the database with the new information
         root.child(relName).updateChildren(nameOne);
@@ -348,7 +347,6 @@ public class FireBaseAdapter {
         callingActivity.myCustomAdapter.removeRelationship();
         callingActivity.relationship.partnerTwoName = null;
         callingActivity.relationship.partnerTwoEmail = null;
-        callingActivity.relationship.partnerTwoRegId = null;
         Intent intent = new Intent(callingActivity, SignInActivity.class);
         callingActivity.stopService(callingActivity.backgroundIntent);
         callingActivity.startActivity(intent);
@@ -369,17 +367,13 @@ public class FireBaseAdapter {
                 for (DataSnapshot rel : snapshot.getChildren()){
                     //Check if current relationship has the user as Partner 1 by comparing the acct email
                     if (rel.child("emailOne").getValue().toString().equals(callingActivity.acct.getEmail())) {
-                        //rel_number = counter;
                         //The user has an account. If there is a partner, update partnerName and partnerEmail
                         if (rel.child("nameTwo").getValue() != null){
                             callingActivity.partnerName = rel.child("nameTwo").getValue().toString();
                             callingActivity.partnerEmail = rel.child("emailTwo").getValue().toString();
                             callingActivity.rel_id = rel.getKey().toString();
                         }
-                        callingActivity.myRegId = rel.child("regIdOne").getValue().toString();
-                        callingActivity.partnersRegId = rel.child("regIdTwo").getValue().toString();
                         callingActivity.toMain();
-                        //Log.d("rel", "rel_id" +callingActivity.rel_id);
                         return;
                     }
                     //Check if current relationship has the user as Partner 2
@@ -389,10 +383,7 @@ public class FireBaseAdapter {
                             callingActivity.partnerEmail = rel.child("emailOne").getValue().toString();
                             callingActivity.rel_id = rel.getKey().toString();
                         }
-                        callingActivity.myRegId = rel.child("regIdTwo").getValue().toString();
-                        callingActivity.partnersRegId = rel.child("regIdOne").getValue().toString();
                         callingActivity.toMain();
-                        //Log.d("rel", "rel_id" +callingActivity.rel_id);
                         return;
                     }
                 }

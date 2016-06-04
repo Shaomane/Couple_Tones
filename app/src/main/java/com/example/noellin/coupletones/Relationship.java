@@ -13,12 +13,9 @@ public class Relationship {
     public String partnerTwoName = "";
     public String partnerTwoEmail = "";
     public String partnerOneID = "";
-    //public String partnerTwoID = "";
     public String partnerOneName = "";
     public String partnerOneEmail = "";
     public String rel_id = "";
-    public static String partnerOneRegId = "";
-    public static String partnerTwoRegId = "";
 
     public Relationship(){
 

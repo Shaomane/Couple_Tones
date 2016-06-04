@@ -33,17 +33,13 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> listItems = new ArrayList<String>();
-    ArrayAdapter<String> adapter;
     MyCustomAdapter myCustomAdapter;
 
     public Relationship relationship;
     public FireBaseAdapter FBInteractor;// = new FireBaseInteractor();
 
-    static final int PREFERENCE_MODE_PRIVATE = 0;                   // int for shared preferences open mode
     public static String SAVED_LOCATIONS = "Saved_locations_file";  // file where locations are stored
 
-    GoogleCloudMessaging gcm;
-    String PROJECT_NUMBER = "290538927222";
     Intent backgroundIntent;
 
     AlertDialog.Builder builder;
@@ -85,19 +81,15 @@ public class MainActivity extends AppCompatActivity {
 
         //determine if the user has logged in
         Bundle extras = getIntent().getExtras();
-        //boolean logged_in = false;
         if (extras != null){
             relationship.rel_id = extras.getString("rel_id");
             relationship.partnerOneName = extras.getString("name");
             relationship.partnerOneEmail = extras.getString("email");
-            relationship.partnerOneRegId = extras.getString("myRegId");
             relationship.partnerOneID = extras.getString("ID");
 
             relationship.partnerTwoName = extras.getString("partnerName");
             relationship.partnerTwoEmail = extras.getString("partnerEmail");
-            relationship.partnerTwoRegId = extras.getString("partnersRegId");
 
-            //SAVED_LOCATIONS+=relationship.partnerOneName;
             SAVED_LOCATIONS = "Saved_locations_file" + relationship.partnerOneName;
 
             //Check if the BackgroundListenerService is running. Only start if not AND we are in a relationship
@@ -127,14 +119,12 @@ public class MainActivity extends AppCompatActivity {
 
         ListView list = (ListView) findViewById(R.id.list);
         FBInteractor.getPartnerFavoriteLocationsList(this, listItems);
-        //adapter = new ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, listItems);
 
         final Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         myCustomAdapter = new MyCustomAdapter(listItems, this, v);
         list.setAdapter(myCustomAdapter);
 
-        getRegId();
     }
 
     private void startListenerForAcceptedRequest(){
@@ -151,9 +141,8 @@ public class MainActivity extends AppCompatActivity {
         Button addPartnerButton = (Button)findViewById(R.id.addPartnerButton);
         TextView textView = (TextView) findViewById(R.id.textView);
         if (relationship.partnerTwoName == null) {
-            //startListenerForRequests();
             listItems = new ArrayList<String>();
-            //myCustomAdapter.removeRelationship();
+
             addPartnerButton.setClickable(true);
             addPartnerButton.setVisibility(View.VISIBLE);
             removePartnerButton.setClickable(false);
@@ -270,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         respondToRequestDialogue.show();
-        //request.getRef().setValue(null);
     }
 
     /*
@@ -398,37 +386,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("senderName", relationship.partnerOneName);
 
         startActivity(intent);
-    }
-
-    /*
-    This method gets the user's reg_id, which is used for Google cloud messaging
-     */
-    public void getRegId() {
-        new AsyncTask<Void, Void, String>() {
-
-            @Override
-            protected String doInBackground(Void... params) {
-                String msg = "";
-                try {
-                    if(gcm == null) {
-                        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-                    }
-
-                    relationship.partnerOneRegId = gcm.register(PROJECT_NUMBER);
-                    msg = "Device registered, registration ID=" + relationship.partnerOneRegId;
-                    Log.i("GCM", "!!!!! " + relationship.partnerOneRegId);
-
-                } catch(IOException ex) {
-                    msg = "Error: " + ex.getMessage();
-                }
-                return msg;
-            }
-
-            @Override
-            protected void onPostExecute(String msg) {
-                /*etRegId.setText(msg);*/
-            }
-        }.execute(null, null, null);
     }
 
     /*
