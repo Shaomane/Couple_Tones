@@ -29,7 +29,7 @@ public class Test_7sendPartnerRequest_alreadyPaired extends ActivityInstrumentat
         mainActivity = getActivity();
         mainActivity.relationship.partnerOneName = "whee";
         mainActivity.relationship.partnerOneEmail = "whee@example.com";
-        mainActivity.relationship.partnerOneRegId = "1234512345";
+        //mainActivity.relationship.partnerOneRegId = "1234512345";
         mainActivity.relationship.partnerOneID = "5432154321";
         final String entered_email = "bar@example.com";
     }
@@ -41,7 +41,7 @@ public class Test_7sendPartnerRequest_alreadyPaired extends ActivityInstrumentat
         //mainActivity.relationship = new Relationship();
         mainActivity.relationship.partnerOneName = "whee";
         mainActivity.relationship.partnerOneEmail = "whee@example.com";
-        mainActivity.relationship.partnerOneRegId = "1234512345";
+        //mainActivity.relationship.partnerOneRegId = "1234512345";
         mainActivity.relationship.partnerOneID = "5432154321";
         final String entered_email = "bar@example.com";
 
@@ -60,7 +60,7 @@ public class Test_7sendPartnerRequest_alreadyPaired extends ActivityInstrumentat
                     if (req.child("senderName").getValue() != null
                             && req.child("senderName").getValue().toString().equals("whee")
                             && req.child("senderEmail").getValue().toString().equals("whee@example.com")
-                            && req.child("senderRegId").getValue().toString().equals("1234512345")
+                            //&& req.child("senderRegId").getValue().toString().equals("1234512345")
                             && req.child("receiverEmail").getValue().toString().equals(entered_email)) {
                         Log.d("if statement","found a matching request");
                         fail("found a matching request");

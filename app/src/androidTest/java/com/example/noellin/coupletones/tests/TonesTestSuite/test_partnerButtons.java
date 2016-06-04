@@ -37,7 +37,7 @@ public class test_partnerButtons extends ActivityInstrumentationTestCase2<MainAc
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         mainActivity = getActivity();
     }
-
+/*
     @Test
     public void testPartnerVisitsButton() {
         mainActivity = getActivity();
@@ -68,4 +68,5 @@ public class test_partnerButtons extends ActivityInstrumentationTestCase2<MainAc
         onView(withId(R.id.vibetone_btn)).perform(click());
         mainActivity.onBackPressed();
     }
+    */
 }

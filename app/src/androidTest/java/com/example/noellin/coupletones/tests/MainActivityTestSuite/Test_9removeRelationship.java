@@ -1,5 +1,6 @@
 package com.example.noellin.coupletones.tests.MainActivityTestSuite;
 
+import android.os.Looper;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
@@ -42,6 +43,7 @@ public class Test_9removeRelationship extends ActivityInstrumentationTestCase2<M
         mainActivity.relationship = new Relationship();
         String rel_id = "11111111";
         mainActivity.relationship.rel_id = rel_id;
+        Looper.prepare();
         mainActivity.FBInteractor.removeRelationship(mainActivity);
 
         //Check if a relationship was removed from the database

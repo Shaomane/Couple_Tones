@@ -89,7 +89,8 @@ public class FireBaseAdapter {
                             callingActivity.startService(callingActivity.backgroundIntent);
                         }
                         started = false;
-                        ref.child("requests").removeEventListener(listenerForRequests);
+                        if (listenerForRequests != null)
+                            ref.child("requests").removeEventListener(listenerForRequests);
 
                         return;
                     }
@@ -146,7 +147,7 @@ public class FireBaseAdapter {
         callingActivity.relationship.partnerTwoEmail = null;
         callingActivity.relationship.partnerTwoName = null;
         callingActivity.updateUI();
-        callingActivity.myCustomAdapter.removeRelationship();
+        //callingActivity.myCustomAdapter.removeRelationship();
         startListenerForRequests(callingActivity);
 
         Intent intent = new Intent(callingActivity, SignInActivity.class);
@@ -182,7 +183,8 @@ public class FireBaseAdapter {
                         callingActivity.respondToRequest(senderName, senderEmail);
                     }
                 }
-                ref.child("requests").removeEventListener(searchRequestListener);
+                if (searchRequestListener!=null)
+                    ref.child("requests").removeEventListener(searchRequestListener);
             }
 
             @Override
@@ -292,7 +294,8 @@ public class FireBaseAdapter {
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
 
         started = false;
-        ref.child("requests").removeEventListener(listenerForRequests);
+        if (listenerForRequests!=null)
+            ref.child("requests").removeEventListener(listenerForRequests);
 
         //no relationship was found including the user. Create a new request in the database
         Map<String, Object> newEntry = new HashMap<String, Object>();
@@ -337,11 +340,12 @@ public class FireBaseAdapter {
 
         ended = true;
 
-        ref.removeEventListener(listenerForBreakup);
+        if (listenerForBreakup!=null)
+            ref.removeEventListener(listenerForBreakup);
 
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
         root.child(callingActivity.relationship.rel_id).setValue(null);
-        callingActivity.myCustomAdapter.removeRelationship();
+        //callingActivity.myCustomAdapter.removeRelationship();
         callingActivity.relationship.partnerTwoName = null;
         callingActivity.relationship.partnerTwoEmail = null;
         Intent intent = new Intent(callingActivity, SignInActivity.class);

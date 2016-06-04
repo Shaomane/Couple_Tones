@@ -32,7 +32,7 @@ public class test_checkSignInButton extends ActivityInstrumentationTestCase2<Mai
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         mainActivity = getActivity();
     }
-
+/*
     @Test
     public void test_checkSignInButtons() {
 
@@ -55,5 +55,5 @@ public class test_checkSignInButton extends ActivityInstrumentationTestCase2<Mai
         onView(withId(R.id.continue_button)).check(matches(isDisplayed()));
 
     }
-
+*/
 }

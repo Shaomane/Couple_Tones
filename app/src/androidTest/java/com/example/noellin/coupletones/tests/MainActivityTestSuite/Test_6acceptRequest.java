@@ -28,7 +28,7 @@ public class Test_6acceptRequest extends ActivityInstrumentationTestCase2<MainAc
         mainActivity = getActivity();
         mainActivity.relationship.partnerOneName = "foo";
         mainActivity.relationship.partnerOneEmail = "foo@example.com";
-        mainActivity.relationship.partnerOneRegId = "1234567890";
+        //mainActivity.relationship.partnerOneRegId = "1234567890";
         mainActivity.relationship.partnerOneID = "0987654321";
         //mainActivity.sendPartnerRequest("bar@example.com");
     }
@@ -42,13 +42,14 @@ public class Test_6acceptRequest extends ActivityInstrumentationTestCase2<MainAc
         mainActivity = getActivity();
         mainActivity.relationship.partnerOneName = "bar";
         mainActivity.relationship.partnerOneEmail = "bar@example.com";
-        mainActivity.relationship.partnerOneRegId = "00000000";
+        //mainActivity.relationship.partnerOneRegId = "00000000";
         mainActivity.relationship.partnerOneID = "11111111";
+        mainActivity.startListenerForRequests();
 
-        mainActivity.acceptRequest("foo","foo@example.com","1234567890");
+        mainActivity.acceptRequest("foo","foo@example.com");
 
         //Ensure that the correct variables are being set
-        assertEquals(mainActivity.relationship.partnerTwoRegId, "1234567890");
+        //assertEquals(mainActivity.relationship.partnerTwoRegId, "1234567890");
         assertEquals(mainActivity.relationship.partnerTwoEmail, "foo@example.com");
         assertEquals(mainActivity.relationship.partnerTwoName, "foo");
 

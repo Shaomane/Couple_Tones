@@ -50,7 +50,7 @@ public class Test_3sendPartnerRequest_searchForRequest extends ActivityInstrumen
         mainActivity = getActivity();
         mainActivity.relationship.partnerOneName = "foo";
         mainActivity.relationship.partnerOneEmail = "foo@example.com";
-        mainActivity.relationship.partnerOneRegId = "1234567890";
+        //mainActivity.relationship.partnerOneRegId = "1234567890";
         mainActivity.relationship.partnerOneID = "0987654321";
 
         Firebase ref = new Firebase("https://dazzling-inferno-7112.firebaseio.com/requests");
@@ -65,7 +65,7 @@ public class Test_3sendPartnerRequest_searchForRequest extends ActivityInstrumen
                     if (req.child("senderName").getValue() != null
                             && req.child("senderName").getValue().toString().equals("foo")
                             && req.child("senderEmail").getValue().toString().equals("foo@example.com")
-                            && req.child("senderRegId").getValue().toString().equals("1234567890")
+                            //&& req.child("senderRegId").getValue().toString().equals("1234567890")
                             && req.child("receiverEmail").getValue().toString().equals(entered_email)) {
                         //This is expected
                         Log.d("if statement","found a matching request");
