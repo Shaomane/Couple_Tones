@@ -178,9 +178,8 @@ public class FireBaseAdapter {
 
                         String senderName = request.child("senderName").getValue().toString();
                         String senderEmail = request.child("senderEmail").getValue().toString();
-                        String senderRegId = request.child("senderRegId").getValue().toString();
                         request.getRef().setValue(null);
-                        callingActivity.respondToRequest(senderName, senderEmail, senderRegId, request);
+                        callingActivity.respondToRequest(senderName, senderEmail);
                     }
                 }
                 ref.child("requests").removeEventListener(searchRequestListener);
@@ -264,7 +263,6 @@ public class FireBaseAdapter {
                 //Create Maps to put data in for the database
                 Map<String, Object> senderName = new HashMap<String, Object>();
                 Map<String, Object> senderEmail = new HashMap<String, Object>();
-                Map<String, Object> senderRegId = new HashMap<String, Object>();
                 Map<String, Object> receiverEmail = new HashMap<String, Object>();
                 senderName.put("senderName", myName);
                 senderEmail.put("senderEmail", myEmail);
@@ -273,7 +271,6 @@ public class FireBaseAdapter {
                 //update the request in the database with the new information
                 root.child(reqName).updateChildren(senderName);
                 root.child(reqName).updateChildren(senderEmail);
-                root.child(reqName).updateChildren(senderRegId);
                 root.child(reqName).updateChildren(receiverEmail);
                 callingActivity.showPartnerRequestConfirmation(entered_email);
 
@@ -291,7 +288,7 @@ public class FireBaseAdapter {
     This method accepts a request by adding in a new relationship to the database containing the
     requester and the requested partner
      */
-    public void acceptRequest(String senderName, String senderEmail, String senderRegId, final MainActivity callingActivity){
+    public void acceptRequest(String senderName, String senderEmail, final MainActivity callingActivity){
         Firebase root = new Firebase("https://dazzling-inferno-7112.firebaseio.com/relationships");
 
         started = false;

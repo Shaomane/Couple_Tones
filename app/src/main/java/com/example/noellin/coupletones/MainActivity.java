@@ -229,11 +229,10 @@ public class MainActivity extends AppCompatActivity {
     This method creates a dialogue that prompts the user to either accept or decline an
     incoming partner request
      */
-    public void respondToRequest(String senderName, String senderEmail, String senderRegId, DataSnapshot request){
+    public void respondToRequest(String senderName, String senderEmail){
 
         final String secondName = senderName;
         final String secondEmail = senderEmail;
-        final String secondRegId = senderRegId;
         if (isFinishing())
             return;
 
@@ -244,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         respondToRequestDialogue.setPositiveButton("Accept",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        acceptRequest(secondName, secondEmail, secondRegId);
+                        acceptRequest(secondName, secondEmail);
                         dialog.cancel();
                         Toast.makeText(MainActivity.this, "Congratulations, you are now paired with "+
                                 relationship.partnerTwoName, Toast.LENGTH_SHORT).show();
@@ -266,8 +265,8 @@ public class MainActivity extends AppCompatActivity {
     the request by creating a new relationship in the database involving the user and the
     request sender
      */
-    public void acceptRequest(String senderName, String senderEmail, String senderRegId){
-        FBInteractor.acceptRequest(senderName, senderEmail, senderRegId, this);
+    public void acceptRequest(String senderName, String senderEmail){
+        FBInteractor.acceptRequest(senderName, senderEmail, this);
 
         relationship.partnerTwoName = senderName;
         relationship.partnerTwoEmail = senderEmail;
