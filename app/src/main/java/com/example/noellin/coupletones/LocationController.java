@@ -68,7 +68,7 @@ public class LocationController {
         });
     }
 
-    private void changeInLists(DataSnapshot location){
+    public void changeInLists(DataSnapshot location){
 
         for (int i = 0; i < locationNames.size(); i++){
             if (locationNames.get(i).equals(location.child("name").getValue().toString())){
@@ -98,7 +98,7 @@ public class LocationController {
 
     }
 
-    private void removeFromLists(DataSnapshot location){
+    public void removeFromLists(DataSnapshot location){
         for (int i = 0; i < locationNames.size(); i++){
             if (locationNames.get(i).equals(location.child("name").getValue().toString())){
 
@@ -112,7 +112,7 @@ public class LocationController {
         }
     }
 
-    private void addToLists(DataSnapshot location) {
+    public void addToLists(DataSnapshot location) {
 
         Log.d("updateList","Location: "+location);
         locationNames.add(location.child("name").getValue().toString());

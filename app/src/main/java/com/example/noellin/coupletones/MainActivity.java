@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Firebase.setAndroidContext(this);
         //setup for the background intent listening for new notifications, as well as the Firebase database
         backgroundIntent = new Intent(MainActivity.this, BackgroundListenerService.class);
-        Firebase.setAndroidContext(this);
+
 
         FBInteractor = new FireBaseAdapter();
 
